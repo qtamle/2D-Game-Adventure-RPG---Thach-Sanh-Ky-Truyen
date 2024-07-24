@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private float dashingCooldown = 1f;
 
     private bool isWallSliding;
-    private float wallSlidingSpeed = 2f;
+    private float wallSlidingSpeed = 1f;
 
     private bool isWallJumping;
     private float wallJumpingDirection;
@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
             rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y * 0.5f);
         }
 
-        if (Input.GetKeyDown(KeyCode.L) && canDash)
+        if (Input.GetKeyDown(KeyCode.L) && canDash && !isWallSliding && IsGrounded())
         {
             StartCoroutine(Dash());
         }
@@ -93,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallSlide()
     {
+        if (isDashing) return; 
+
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
             isWallSliding = true;
@@ -101,6 +103,12 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             isWallSliding = false;
+        }
+
+        if (IsGrounded())
+        {
+            rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
+            Flip();
         }
     }
 
