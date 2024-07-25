@@ -3,17 +3,20 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Move and Jump")]
     public float horizontal;
     public float speed;
     public float jumpPower;
     public bool isFacingRight = true;
 
+    [Header("Dash")]
     private bool canDash = true;
     private bool isDashing;
     private float dashingPower = 20f;
     private float dashingTime = 0.2f;
     private float dashingCooldown = 1f;
 
+    [Header("Wall Slide and Wall Jump")]
     private bool isWallSliding;
     private float wallSlidingSpeed = 1f;
 
@@ -24,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private float wallJumpingDuration = 0.4f;
     private Vector2 wallJumpingPower = new Vector2(8f, 16f);
 
+    [Header("Check")]
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;

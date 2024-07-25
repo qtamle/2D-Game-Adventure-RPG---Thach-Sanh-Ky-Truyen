@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
 
     public Vector3 positionOffset;
 
-    [Header("Axis Limitation")]
+    [Header("Limit vector X - Y")]
     public Vector2 xLimit;
     public Vector2 yLimit;
     private void Awake()
