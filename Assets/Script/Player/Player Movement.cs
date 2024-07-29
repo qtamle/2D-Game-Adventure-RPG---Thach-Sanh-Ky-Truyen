@@ -5,8 +5,8 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Move and Jump")]
     public float horizontal;
-    public float speed;
-    public float jumpPower;
+    public float speed = 5f;
+    public float jumpPower = 10f;
     public bool isFacingRight = true;
 
     [Header("Dash")]
@@ -27,6 +27,12 @@ public class PlayerMovement : MonoBehaviour
     private float wallJumpingDuration = 0.4f;
     private Vector2 wallJumpingPower = new Vector2(8f, 16f);
 
+    [Header("Rope Swing")]
+    public bool isSwinging = false;
+    private HingeJoint2D ropeHingeJoint;
+    private GameObject rope;
+    public float swingForce = 200f;
+
     [Header("Check")]
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private Transform groundCheck;
@@ -37,16 +43,26 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isDashing)
+        if (isDashing || isSwinging)
         {
+            if (Input.GetKeyDown(KeyCode.Space) && isSwinging)
+            {
+                JumpOffRope();
+            }
+            if (isSwinging && Input.GetKeyDown(KeyCode.Q))
+            {
+                Flip();
+            }
             return;
         }
+
         horizontal = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetKeyDown(KeyCode.W) && IsGrounded())
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
         }
+
         if (Input.GetKeyUp(KeyCode.W) && rb2d.velocity.y > 0f)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y * 0.5f);
@@ -60,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         WallSlide();
         WallJump();
 
-        if (!isWallJumping)
+        if (!isWallJumping && !isSwinging)
         {
             Flip();
         }
@@ -68,9 +84,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isWallJumping && !isDashing)
+        if (!isWallJumping && !isDashing && !isSwinging)
         {
             rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
+        }
+        else if (isSwinging)
+        {
+            float swingInput = Input.GetAxis("Horizontal");
+            float swingForceAdjusted = swingForce * Time.fixedDeltaTime;
+            rb2d.AddForce(new Vector2(swingInput * swingForceAdjusted, 0), ForceMode2D.Force);
         }
     }
 
@@ -81,12 +103,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void Flip()
     {
-        if (horizontal > 0 && !isFacingRight || horizontal < 0 && isFacingRight)
+        if (isSwinging)
         {
             isFacingRight = !isFacingRight;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1;
             transform.localScale = localScale;
+        }
+        else if (horizontal != 0)
+        {
+            // Flip hướng khi di chuyển
+            if (horizontal > 0 && !isFacingRight || horizontal < 0 && isFacingRight)
+            {
+                isFacingRight = !isFacingRight;
+                Vector3 localScale = transform.localScale;
+                localScale.x *= -1;
+                transform.localScale = localScale;
+            }
         }
     }
 
@@ -97,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallSlide()
     {
-        if (isDashing) return; 
+        if (isDashing || isSwinging) return;
 
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
@@ -165,5 +198,72 @@ public class PlayerMovement : MonoBehaviour
         isDashing = false;
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Rope") && !isSwinging)
+        {
+            AttachToRope(collision.gameObject);
+        }
+    }
+
+    private void AttachToRope(GameObject ropeObject)
+    {
+        isSwinging = true;
+        rb2d.velocity = Vector2.zero;
+        rb2d.gravityScale = 0;
+        rb2d.angularDrag = 0.1f;
+        rb2d.inertia = 1f;
+
+        ropeHingeJoint = gameObject.AddComponent<HingeJoint2D>();
+        ropeHingeJoint.connectedBody = ropeObject.GetComponent<Rigidbody2D>();
+        ropeHingeJoint.autoConfigureConnectedAnchor = false;
+        ropeHingeJoint.anchor = Vector2.zero;
+        ropeHingeJoint.connectedAnchor = new Vector2(0f, -0.5f);
+
+        rope = ropeObject;
+    }
+
+    private void JumpOffRope()
+    {
+        DetachFromRope();
+
+        // Tăng giá trị để tăng lực đẩy theo chiều ngang
+        float horizontalJumpForce = 50f;
+        float verticalJumpForce = 20f;
+
+        // Tính toán lực đẩy theo hướng nhảy
+        Vector2 jumpDirection = new Vector2(transform.localScale.x, 1).normalized;
+        rb2d.velocity = new Vector2(jumpDirection.x * horizontalJumpForce, verticalJumpForce);
+
+        rb2d.velocity += new Vector2(transform.localScale.x * 15, 0);
+    }
+
+    private void DetachFromRope()
+    {
+        isSwinging = false;
+        rb2d.gravityScale = 1;
+
+        if (rope != null)
+        {
+            RopeController ropeController = rope.GetComponent<RopeController>();
+            if (ropeController != null)
+            {
+                ropeController.DisableColliderTemporarily(2f);
+
+                StartCoroutine(ResetRopeAfterDelay(3f, ropeController));
+            }
+        }
+
+        Destroy(ropeHingeJoint);
+        ropeHingeJoint = null;
+        rope = null;
+    }
+
+    private IEnumerator ResetRopeAfterDelay(float delay, RopeController ropeController)
+    {
+        yield return new WaitForSeconds(delay);
+        ropeController.ResetRope();
     }
 }
