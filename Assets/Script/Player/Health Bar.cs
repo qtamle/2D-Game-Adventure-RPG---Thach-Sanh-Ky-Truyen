@@ -15,34 +15,23 @@ public class HealthBar : MonoBehaviour
     {
         health = maxHealth;
         currentHealth = health;
+        healthSlider.maxValue = maxHealth; 
+        healthSlider.value = health; 
     }
 
     void Update()
     {
-        CheckHealth();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(10);
-        }
-
         currentHealth = Mathf.Lerp(currentHealth, health, Time.deltaTime * lerpSpeed);
         healthSlider.value = currentHealth;
-    }
 
-    private void TakeDamage(float damage)
-    {
-        health -= damage;
-    }
-
-    private void CheckHealth()
-    {
-        if (health > 100f)
-        {
-            health = 100f;
-        }else if (health < 0f)
+        if (health <= 0f)
         {
             health = 0f;
         }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
     }
 }

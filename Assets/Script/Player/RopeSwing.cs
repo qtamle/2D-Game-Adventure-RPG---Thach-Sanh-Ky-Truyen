@@ -5,7 +5,7 @@ public class RopeSwing : MonoBehaviour
     public float swingForce = 10f; // Lực để đu dây
     private bool isSwinging = false;
     private Rigidbody2D rb;
-    private HingeJoint2D hingeJoint;
+    private HingeJoint2D RopehingeJoint;
     private GameObject rope;
 
     void Start()
@@ -42,10 +42,10 @@ public class RopeSwing : MonoBehaviour
         rb.gravityScale = 0; // Tắt trọng lực
 
         // Tạo HingeJoint để gắn vào dây
-        hingeJoint = gameObject.AddComponent<HingeJoint2D>();
-        hingeJoint.connectedBody = ropeObject.GetComponent<Rigidbody2D>();
-        hingeJoint.autoConfigureConnectedAnchor = false;
-        hingeJoint.connectedAnchor = transform.position - ropeObject.transform.position;
+        RopehingeJoint = gameObject.AddComponent<HingeJoint2D>();
+        RopehingeJoint.connectedBody = ropeObject.GetComponent<Rigidbody2D>();
+        RopehingeJoint.autoConfigureConnectedAnchor = false;
+        RopehingeJoint.connectedAnchor = transform.position - ropeObject.transform.position;
 
         // Lưu lại tham chiếu đến đối tượng dây
         rope = ropeObject;
@@ -55,8 +55,8 @@ public class RopeSwing : MonoBehaviour
     {
         isSwinging = false;
         rb.gravityScale = 1; // Khôi phục trọng lực
-        Destroy(hingeJoint); // Loại bỏ HingeJoint
-        hingeJoint = null;
+        Destroy(RopehingeJoint); // Loại bỏ HingeJoint
+        RopehingeJoint = null;
         rope = null;
     }
 

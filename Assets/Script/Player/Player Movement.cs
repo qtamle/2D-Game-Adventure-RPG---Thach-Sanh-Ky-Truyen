@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -40,6 +41,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private TrailRenderer tr;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
+
+    [Header("Health")]
+    public HealthBar healthBar;
+
+    private void Start()
+    {
+        // Khởi tạo HealthBar
+        if (healthBar != null)
+        {
+            healthBar.health = healthBar.maxHealth; 
+        }
+    }
 
     private void Update()
     {
@@ -266,4 +279,17 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(delay);
         ropeController.ResetRope();
     }
+
+    public void TakeDamage(float damage)
+    {
+        if (healthBar != null)
+        {
+            healthBar.TakeDamage(damage);
+        }
+        else
+        {
+            Debug.LogError("HealthBar chưa được gán.");
+        }
+    }
+
 }
