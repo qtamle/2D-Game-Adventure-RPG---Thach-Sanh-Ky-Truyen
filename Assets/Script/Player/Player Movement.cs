@@ -34,6 +34,15 @@ public class PlayerMovement : MonoBehaviour
     private GameObject rope;
     public float swingForce = 200f;
 
+    [Header("Ledge")]
+    public float ledgeRay1;
+    public float ledgeRay2;
+    public float rayStart;
+    public float ledgeRayLength;
+    public Vector3 ledgeGrabTarget;
+    public float ledgeGrabSpeed;
+    public bool canLedgeGrab = true;
+
     [Header("Check")]
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private Transform groundCheck;
@@ -41,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private TrailRenderer tr;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private LayerMask ledgeLayer;
 
     [Header("Health")]
     public HealthBar healthBar;
@@ -56,6 +66,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        CheckLedgeGrab();
+
         if (isDashing || isSwinging)
         {
             if (Input.GetKeyDown(KeyCode.Space) && isSwinging)
@@ -290,6 +302,77 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError("HealthBar chưa được gán.");
         }
+    }
+
+    private void CheckLedgeGrab()
+    {
+        if (!canLedgeGrab) return;
+
+        float rayStartOriented = rayStart;
+        Vector2 orientation = Vector2.right;
+        Vector3 targetOriented = ledgeGrabTarget;
+
+        if (Input.GetAxis("Horizontal") < 0)
+        {
+            rayStartOriented = -rayStart;
+            orientation = -orientation;
+            targetOriented.x = -targetOriented.x;
+        }
+
+        // Sử dụng LayerMask để kiểm tra va chạm với lớp ledge
+        RaycastHit2D hit1 = Physics2D.Raycast(transform.position + new Vector3(rayStartOriented, ledgeRay1), orientation, ledgeRayLength, ledgeLayer);
+        RaycastHit2D hit2 = Physics2D.Raycast(transform.position + new Vector3(rayStartOriented, ledgeRay2), orientation, ledgeRayLength, ledgeLayer);
+
+        Debug.DrawRay(transform.position + new Vector3(rayStartOriented, ledgeRay1), orientation * ledgeRayLength, Color.red);
+        Debug.DrawRay(transform.position + new Vector3(rayStartOriented, ledgeRay2), orientation * ledgeRayLength, Color.red);
+
+        if (hit1.collider != null || hit2.collider != null)
+        {
+            if (!isWallJumping && !isSwinging && !isDashing && !isWallSliding)
+            {
+                StartCoroutine(LedgeGrabRoutine(targetOriented));
+            }
+        }
+    }
+
+    public IEnumerator LedgeGrabRoutine(Vector3 targetPosition)
+    {
+        Debug.Log("Starting ledge grab routine");
+        rb2d.velocity = Vector2.zero;
+        rb2d.gravityScale = 0;
+
+        Vector3 targetPositionWorld = transform.position + targetPosition;
+
+        // Di chuyển lên
+        while (transform.position.y < targetPositionWorld.y)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, targetPositionWorld.y, transform.position.z), Time.deltaTime * ledgeGrabSpeed);
+            yield return null;
+        }
+
+        // Di chuyển sang trái hoặc phải
+        while (Mathf.Abs(transform.position.x - targetPositionWorld.x) > 0.1f)
+        {
+            float moveDirection = targetPosition.x < 0 ? -1 : 1;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + moveDirection * ledgeGrabSpeed * Time.deltaTime, transform.position.y, transform.position.z), ledgeGrabSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        rb2d.velocity = Vector2.zero;
+        rb2d.gravityScale = 1;
+        Debug.Log("Ledge grab routine completed");
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying) return;
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawRay(transform.position + new Vector3(rayStart, ledgeRay1), Vector2.right * ledgeRayLength);
+        Gizmos.DrawRay(transform.position + new Vector3(rayStart, ledgeRay2), Vector2.right * ledgeRayLength);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(transform.position + ledgeGrabTarget, 0.2f);
     }
 
 }
