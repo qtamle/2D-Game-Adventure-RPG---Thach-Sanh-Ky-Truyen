@@ -55,6 +55,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Health")]
     public HealthBar healthBar;
 
+    [Header("Attack")]
+    [SerializeField] private Attack attackScript;
     private void Start()
     {
         // Khởi tạo HealthBar
@@ -105,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
-    }
+}
 
     private void FixedUpdate()
     {
@@ -374,5 +376,4 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(transform.position + ledgeGrabTarget, 0.2f);
     }
-
 }
