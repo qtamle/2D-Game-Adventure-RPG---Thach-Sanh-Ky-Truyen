@@ -45,11 +45,9 @@ public class Attack : MonoBehaviour
     {
         Vector3 attackDirection = transform.localScale.x > 0 ? transform.right : -transform.right;
 
-        // Calculate attack radius
         float halfAngle = angleAttack / 2f;
         float angleStep = angleAttack / attackSegments;
 
-        // Get all colliders in attack radius
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, radiusAttack, LayerMask.GetMask("Enemy"));
 
         foreach (var enemy in enemies)
