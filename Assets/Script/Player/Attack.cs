@@ -16,14 +16,16 @@ public class Attack : MonoBehaviour
     public float comboResetTime = 2f;
 
     private LadderMovement ladder;
+    private PlayerMovement rope;
 
     private void Start()
     {
         ladder = GetComponent<LadderMovement>();
+        rope = GetComponent<PlayerMovement>();
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J) && !ladder.isClimbing)
+        if (Input.GetKeyDown(KeyCode.J) && !ladder.isClimbing && !rope.isSwinging)
         {
             if (!isCooldown)
             {

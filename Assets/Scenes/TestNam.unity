@@ -422,7 +422,7 @@ MonoBehaviour:
   jumpPower: 15
   isFacingRight: 0
   isSwinging: 0
-  swingForce: 200
+  swingForce: 300
   isClimbingLedge: 0
   climbSpeed: 1
   ledgeCheckDistance: 0.5
@@ -569,6 +569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13dba8d45920a8d4dada216d83979d3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isClimbing: 0
   rb: {fileID: 171858708}
 --- !u!114 &171858712
 MonoBehaviour:
@@ -756,7 +757,7 @@ MonoBehaviour:
   angleAttack: 90
   attackSegments: 90
   damage: 10
-  comboCooldown: 1
+  comboCooldown: 0.5
   comboResetTime: 2
 --- !u!1 &174809661
 GameObject:
