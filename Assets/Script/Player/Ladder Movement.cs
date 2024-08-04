@@ -10,7 +10,7 @@ public class LadderMovement : MonoBehaviour
 
     private bool isLadder;
 
-    private bool isClimbing;
+    public bool isClimbing;
 
     [SerializeField] private Rigidbody2D rb;
 

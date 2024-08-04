@@ -15,9 +15,15 @@ public class Attack : MonoBehaviour
     private float lastAttackTime = 0f;
     public float comboResetTime = 2f;
 
+    private LadderMovement ladder;
+
+    private void Start()
+    {
+        ladder = GetComponent<LadderMovement>();
+    }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.J) && !ladder.isClimbing)
         {
             if (!isCooldown)
             {
@@ -97,5 +103,5 @@ public class Attack : MonoBehaviour
             Vector3 dir = Quaternion.Euler(0, 0, angle) * forward;
             Gizmos.DrawLine(transform.position + dir * radiusAttack, transform.position);
         }
-    }
+ }
 }

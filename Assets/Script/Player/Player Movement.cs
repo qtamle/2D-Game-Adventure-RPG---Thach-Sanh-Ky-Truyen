@@ -34,14 +34,17 @@ public class PlayerMovement : MonoBehaviour
     private GameObject rope;
     public float swingForce = 200f;
 
-    [Header("Ledge")]
-    public float ledgeRay1;
-    public float ledgeRay2;
-    public float rayStart;
-    public float ledgeRayLength;
-    public Vector3 ledgeGrabTarget;
-    public float ledgeGrabSpeed;
-    public bool canLedgeGrab = true;
+    [Header("Ledge Climb")]
+    public bool isClimbingLedge = false;
+    public float climbSpeed = 3f;
+    public float ledgeCheckDistance = 0.5f; 
+    private Transform ledgeTransform;
+    private Vector2 ledgePosition;
+
+    [Header("Ledge Check")]
+    [SerializeField] private Transform ledgeCheckTransform;
+    public float ledgeCheckRadius = 0.2f;
+    private bool isTouchingLedge = false;
 
     [Header("Check")]
     [SerializeField] private Rigidbody2D rb2d;
@@ -57,6 +60,11 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Attack")]
     [SerializeField] private Attack attackScript;
+
+    [HideInInspector] public bool ledgeDetected;
+
+    private LadderMovement ladderMovement;
+
     private void Start()
     {
         // Khởi tạo HealthBar
@@ -64,11 +72,15 @@ public class PlayerMovement : MonoBehaviour
         {
             healthBar.health = healthBar.maxHealth; 
         }
+        ladderMovement = GetComponent<LadderMovement>();
     }
 
     private void Update()
     {
-        CheckLedgeGrab();
+        if (ladderMovement != null && ladderMovement.isClimbing)
+        {
+            return;
+        }
 
         if (isDashing || isSwinging)
         {
@@ -107,7 +119,17 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
-}
+
+        if (isTouchingLedge && !isClimbingLedge)
+        {
+            Collider2D ledgeCollider = Physics2D.OverlapCircle(ledgeCheckTransform.position, ledgeCheckRadius, ledgeLayer);
+            if (ledgeCollider != null && ledgeCollider.CompareTag("Ledge"))
+            {
+                Vector2 ledgePosition = ledgeCollider.transform.position;
+                StartClimbingLedge(ledgePosition);
+            }
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -226,12 +248,64 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Rope") && !isSwinging)
         {
             AttachToRope(collision.gameObject);
+        }
+        else if (collision.CompareTag("Ledge"))
+        {
+            isTouchingLedge = true;
+        }
+    }
+
+    private void StartClimbingLedge(Vector2 ledgePosition)
+    {
+        isClimbingLedge = true;
+        rb2d.velocity = Vector2.zero; 
+        rb2d.gravityScale = 0; 
+
+        // Cập nhật vị trí người chơi gần với ledge
+        transform.position = new Vector3(ledgePosition.x, ledgePosition.y + 0.5f, transform.position.z);
+
+        // Thực hiện hoạt động leo lên ledge
+        StartCoroutine(ClimbLedgeCoroutine());
+    }
+
+    private IEnumerator ClimbLedgeCoroutine()
+    {
+        float climbDuration = 1f; 
+        float elapsedTime = 0f;
+        Vector2 startPosition = transform.position;
+        Vector2 targetPosition = new Vector2(transform.position.x, transform.position.y + 0.5f); // Di chuyển lên trên ledge
+
+        while (elapsedTime < climbDuration)
+        {
+            transform.position = Vector2.Lerp(startPosition, targetPosition, elapsedTime / climbDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = targetPosition;
+
+        // Hoàn tất leo ledge
+        isClimbingLedge = false;
+        rb2d.gravityScale = 1; 
+    }
+
+    private bool IsTouchingLedge()
+    {
+        // Sử dụng một vùng nhỏ xung quanh ledgeCheckTransform để xác định ledge
+        Collider2D ledgeCollider = Physics2D.OverlapCircle(ledgeCheckTransform.position, ledgeCheckRadius, ledgeLayer);
+        return ledgeCollider != null && ledgeCollider.CompareTag("Ledge");
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ledge"))
+        {
+            isTouchingLedge = false;
+            isClimbingLedge = false; 
+            rb2d.gravityScale = 1;
         }
     }
 
@@ -278,7 +352,6 @@ public class PlayerMovement : MonoBehaviour
             if (ropeController != null)
             {
                 ropeController.DisableColliderTemporarily(2f);
-
                 StartCoroutine(ResetRopeAfterDelay(3f, ropeController));
             }
         }
@@ -306,74 +379,4 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void CheckLedgeGrab()
-    {
-        if (!canLedgeGrab) return;
-
-        float rayStartOriented = rayStart;
-        Vector2 orientation = Vector2.right;
-        Vector3 targetOriented = ledgeGrabTarget;
-
-        if (Input.GetAxis("Horizontal") < 0)
-        {
-            rayStartOriented = -rayStart;
-            orientation = -orientation;
-            targetOriented.x = -targetOriented.x;
-        }
-
-        // Sử dụng LayerMask để kiểm tra va chạm với lớp ledge
-        RaycastHit2D hit1 = Physics2D.Raycast(transform.position + new Vector3(rayStartOriented, ledgeRay1), orientation, ledgeRayLength, ledgeLayer);
-        RaycastHit2D hit2 = Physics2D.Raycast(transform.position + new Vector3(rayStartOriented, ledgeRay2), orientation, ledgeRayLength, ledgeLayer);
-
-        Debug.DrawRay(transform.position + new Vector3(rayStartOriented, ledgeRay1), orientation * ledgeRayLength, Color.red);
-        Debug.DrawRay(transform.position + new Vector3(rayStartOriented, ledgeRay2), orientation * ledgeRayLength, Color.red);
-
-        if (hit1.collider != null || hit2.collider != null)
-        {
-            if (!isWallJumping && !isSwinging && !isDashing && !isWallSliding)
-            {
-                StartCoroutine(LedgeGrabRoutine(targetOriented));
-            }
-        }
-    }
-
-    public IEnumerator LedgeGrabRoutine(Vector3 targetPosition)
-    {
-        Debug.Log("Starting ledge grab routine");
-        rb2d.velocity = Vector2.zero;
-        rb2d.gravityScale = 0;
-
-        Vector3 targetPositionWorld = transform.position + targetPosition;
-
-        // Di chuyển lên
-        while (transform.position.y < targetPositionWorld.y)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, targetPositionWorld.y, transform.position.z), Time.deltaTime * ledgeGrabSpeed);
-            yield return null;
-        }
-
-        // Di chuyển sang trái hoặc phải
-        while (Mathf.Abs(transform.position.x - targetPositionWorld.x) > 0.1f)
-        {
-            float moveDirection = targetPosition.x < 0 ? -1 : 1;
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + moveDirection * ledgeGrabSpeed * Time.deltaTime, transform.position.y, transform.position.z), ledgeGrabSpeed * Time.deltaTime);
-            yield return null;
-        }
-
-        rb2d.velocity = Vector2.zero;
-        rb2d.gravityScale = 1;
-        Debug.Log("Ledge grab routine completed");
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (Application.isPlaying) return;
-
-        Gizmos.color = Color.white;
-        Gizmos.DrawRay(transform.position + new Vector3(rayStart, ledgeRay1), Vector2.right * ledgeRayLength);
-        Gizmos.DrawRay(transform.position + new Vector3(rayStart, ledgeRay2), Vector2.right * ledgeRayLength);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position + ledgeGrabTarget, 0.2f);
-    }
 }
