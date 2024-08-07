@@ -48,8 +48,14 @@ public class BossSkill : MonoBehaviour
     public Transform poisonFirePointLeft;
     public float poisonDuration = 5f;
 
+    [Header("Camera Shake")]
+    private CameraShake shake;
+    private CameraShake shake1;
+
     private void Start()
     {
+        shake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
+        shake1= GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         rb = GetComponent<Rigidbody2D>();
         moveDirection = Vector2.right;
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -125,6 +131,7 @@ public class BossSkill : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Turn"))
         {
+            shake1.CamShake1();
             Flip();
             EndDash();
         }
@@ -220,6 +227,8 @@ public class BossSkill : MonoBehaviour
         Vector3 endPosition = spikeTransform.position;
 
         float elapsedTime = 0f;
+
+        shake.CamShake();
 
         while (elapsedTime < spikeRiseDuration)
         {
