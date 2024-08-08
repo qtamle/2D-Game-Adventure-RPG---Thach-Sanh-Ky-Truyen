@@ -37,11 +37,11 @@ public class EnemyMove : MonoBehaviour
 
             if (direction.x > 0)
             {
-                transform.localScale = new Vector2(1, 1); // Hướng về bên phải
+                transform.localScale = new Vector2(-1, 1); // Hướng về bên phải
             }
             else
             {
-                transform.localScale = new Vector2(-1, 1); // Hướng về bên trái
+                transform.localScale = new Vector2(1, 1); // Hướng về bên trái
             }
         }
         else
@@ -49,12 +49,12 @@ public class EnemyMove : MonoBehaviour
             if (moveRight)
             {
                 transform.Translate(Vector2.right * speed * Time.deltaTime);
-                transform.localScale = new Vector2(1, 1);
+                transform.localScale = new Vector2(-1, 1);
             }
             else
             {
                 transform.Translate(Vector2.left * speed * Time.deltaTime);
-                transform.localScale = new Vector2(-1, 1);
+                transform.localScale = new Vector2(1, 1);
             }
         }
     }

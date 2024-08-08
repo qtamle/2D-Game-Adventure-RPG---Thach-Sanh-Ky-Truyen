@@ -37,9 +37,11 @@ public class BossSkill : MonoBehaviour
     public float timeHideBoss = 2f;
     private SpriteRenderer spriteRenderer;
     private Vector3 positionBoss;
-    public float spikeSkillDuration = 10f;
+    public float spikeSkillDuration = 12.6f;
     public float spikeLifeTime = 2f;
     public float spikeRiseDuration = 1f;
+    public float spikeLowerDuration = 1f;
+    private List<int> availableIndices;
 
     [Header("Skill Poison")]
     public GameObject bulletPoison;
@@ -60,6 +62,12 @@ public class BossSkill : MonoBehaviour
         moveDirection = Vector2.right;
         spriteRenderer = GetComponent<SpriteRenderer>();
         positionBoss = transform.position;
+
+        availableIndices = new List<int>();
+        for (int i = 0; i < spkieSpawn.Length; i++)
+        {
+            availableIndices.Add(i);
+        }
     }
 
     private void Update()
@@ -206,19 +214,37 @@ public class BossSkill : MonoBehaviour
 
         while (Time.time < endTime)
         {
-            foreach (Transform spawnPoint in spkieSpawn)
-            {
-                GameObject spike = Instantiate(spikePrefabs, spawnPoint.position, Quaternion.identity);
-                StartCoroutine(RiseSpike(spike.transform));
-                Destroy(spike, spikeLifeTime); // Xóa gai sau spikeLifetime giây
+            // Lấy một vị trí ngẫu nhiên từ availableIndices
+            int randomIndex = GetRandomIndex();
+            Transform spawnPoint = spkieSpawn[randomIndex];
 
-                // Đợi để gai tiếp theo có thể mọc lên
-                yield return new WaitForSeconds(2.1f);
-            }
+            GameObject spike = Instantiate(spikePrefabs, spawnPoint.position, Quaternion.identity);
+            StartCoroutine(RiseSpike(spike.transform));
+            StartCoroutine(LowerAndDestroySpike(spike.transform));
+
+            // Đợi để gai tiếp theo có thể mọc lên
+            yield return new WaitForSeconds(2.1f);
         }
 
         // Hiện lại sprite
         spriteRenderer.enabled = true;
+    }
+
+    private int GetRandomIndex()
+    {
+        if (availableIndices.Count == 0)
+        {
+            for (int i = 0; i < spkieSpawn.Length; i++)
+            {
+                availableIndices.Add(i);
+            }
+        }
+
+        int randomIndex = Random.Range(0, availableIndices.Count);
+        int index = availableIndices[randomIndex];
+        availableIndices.RemoveAt(randomIndex);
+
+        return index;
     }
 
     private IEnumerator RiseSpike(Transform spikeTransform)
@@ -238,6 +264,28 @@ public class BossSkill : MonoBehaviour
         }
 
         spikeTransform.position = endPosition;
+    }
+
+    private IEnumerator LowerAndDestroySpike(Transform spikeTransform)
+    {
+        // Chờ spikeLifeTime trước khi bắt đầu hạ spike
+        yield return new WaitForSeconds(spikeLifeTime - spikeLowerDuration);
+
+        Vector3 startPosition = spikeTransform.position;
+        Vector3 endPosition = new Vector3(spikeTransform.position.x, spikeTransform.position.y - 2f, spikeTransform.position.z);
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < spikeLowerDuration)
+        {
+            spikeTransform.position = Vector3.Lerp(startPosition, endPosition, (elapsedTime / spikeLowerDuration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        spikeTransform.position = endPosition;
+
+        Destroy(spikeTransform.gameObject);
     }
 
     private IEnumerator StartPoisonSkill()
