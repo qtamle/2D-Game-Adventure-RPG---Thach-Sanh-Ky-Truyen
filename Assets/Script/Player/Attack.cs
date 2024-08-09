@@ -48,7 +48,6 @@ public class Attack : MonoBehaviour
             Debug.Log("Combo attack reset");
         }
     }
-
     private void PlayerAttack()
     {
         Vector3 attackDirection = transform.localScale.x > 0 ? transform.right : -transform.right;
@@ -65,16 +64,16 @@ public class Attack : MonoBehaviour
 
             if (angleToEnemy <= halfAngle)
             {
-                Debug.Log($"Attacking enemy: {enemy.name} at position {enemy.transform.position}");
-
                 HealthbarEnemy enemyHealth = enemy.GetComponent<HealthbarEnemy>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.TakeDamage(damage);
+                    Vector2 knockbackDirection = directionToEnemy * 1; 
+                    enemyHealth.TakeDamage(damage, knockbackDirection);
                 }
             }
         }
     }
+
 
     private IEnumerator ComboCooldownRoutine()
     {

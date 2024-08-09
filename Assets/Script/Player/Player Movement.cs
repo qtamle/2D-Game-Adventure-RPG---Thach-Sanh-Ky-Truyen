@@ -65,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
     private LadderMovement ladderMovement;
 
+    public Vector3 knockbackDirection = Vector3.left;
     private void Start()
     {
         // Khởi tạo HealthBar
@@ -77,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+
         if (ladderMovement != null && ladderMovement.isClimbing)
         {
             return;
@@ -366,7 +368,6 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(delay);
         ropeController.ResetRope();
     }
-
     public void TakeDamage(float damage)
     {
         if (healthBar != null)
@@ -377,6 +378,55 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError("HealthBar chưa được gán.");
         }
+
+        Vector3 knockbackDirection = GetKnockbackDirection();
+        StartCoroutine(ApplyKnockback(knockbackDirection));
+    }
+    private Vector3 GetKnockbackDirection()
+    {
+        // Tìm tất cả enemy trong phạm vi
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, 10f, LayerMask.GetMask("Enemy"));
+        if (enemies.Length == 0)
+        {
+            // Không có enemy gần, trả về hướng đối diện với player
+            return isFacingRight ? Vector3.left : Vector3.right;
+        }
+
+        // Tìm enemy gần nhất
+        Collider2D closestEnemy = enemies[0];
+        float closestDistance = Vector3.Distance(transform.position, closestEnemy.transform.position);
+
+        foreach (Collider2D enemy in enemies)
+        {
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestEnemy = enemy;
+            }
+        }
+
+        // Tính hướng knockback từ player đến enemy gần nhất
+        Vector3 directionToEnemy = closestEnemy.transform.position - transform.position;
+        return -directionToEnemy.normalized; 
     }
 
+    private IEnumerator ApplyKnockback(Vector3 knockbackDirection)
+    {
+        float knockbackDistance = 0.2f;
+        float knockbackSpeed = 1f;
+        float knockbackDuration = 0.1f;
+
+        float elapsedTime = 0f;
+        Vector3 originalPosition = transform.position;
+
+        while (elapsedTime < knockbackDuration)
+        {
+            transform.position = Vector3.Lerp(originalPosition, originalPosition + knockbackDirection * knockbackDistance, (elapsedTime / knockbackDuration));
+            elapsedTime += Time.deltaTime * knockbackSpeed;
+            yield return null;
+        }
+
+        transform.position = originalPosition + knockbackDirection * knockbackDistance;
+    }
 }

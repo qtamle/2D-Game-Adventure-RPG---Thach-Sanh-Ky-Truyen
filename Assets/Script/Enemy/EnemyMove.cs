@@ -14,9 +14,10 @@ public class EnemyMove : MonoBehaviour
     private bool isChasing = false;
 
     public Collider2D playerCollider;
-
     private void Start()
     {
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"), true);
+
         if (playerCollider != null)
         {
             Physics2D.IgnoreCollision(GetComponent<Collider2D>(), playerCollider);

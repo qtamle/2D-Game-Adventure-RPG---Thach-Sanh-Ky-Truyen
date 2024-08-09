@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -27,7 +27,6 @@ public class Bullet : MonoBehaviour
         transform.rotation = Quaternion.Euler(0,0,rot + 90);
 
     }
-
     private void Update()
     {
         timer += Time.deltaTime;

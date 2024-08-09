@@ -16,11 +16,15 @@ public class HealthbarEnemy : MonoBehaviour
     private float currentHealth;
     private float healthVelocity = 0f;
 
+    private KnockbackEnemy knockbackEnemy; 
+
     private void Start()
     {
         health = maxHealth;
         targetHealth = health;
         currentHealth = health;
+
+        knockbackEnemy = GetComponent<KnockbackEnemy>(); 
 
         if (slider != null)
         {
@@ -29,7 +33,7 @@ public class HealthbarEnemy : MonoBehaviour
             slider.gameObject.SetActive(false); // Ẩn thanh máu ban đầu
         }
     }
-
+        
     private void Update()
     {
         if (player != null)
@@ -53,12 +57,17 @@ public class HealthbarEnemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector2 knockbackDirection)
     {
         targetHealth -= damage;
         if (targetHealth < 0) targetHealth = 0;
 
         StartCoroutine(UpdateHealthBar());
+
+        if (knockbackEnemy != null)
+        {
+            knockbackEnemy.ApplyKnockback(knockbackDirection);
+        }
     }
 
     private IEnumerator UpdateHealthBar()

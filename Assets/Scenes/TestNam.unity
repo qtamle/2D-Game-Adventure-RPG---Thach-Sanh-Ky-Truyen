@@ -368,7 +368,7 @@ Transform:
   m_GameObject: {fileID: 171858704}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.1, y: -0.8, z: 3.6577647}
+  m_LocalPosition: {x: 28.91, y: 5.98, z: 3.6577647}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -424,7 +424,7 @@ MonoBehaviour:
   isSwinging: 0
   swingForce: 300
   isClimbingLedge: 0
-  climbSpeed: 1
+  climbSpeed: 2
   ledgeCheckDistance: 0.5
   ledgeCheckTransform: {fileID: 309121585}
   ledgeCheckRadius: 0.2
@@ -444,6 +444,7 @@ MonoBehaviour:
   healthBar: {fileID: 2096506960}
   attackScript: {fileID: 171858717}
   ledgeDetected: 0
+  knockbackDirection: {x: -1, y: 0, z: 0}
 --- !u!96 &171858710
 TrailRenderer:
   serializedVersion: 3
@@ -723,7 +724,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 5.1623635
+  m_Distance: 29.522
   m_MaxDistanceOnly: 0
 --- !u!114 &171858716
 MonoBehaviour:
@@ -1120,6 +1121,7 @@ GameObject:
   - component: {fileID: 260644728}
   - component: {fileID: 260644727}
   - component: {fileID: 260644732}
+  - component: {fileID: 260644733}
   m_Layer: 11
   m_Name: Snake
   m_TagString: Untagged
@@ -1243,18 +1245,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.007163048, y: 0}
+  m_Offset: {x: -0.10867214, y: 0.029855728}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.53, y: 1.68}
+    oldSize: {x: 1.28, y: 1.28}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9856739, y: 1}
+  m_Size: {x: 0.9737301, y: 0.94028854}
   m_EdgeRadius: 0
 --- !u!212 &260644731
 SpriteRenderer:
@@ -1297,7 +1299,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -979635408, guid: 7cf87287a98ba59498ad694c777c59c8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c99b7deeed902eb4fb7a9864428d77d5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1326,6 +1328,19 @@ MonoBehaviour:
   health: 0
   maxHealth: 100
   smoothTime: 0.2
+--- !u!114 &260644733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260644725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919d9fd3d5d23cc49824d1af624bd20d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackForce: 3
 --- !u!1 &290198907
 GameObject:
   m_ObjectHideFlags: 0
@@ -5075,6 +5090,7 @@ GameObject:
   - component: {fileID: 1907766100}
   - component: {fileID: 1907766104}
   - component: {fileID: 1907766105}
+  - component: {fileID: 1907766106}
   m_Layer: 11
   m_Name: Tiger
   m_TagString: Untagged
@@ -5177,18 +5193,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.007163048, y: 0}
+  m_Offset: {x: -0.12124443, y: 0.19306159}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1.28, y: 1.28}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9856739, y: 1}
+  m_Size: {x: 0.9681206, y: 1.0877547}
   m_EdgeRadius: 0
 --- !u!212 &1907766103
 SpriteRenderer:
@@ -5231,7 +5247,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c99b7deeed902eb4fb7a9864428d77d5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5260,6 +5276,7 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 64
+  enemyMove: {fileID: 1907766100}
 --- !u!114 &1907766105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5278,6 +5295,19 @@ MonoBehaviour:
   health: 0
   maxHealth: 100
   smoothTime: 0.2
+--- !u!114 &1907766106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907766098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919d9fd3d5d23cc49824d1af624bd20d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackForce: 5
 --- !u!1 &2016576044
 GameObject:
   m_ObjectHideFlags: 0
@@ -5586,7 +5616,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1907026337}
   m_HandleRect: {fileID: 0}
-  m_Direction: 1
+  m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 0
