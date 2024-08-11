@@ -255,6 +255,7 @@ GameObject:
   - component: {fileID: 171858713}
   - component: {fileID: 171858716}
   - component: {fileID: 171858717}
+  - component: {fileID: 171858718}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -368,7 +369,7 @@ Transform:
   m_GameObject: {fileID: 171858704}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 28.91, y: 5.98, z: 3.6577647}
+  m_LocalPosition: {x: -4.63, y: -0.56, z: 3.6577647}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -423,11 +424,6 @@ MonoBehaviour:
   isFacingRight: 0
   isSwinging: 0
   swingForce: 300
-  isClimbingLedge: 0
-  climbSpeed: 2
-  ledgeCheckDistance: 0.5
-  ledgeCheckTransform: {fileID: 309121585}
-  ledgeCheckRadius: 0.2
   rb2d: {fileID: 171858708}
   groundCheck: {fileID: 1056484114}
   groundLayer:
@@ -724,7 +720,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 29.522
+  m_Distance: 4.6637435
   m_MaxDistanceOnly: 0
 --- !u!114 &171858716
 MonoBehaviour:
@@ -760,6 +756,24 @@ MonoBehaviour:
   damage: 10
   comboCooldown: 0.5
   comboResetTime: 2
+--- !u!114 &171858718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171858704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ace4ab0dd41322408ab50684fbd2e78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ledgeLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  raycastDistance: 0.6
+  climbOffset: {x: 0.5, y: 1}
+  climbSpeed: 3.5
 --- !u!1 &174809661
 GameObject:
   m_ObjectHideFlags: 0
@@ -1626,7 +1640,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &309121585
 Transform:
   m_ObjectHideFlags: 0
@@ -3654,8 +3668,8 @@ Transform:
   m_GameObject: {fileID: 1354893773}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.47251925, y: 0, z: 0}
-  m_LocalScale: {x: 0.03126698, y: 1, z: 1}
+  m_LocalPosition: {x: -0.486, y: 0.3062, z: 0}
+  m_LocalScale: {x: 0.029228374, y: 0.3875, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1031924216}
@@ -6159,8 +6173,8 @@ Transform:
   m_GameObject: {fileID: 2140371641}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.48246714, y: 0, z: 0}
-  m_LocalScale: {x: 0.03126698, y: 1, z: 1}
+  m_LocalPosition: {x: 0.48246714, y: 0.3389, z: 0}
+  m_LocalScale: {x: 0.03126698, y: 0.3221, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1031924216}
@@ -6197,7 +6211,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.016758233, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -6208,7 +6222,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.16764, y: 1}
   m_EdgeRadius: 0
 --- !u!212 &2140371644
 SpriteRenderer:

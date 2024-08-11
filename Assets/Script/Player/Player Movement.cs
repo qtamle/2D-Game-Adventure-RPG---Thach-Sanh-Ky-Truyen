@@ -34,18 +34,6 @@ public class PlayerMovement : MonoBehaviour
     private GameObject rope;
     public float swingForce = 200f;
 
-    [Header("Ledge Climb")]
-    public bool isClimbingLedge = false;
-    public float climbSpeed = 3f;
-    public float ledgeCheckDistance = 0.5f; 
-    private Transform ledgeTransform;
-    private Vector2 ledgePosition;
-
-    [Header("Ledge Check")]
-    [SerializeField] private Transform ledgeCheckTransform;
-    public float ledgeCheckRadius = 0.2f;
-    private bool isTouchingLedge = false;
-
     [Header("Check")]
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private Transform groundCheck;
@@ -75,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
         }
         ladderMovement = GetComponent<LadderMovement>();
     }
-
     private void Update()
     {
 
@@ -121,16 +108,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
-
-        if (isTouchingLedge && !isClimbingLedge)
-        {
-            Collider2D ledgeCollider = Physics2D.OverlapCircle(ledgeCheckTransform.position, ledgeCheckRadius, ledgeLayer);
-            if (ledgeCollider != null && ledgeCollider.CompareTag("Ledge"))
-            {
-                Vector2 ledgePosition = ledgeCollider.transform.position;
-                StartClimbingLedge(ledgePosition);
-            }
-        }
     }
 
     private void FixedUpdate()
@@ -173,7 +150,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
     private bool IsWalled()
     {
         return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
@@ -256,61 +232,7 @@ public class PlayerMovement : MonoBehaviour
         {
             AttachToRope(collision.gameObject);
         }
-        else if (collision.CompareTag("Ledge"))
-        {
-            isTouchingLedge = true;
-        }
     }
-
-    private void StartClimbingLedge(Vector2 ledgePosition)
-    {
-        isClimbingLedge = true;
-        rb2d.velocity = Vector2.zero; 
-        rb2d.gravityScale = 0; 
-
-        // Cập nhật vị trí người chơi gần với ledge
-        transform.position = new Vector3(ledgePosition.x, ledgePosition.y + 0.5f, transform.position.z);
-
-        // Thực hiện hoạt động leo lên ledge
-        StartCoroutine(ClimbLedgeCoroutine());
-    }
-
-    private IEnumerator ClimbLedgeCoroutine()
-    {
-        float climbDuration = 1f; 
-        float elapsedTime = 0f;
-        Vector2 startPosition = transform.position;
-        Vector2 targetPosition = new Vector2(transform.position.x, transform.position.y + 0.5f); // Di chuyển lên trên ledge
-
-        while (elapsedTime < climbDuration)
-        {
-            transform.position = Vector2.Lerp(startPosition, targetPosition, elapsedTime / climbDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = targetPosition;
-
-        // Hoàn tất leo ledge
-        isClimbingLedge = false;
-        rb2d.gravityScale = 1; 
-    }
-
-    private bool IsTouchingLedge()
-    {
-        // Sử dụng một vùng nhỏ xung quanh ledgeCheckTransform để xác định ledge
-        Collider2D ledgeCollider = Physics2D.OverlapCircle(ledgeCheckTransform.position, ledgeCheckRadius, ledgeLayer);
-        return ledgeCollider != null && ledgeCollider.CompareTag("Ledge");
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Ledge"))
-        {
-            isTouchingLedge = false;
-            isClimbingLedge = false; 
-            rb2d.gravityScale = 1;
-        }
-    }
-
     private void AttachToRope(GameObject ropeObject)
     {
         isSwinging = true;
