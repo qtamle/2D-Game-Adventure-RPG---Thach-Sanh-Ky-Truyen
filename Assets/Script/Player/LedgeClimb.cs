@@ -32,7 +32,6 @@ public class LedgeClimb : MonoBehaviour
 
         if (hit.collider != null)
         {
-            // Debug khi Raycast chạm vào Layer Ledge
             Debug.Log("Chạm vào Ledge: " + hit.collider.name);
 
             // Tính toán vị trí cần leo lên
