@@ -9,6 +9,7 @@ public class Grappler : MonoBehaviour
     public DistanceJoint2D distanceJoint;
     public string pointTag = "Point";  // Tag cho các điểm grappler
     public float maxGrappleDistance = 10f; // Khoảng cách tối đa để grappler
+    private bool isGrappling = false;
 
     private void Start()
     {
@@ -28,12 +29,14 @@ public class Grappler : MonoBehaviour
                 distanceJoint.connectedAnchor = closestPoint;
                 distanceJoint.enabled = true;
                 lineRenderer.enabled = true;
+                isGrappling = true;
             }
         }
         else if (Input.GetKeyUp(KeyCode.E))
         {
             distanceJoint.enabled = false;
             lineRenderer.enabled = false;
+            isGrappling = false;
         }
 
         if (distanceJoint.enabled)
@@ -60,5 +63,10 @@ public class Grappler : MonoBehaviour
 
         // Trả về Vector2.zero nếu không có điểm nào trong phạm vi
         return closestDistance <= maxGrappleDistance ? closestPoint : Vector2.zero;
+    }
+
+    public bool IsGrappling()
+    {
+        return isGrappling;
     }
 }

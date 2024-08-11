@@ -52,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool ledgeDetected;
 
     private LadderMovement ladderMovement;
+    private Grappler grappler;
+    private LedgeClimb ledgeClimb;
 
     public Vector3 knockbackDirection = Vector3.left;
     private void Start()
@@ -61,7 +63,10 @@ public class PlayerMovement : MonoBehaviour
         {
             healthBar.health = healthBar.maxHealth; 
         }
+        // Get Component
         ladderMovement = GetComponent<LadderMovement>();
+        grappler = GetComponent<Grappler>();
+        ledgeClimb = GetComponent<LedgeClimb>();
     }
     private void Update()
     {
@@ -262,7 +267,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 jumpDirection = new Vector2(transform.localScale.x, 1).normalized;
         rb2d.velocity = new Vector2(jumpDirection.x * horizontalJumpForce, verticalJumpForce);
 
-        rb2d.velocity += new Vector2(transform.localScale.x * 50, 0);
+        rb2d.velocity += new Vector2(transform.localScale.x * 10, 0);
     }
 
     private void DetachFromRope()
@@ -350,5 +355,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         transform.position = originalPosition + knockbackDirection * knockbackDistance;
+    }
+
+    public bool CanAttack()
+    {
+        return !isDashing && !isWallSliding && !isSwinging && !grappler.IsGrappling() && !ledgeClimb.IsClimbing();
     }
 }

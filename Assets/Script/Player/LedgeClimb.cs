@@ -69,4 +69,9 @@ public class LedgeClimb : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.right * transform.localScale.x * raycastDistance);
     }
+
+    public bool IsClimbing()
+    {
+        return isClimbing;
+    }
 }

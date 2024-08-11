@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,21 +15,27 @@ public class Attack : MonoBehaviour
     private float lastAttackTime = 0f;
     public float comboResetTime = 2f;
 
+    public float reducedSpeed = 2f;
+    private float originalSpeed;
+
     private LadderMovement ladder;
-    private PlayerMovement rope;
+    private PlayerMovement playerMovement;
 
     private void Start()
     {
         ladder = GetComponent<LadderMovement>();
-        rope = GetComponent<PlayerMovement>();
+        playerMovement = GetComponent<PlayerMovement>();
+
+        originalSpeed = playerMovement.speed;
     }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J) && !ladder.isClimbing && !rope.isSwinging)
+        if (Input.GetKeyDown(KeyCode.J) && !ladder.isClimbing && !playerMovement.isSwinging && playerMovement.CanAttack())
         {
             if (!isCooldown)
             {
-                PlayerAttack();
+                StartCoroutine(AttackRoutine());
                 Debug.Log($"Attack {comboCount + 1}");
                 comboCount++;
                 lastAttackTime = Time.time;
@@ -41,13 +47,22 @@ public class Attack : MonoBehaviour
             }
         }
 
-        // Check time to reset combo
         if (Time.time - lastAttackTime > comboResetTime && comboCount > 0)
         {
             comboCount = 0;
             Debug.Log("Combo attack reset");
         }
     }
+
+    // giảm speed khi vừa tấn công vừa di chuyển
+    private IEnumerator AttackRoutine()
+    {
+        playerMovement.speed = reducedSpeed;
+        PlayerAttack();
+        yield return new WaitForSeconds(0.5f);
+        playerMovement.speed = originalSpeed;
+    }
+
     private void PlayerAttack()
     {
         Vector3 attackDirection = transform.localScale.x > 0 ? transform.right : -transform.right;
@@ -67,13 +82,12 @@ public class Attack : MonoBehaviour
                 HealthbarEnemy enemyHealth = enemy.GetComponent<HealthbarEnemy>();
                 if (enemyHealth != null)
                 {
-                    Vector2 knockbackDirection = directionToEnemy * 1; 
+                    Vector2 knockbackDirection = directionToEnemy * 1;
                     enemyHealth.TakeDamage(damage, knockbackDirection);
                 }
             }
         }
     }
-
 
     private IEnumerator ComboCooldownRoutine()
     {
@@ -104,5 +118,5 @@ public class Attack : MonoBehaviour
             Vector3 dir = Quaternion.Euler(0, 0, angle) * forward;
             Gizmos.DrawLine(transform.position + dir * radiusAttack, transform.position);
         }
- }
+    }
 }
