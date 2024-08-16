@@ -58,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 knockbackDirection = Vector3.left;
     private void Start()
     {
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Turn"), LayerMask.NameToLayer("Turn"), true);
+
         // Khởi tạo HealthBar
         if (healthBar != null)
         {
@@ -356,9 +358,16 @@ public class PlayerMovement : MonoBehaviour
 
         transform.position = originalPosition + knockbackDirection * knockbackDistance;
     }
-
     public bool CanAttack()
     {
         return !isDashing && !isWallSliding && !isSwinging && !grappler.IsGrappling() && !ledgeClimb.IsClimbing();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Turn"))
+        {
+            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+        }
     }
 }

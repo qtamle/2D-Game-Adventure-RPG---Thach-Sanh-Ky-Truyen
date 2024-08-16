@@ -24,7 +24,6 @@ public class EnemyMove : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         // Kiểm tra xem Player có nằm trong bán kính phát hiện không
@@ -60,11 +59,12 @@ public class EnemyMove : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Turn"))
         {
-            moveRight = !moveRight; 
+            moveRight = !moveRight;
         }
     }
 
