@@ -18,7 +18,6 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         target = GameObject.FindGameObjectWithTag("Player").transform;
-
     }
 
     private void LateUpdate()

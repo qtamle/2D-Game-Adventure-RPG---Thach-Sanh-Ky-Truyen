@@ -1,12 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class PauseGame : MonoBehaviour
 {
     public GameObject pauseGamePanel;
 
     public bool isPauseGame = false;
+
+    private void Start()
+    {
+        isPauseGame = false;
+        Time.timeScale = 1;
+        pauseGamePanel.SetActive(false);
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !isPauseGame)
@@ -32,5 +39,12 @@ public class PauseGame : MonoBehaviour
         isPauseGame = false;
         pauseGamePanel.SetActive(false);
         Time.timeScale = 1;
+    }
+
+    public void MainMenu()
+    {
+        isPauseGame = false;
+        Time.timeScale = 1;
+        SceneManager.LoadScene("MainMenu");
     }
 }
