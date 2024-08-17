@@ -56,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
     private LedgeClimb ledgeClimb;
 
     public Vector3 knockbackDirection = Vector3.left;
+
     private void Start()
     {
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Turn"), LayerMask.NameToLayer("Turn"), true);
@@ -297,7 +298,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(delay);
         ropeController.ResetRope();
     }
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, float knockbackDistance, float knockbackSpeed, float knockbackDuration)
     {
         if (healthBar != null)
         {
@@ -309,8 +310,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Vector3 knockbackDirection = GetKnockbackDirection();
-        StartCoroutine(ApplyKnockback(knockbackDirection));
+        StartCoroutine(ApplyKnockback(knockbackDirection, knockbackDistance, knockbackSpeed, knockbackDuration));
     }
+
     private Vector3 GetKnockbackDirection()
     {
         // Tìm tất cả enemy trong phạm vi
@@ -339,13 +341,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 directionToEnemy = closestEnemy.transform.position - transform.position;
         return -directionToEnemy.normalized; 
     }
-
-    private IEnumerator ApplyKnockback(Vector3 knockbackDirection)
+    private IEnumerator ApplyKnockback(Vector3 knockbackDirection, float knockbackDistance, float knockbackSpeed, float knockbackDuration)
     {
-        float knockbackDistance = 0.2f;
-        float knockbackSpeed = 1f;
-        float knockbackDuration = 0.1f;
-
         float elapsedTime = 0f;
         Vector3 originalPosition = transform.position;
 

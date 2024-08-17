@@ -45,7 +45,7 @@ public class Bullet : MonoBehaviour
             PlayerMovement shootPlayer = collision.GetComponent<PlayerMovement>();
             if (shootPlayer != null)
             {
-                shootPlayer.TakeDamage(10);
+                shootPlayer.TakeDamage(10, 0.2f, 1f, 0.1f);
             }
             Destroy(gameObject);
         }
