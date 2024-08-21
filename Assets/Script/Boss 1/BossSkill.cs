@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BossSkill : MonoBehaviour
 {
+    public SpriteRenderer spriteRenderer;
     [Header("Skill Dash")]
     public float dashSpeed = 10f;
     public float dashDuration = 0.5f;
@@ -35,7 +36,7 @@ public class BossSkill : MonoBehaviour
     public GameObject spikePrefabs;
     public Transform[] spkieSpawn;
     public float timeHideBoss = 2f;
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRendererSpike;
     private Vector3 positionBoss;
     public float spikeSkillDuration = 12.6f;
     public float spikeLifeTime = 2f;
@@ -60,6 +61,8 @@ public class BossSkill : MonoBehaviour
         shake1= GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         rb = GetComponent<Rigidbody2D>();
         moveDirection = Vector2.right;
+
+        spriteRendererSpike = GetComponent<SpriteRenderer>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         positionBoss = transform.position;
 
@@ -207,7 +210,7 @@ public class BossSkill : MonoBehaviour
     }
     private IEnumerator SpikeSkill()
     {
-        spriteRenderer.enabled = false;
+       //
 
         // Thực hiện kỹ năng trong thời gian spikeSkillDuration
         float endTime = Time.time + spikeSkillDuration;
@@ -227,7 +230,7 @@ public class BossSkill : MonoBehaviour
         }
 
         // Hiện lại sprite
-        spriteRenderer.enabled = true;
+        
     }
 
     private int GetRandomIndex()
