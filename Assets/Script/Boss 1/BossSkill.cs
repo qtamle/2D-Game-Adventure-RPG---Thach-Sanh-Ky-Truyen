@@ -91,7 +91,7 @@ public class BossSkill : MonoBehaviour
         while (true)
         {
             // Chọn kỹ năng ngẫu nhiên để thực hiện
-            int skillIndex = Random.Range(0, 3); // 0 = Dash, 1 = Fire, 2 = Spike
+            int skillIndex = Random.Range(0, 3); 
 
             switch (skillIndex)
             {
@@ -248,8 +248,24 @@ public class BossSkill : MonoBehaviour
             if (player != null)
             {
                 Vector3 playerPosition = player.transform.position;
-                Vector3 offset = new Vector3(Random.Range(-2f, 2f), (float)0.5, 0);
-                Vector3 spawnPosition = playerPosition + offset;
+                Vector3 spawnPosition;
+
+                // Kiểm tra xem người chơi có đang ở trên không
+                RaycastHit2D hit = Physics2D.Raycast(playerPosition, Vector2.down, Mathf.Infinity, LayerMask.GetMask("Ground"));
+
+                if (hit.collider != null)
+                {
+                    // Nếu người chơi đang bay, đặt spike ở vị trí mặt đất
+                    spawnPosition = new Vector3(playerPosition.x, hit.point.y, playerPosition.z);
+                }
+                else
+                {
+                    // Nếu người chơi đang trên mặt đất, đặt spike ở vị trí hiện tại
+                    spawnPosition = playerPosition;
+                }
+
+                Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0.5f, 0);
+                spawnPosition += offset;
 
                 // Tạo dấu cảnh báo tại vị trí mới
                 GameObject warningMark = Instantiate(warningMarkPrefab, spawnPosition, Quaternion.identity);
