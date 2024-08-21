@@ -5,6 +5,7 @@ using UnityEngine;
 public class BossSkill : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
+
     [Header("Skill Dash")]
     public float dashSpeed = 10f;
     public float dashDuration = 0.5f;
@@ -43,6 +44,7 @@ public class BossSkill : MonoBehaviour
     public float spikeRiseDuration = 1f;
     public float spikeLowerDuration = 1f;
     private List<int> availableIndices;
+    public GameObject warningMarkPrefab;
 
     [Header("Skill Poison")]
     public GameObject bulletPoison;
@@ -71,47 +73,59 @@ public class BossSkill : MonoBehaviour
         {
             availableIndices.Add(i);
         }
+
+        StartCoroutine(StartSkillsWithDelay());
+
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Boss"), LayerMask.NameToLayer("Player"), true);
+
     }
 
-    private void Update()
+    private IEnumerator StartSkillsWithDelay()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isDashing)
-        {
-            StartDash();
-        }
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(ExecuteRandomSkills());
+    }
 
-        if (isDashing)
+    private IEnumerator ExecuteRandomSkills()
+    {
+        while (true)
         {
-            dashTime -= Time.deltaTime;
-            if (dashTime <= 0)
+            // Chọn kỹ năng ngẫu nhiên để thực hiện
+            int skillIndex = Random.Range(0, 3); // 0 = Dash, 1 = Fire, 2 = Spike
+
+            switch (skillIndex)
             {
-                EndDash();
+                case 0:
+                    yield return StartCoroutine(AutoDash());
+                    break;
+                case 1:
+                    yield return StartCoroutine(FireProjectiles());
+                    break;
+                case 2:
+                    yield return StartCoroutine(SpikeSkill());
+                    break;
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            ScaleBoss();
+            // Đợi 4 giây trước khi thực hiện kỹ năng tiếp theo
+            yield return new WaitForSeconds(4f);
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            OldScaleBoss();
-        }
+    private IEnumerator AutoDash()
+    {
+        int dashCount = Random.Range(2, 5);
 
-        if (Input.GetKeyDown(KeyCode.L))
+        for (int i = 0; i < dashCount; i++)
         {
-            StartCoroutine(FireProjectiles());
-        }
+            StartDash(); // Bắt đầu Dash
+            yield return new WaitForSeconds(1f); 
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            StartCoroutine(SpikeSkill());
-        }
+            EndDash(); // Kết thúc Dash
 
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            StartCoroutine(StartPoisonSkill());
+            if (i < dashCount - 1) 
+            {
+                yield return new WaitForSeconds(0.5f); 
+            }
         }
     }
 
@@ -157,18 +171,35 @@ public class BossSkill : MonoBehaviour
         scale.x *= -1;
         transform.localScale = scale;
     }
-
     private IEnumerator FireProjectiles()
     {
-        FireProjectile(firePoint1.position);
-        yield return new WaitForSeconds(1f);
-        FireProjectile(firePoint2.position);
-        yield return new WaitForSeconds(1f);
-        FireProjectile(firePoint3.position);
-        yield return new WaitForSeconds(1f);
-        FireProjectile(firePoint4.position);
-        yield return new WaitForSeconds(2f);
-        StartCoroutine(SmallBulletDrop());
+        // Tìm đối tượng có tag là "Player"
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+        {
+            // Bắn các viên đạn về phía vị trí của Player tại mỗi lần bắn
+            for (int i = 0; i < 4; i++)
+            {
+                Vector3 playerPosition = player.transform.position; // Lưu vị trí hiện tại của Player
+                FireProjectile(playerPosition);
+                yield return new WaitForSeconds(2f);
+            }
+
+            // Bắn thêm một viên đạn lên vị trí chỉ định
+            Vector3 finalPlayerPosition = player.transform.position; // Lưu vị trí cuối cùng của Player
+            Vector3 designatedPosition = new Vector3(finalPlayerPosition.x, finalPlayerPosition.y + 10f, finalPlayerPosition.z);
+            FireProjectile(designatedPosition);
+            yield return new WaitForSeconds(1f);
+
+            // Thả 20 viên đạn nhỏ từ trên cao
+            numberSmallBullet = 20;
+            StartCoroutine(SmallBulletDrop());
+        }
+        else
+        {
+            Debug.LogWarning("Player not found!");
+        }
     }
 
     private void FireProjectile(Vector3 targetPosition)
@@ -210,27 +241,36 @@ public class BossSkill : MonoBehaviour
     }
     private IEnumerator SpikeSkill()
     {
-       //
-
-        // Thực hiện kỹ năng trong thời gian spikeSkillDuration
-        float endTime = Time.time + spikeSkillDuration;
-
-        while (Time.time < endTime)
+        for (int i = 0; i < 6; i++)
         {
-            // Lấy một vị trí ngẫu nhiên từ availableIndices
-            int randomIndex = GetRandomIndex();
-            Transform spawnPoint = spkieSpawn[randomIndex];
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-            GameObject spike = Instantiate(spikePrefabs, spawnPoint.position, Quaternion.identity);
-            StartCoroutine(RiseSpike(spike.transform));
-            StartCoroutine(LowerAndDestroySpike(spike.transform));
+            if (player != null)
+            {
+                Vector3 playerPosition = player.transform.position;
+                Vector3 offset = new Vector3(Random.Range(-2f, 2f), (float)0.5, 0);
+                Vector3 spawnPosition = playerPosition + offset;
 
-            // Đợi để gai tiếp theo có thể mọc lên
-            yield return new WaitForSeconds(2.1f);
+                // Tạo dấu cảnh báo tại vị trí mới
+                GameObject warningMark = Instantiate(warningMarkPrefab, spawnPosition, Quaternion.identity);
+
+                // Chờ 2 giây trước khi spike xuất hiện
+                yield return new WaitForSeconds(0.5f);
+
+                GameObject spike = Instantiate(spikePrefabs, warningMark.transform.position, Quaternion.identity);
+                StartCoroutine(RiseSpike(spike.transform));
+                StartCoroutine(LowerAndDestroySpike(spike.transform));
+
+                Destroy(warningMark);
+
+                yield return new WaitForSeconds(2f);
+            }
+            else
+            {
+                Debug.LogWarning("Player not found!");
+                break;
+            }
         }
-
-        // Hiện lại sprite
-        
     }
 
     private int GetRandomIndex()
@@ -290,23 +330,32 @@ public class BossSkill : MonoBehaviour
 
         Destroy(spikeTransform.gameObject);
     }
-
     private IEnumerator StartPoisonSkill()
     {
-        // Chọn vị trí bắn và tạo độc dựa trên hướng của Boss
-        Transform targetPosition = isFacingRight ? poisonPosition : poisonFirePointLeft;
+        // Tìm đối tượng có tag là "Player"
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-        // Bắn viên đạn độc
-        GameObject poisonBullet = Instantiate(bulletPoison, fireOrigin.position, Quaternion.identity);
-        Vector2 direction = (targetPosition.position - fireOrigin.position).normalized;
-        poisonBullet.GetComponent<Rigidbody2D>().velocity = direction * speedBullet;
-        Destroy(poisonBullet, 2f);
+        if (player != null)
+        {
+            float speedPosion = 10f;
+            Vector3 playerPosition = player.transform.position;
 
-        yield return new WaitForSeconds(1f);
+            // Chọn vị trí bắn và tạo độc dựa trên hướng của Boss
+            Transform targetPosition = isFacingRight ? poisonPosition : poisonFirePointLeft;
 
-        // Tạo khu vực độc tại vị trí mục tiêu
-        GameObject poisonArea = Instantiate(poisonPrefabs, targetPosition.position, Quaternion.identity);
-        Destroy(poisonArea, poisonDuration);
+            // Bắn viên đạn độc về phía người chơi
+            GameObject poisonBullet = Instantiate(bulletPoison, fireOrigin.position, Quaternion.identity);
+            Vector2 direction = (playerPosition - fireOrigin.position).normalized;
+            poisonBullet.GetComponent<Rigidbody2D>().velocity = direction * speedPosion;
+            Destroy(poisonBullet, 2f);
+
+            yield return new WaitForSeconds(2f);
+
+            Vector3 adjustedPoisonPosition = new Vector3(playerPosition.x - 3f, playerPosition.y, playerPosition.z);
+
+            // Tạo khu vực độc tại vị trí điều chỉnh
+            GameObject poisonArea = Instantiate(poisonPrefabs, adjustedPoisonPosition, Quaternion.identity);
+            Destroy(poisonArea, poisonDuration);
+        }
     }
-
 }
