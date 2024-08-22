@@ -76,7 +76,7 @@ public class BossSkill : MonoBehaviour
 
         StartCoroutine(StartSkillsWithDelay());
 
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Boss"), LayerMask.NameToLayer("Player"), true);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
 
     }
 

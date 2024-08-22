@@ -85,6 +85,12 @@ public class Attack : MonoBehaviour
                     Vector2 knockbackDirection = directionToEnemy * 1;
                     enemyHealth.TakeDamage(damage, knockbackDirection);
                 }
+
+                HealthBarBoss bossHealth = enemy.GetComponent<HealthBarBoss>();
+                if (bossHealth != null)
+                {
+                    bossHealth.TakeDamage(damage);
+                }
             }
         }
     }

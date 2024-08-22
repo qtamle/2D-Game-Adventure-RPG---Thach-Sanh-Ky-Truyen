@@ -238,7 +238,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 107633035}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Position1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -281,7 +281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 114372597}
   - component: {fileID: 114372598}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Snake body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -921,7 +921,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 522163651}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Position1
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -988,7 +988,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 620783795}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: PositionSpike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1157,7 +1157,7 @@ GameObject:
   - component: {fileID: 812833170}
   - component: {fileID: 812833172}
   - component: {fileID: 812833171}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1262,7 +1262,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 819544307}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: ShootUp
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
@@ -1553,7 +1553,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 969117700}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: PositionFire1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
@@ -1659,7 +1659,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 995106539}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Position1 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -1690,7 +1690,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1039579025}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Position1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -1766,7 +1766,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1069891232}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: FireOriginal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1797,7 +1797,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1117840549}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: PositionFire1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
@@ -1840,7 +1840,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1227226320}
   - component: {fileID: 1227226321}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Snake tounge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2112,7 +2112,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1552677424}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: PositionFire1
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
@@ -2143,7 +2143,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1636995719}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: BodyBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2175,7 +2175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1652235209}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Position1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -2279,7 +2279,8 @@ GameObject:
   - component: {fileID: 1762478250}
   - component: {fileID: 1762478253}
   - component: {fileID: 1762478254}
-  m_Layer: 13
+  - component: {fileID: 1762478255}
+  m_Layer: 11
   m_Name: SpriteBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2338,7 +2339,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.51925415, y: -0.029910386}
+  m_Offset: {x: -0.5141592, y: -0.34472647}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2349,7 +2350,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.267202, y: 1.0598205}
+  m_Size: {x: 1.2773919, y: 0.43018836}
   m_EdgeRadius: 0
 --- !u!50 &1762478251
 Rigidbody2D:
@@ -2510,7 +2511,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.5129119, y: -0.3451123}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2521,8 +2522,26 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.2853279, y: 0.43096024}
   m_EdgeRadius: 0
+--- !u!114 &1762478255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762478248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70bd250635991ab46a3e65b1bdd4cfc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1851448508}
+  fillImage: {fileID: 50494092}
+  maxHealth: 500
+  currentHealth: 0
+  smoothTime: 0.2
+  anim: {fileID: 1851448510}
 --- !u!1 &1851448507
 GameObject:
   m_ObjectHideFlags: 0
@@ -2676,7 +2695,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1965367266}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: PositionFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2712,7 +2731,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1965918246}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Position1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -2788,7 +2807,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1537474552479902746, guid: 4abe905176cc26d48b3746a9f0bf7d37, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1537474552479902746, guid: 4abe905176cc26d48b3746a9f0bf7d37, type: 3}
       propertyPath: m_IsActive

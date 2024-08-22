@@ -1,41 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class HealthBarBoss : MonoBehaviour
 {
     [SerializeField] private Slider slider;
-    [SerializeField] private Image fillImage;
-    public float maxHealth = 500;
-    public float currentHealth;
-    public float smoothTime = 0.2f; // Thời gian để làm mượt
-    private float healthVelocity = 0.0f;
-    private float targetHealth;
-
+    public float health;
+    public float maxHealth = 100f;
+    public float smoothTime = 0.2f;
     public Animator anim;
+
+    private float targetHealth;
+    private float currentHealth;
+    private float healthVelocity = 0f;
+    private Image fillImage;
+
     private void Start()
     {
-        currentHealth = maxHealth;
-        targetHealth = maxHealth;
-        slider.maxValue = maxHealth;
-        slider.value = maxHealth;
-        UpdateHealthBarColor();
-    }
+        anim = GetComponent<Animator>();
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        health = maxHealth;
+        targetHealth = health;
+        currentHealth = health;
+
+
+        if (slider != null)
         {
-            HealthBarShake();
-            TakeDamage(10);
+            slider.maxValue = maxHealth;
+            slider.value = health;
+            fillImage = slider.fillRect.GetComponent<Image>();
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        targetHealth = Mathf.Max(0, targetHealth - damage);
+        targetHealth -= damage;
+        if (targetHealth < 0) targetHealth = 0;
+
+        HealthBarShake();
         StartCoroutine(UpdateHealthBar());
+
     }
 
     private IEnumerator UpdateHealthBar()
@@ -56,25 +60,26 @@ public class HealthBarBoss : MonoBehaviour
             slider.value = targetHealth;
         }
 
+        if (targetHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
-
     private void UpdateHealthBarColor()
     {
-        float healthPercentage = (float)currentHealth / maxHealth * 100f;
-
-        if (healthPercentage >= 80f)
+        if (targetHealth >= 80f)
         {
             fillImage.color = Color.green;
         }
-        else if (healthPercentage >= 60f && healthPercentage < 80f)
+        else if (targetHealth >= 60f && targetHealth < 80f)
         {
             fillImage.color = new Color(0.5f, 1f, 0.5f);
         }
-        else if (healthPercentage >= 40f && healthPercentage < 60f)
+        else if (targetHealth >= 40f && targetHealth < 60f)
         {
             fillImage.color = Color.yellow;
         }
-        else if (healthPercentage >= 20f && healthPercentage < 40f)
+        else if (targetHealth >= 20f && targetHealth < 40f)
         {
             fillImage.color = new Color(1f, 0.64f, 0f);
         }
@@ -83,9 +88,9 @@ public class HealthBarBoss : MonoBehaviour
             fillImage.color = Color.red;
         }
     }
-
     public void HealthBarShake()
     {
         anim.SetTrigger("HealthbarShake");
     }
+
 }
