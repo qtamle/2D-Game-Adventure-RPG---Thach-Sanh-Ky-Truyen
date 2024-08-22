@@ -6,7 +6,7 @@ public class HealthBarBoss : MonoBehaviour
 {
     [SerializeField] private Slider slider;
     public float health;
-    public float maxHealth = 100f;
+    public float maxHealth = 1000f;
     public float smoothTime = 0.2f;
 
     private Animator anim;
@@ -17,7 +17,7 @@ public class HealthBarBoss : MonoBehaviour
 
     private void Start()
     {
-        anim = GetComponent<Animator>(); 
+        anim = GetComponent<Animator>();
 
         health = maxHealth;
         targetHealth = health;
@@ -28,12 +28,8 @@ public class HealthBarBoss : MonoBehaviour
             slider.maxValue = maxHealth;
             slider.value = health;
             fillImage = slider.fillRect.GetComponent<Image>();
+            UpdateHealthBarColor(); 
         }
-    }
-
-    private void Update()
-    {
-        UpdateHealthBarColor();
     }
 
     public void TakeDamage(float damage)
@@ -41,8 +37,10 @@ public class HealthBarBoss : MonoBehaviour
         targetHealth -= damage;
         if (targetHealth < 0) targetHealth = 0;
 
+        // Cập nhật giá trị health hiện tại để phản ánh đúng trong UI
+        health = targetHealth;
         StartCoroutine(UpdateHealthBar());
-        HealthBarShake(); 
+        HealthBarShake();
     }
 
     private IEnumerator UpdateHealthBar()
@@ -53,6 +51,7 @@ public class HealthBarBoss : MonoBehaviour
             if (slider != null)
             {
                 slider.value = currentHealth;
+                UpdateHealthBarColor();
             }
             yield return null;
         }
@@ -60,6 +59,7 @@ public class HealthBarBoss : MonoBehaviour
         if (slider != null)
         {
             slider.value = targetHealth;
+            UpdateHealthBarColor(); 
         }
 
         if (targetHealth <= 0)
@@ -70,23 +70,23 @@ public class HealthBarBoss : MonoBehaviour
 
     private void UpdateHealthBarColor()
     {
-        if (fillImage == null) return; // Kiểm tra nếu fillImage không được thiết lập
+        if (fillImage == null) return; 
 
-        float healthPercentage = targetHealth / maxHealth * 100f;
+        float healthPercentage = currentHealth / maxHealth;
 
-        if (healthPercentage >= 80f)
+        if (healthPercentage >= 0.8f)
         {
             fillImage.color = Color.green;
         }
-        else if (healthPercentage >= 60f && healthPercentage < 80f)
+        else if (healthPercentage >= 0.6f)
         {
             fillImage.color = new Color(0.5f, 1f, 0.5f);
         }
-        else if (healthPercentage >= 40f && healthPercentage < 60f)
+        else if (healthPercentage >= 0.4f)
         {
             fillImage.color = Color.yellow;
         }
-        else if (healthPercentage >= 20f && healthPercentage < 40f)
+        else if (healthPercentage >= 0.2f)
         {
             fillImage.color = new Color(1f, 0.64f, 0f);
         }
@@ -100,7 +100,7 @@ public class HealthBarBoss : MonoBehaviour
     {
         if (anim != null)
         {
-            anim.SetTrigger("HealthbarShake"); 
+            anim.SetTrigger("HealthbarShake");
         }
     }
 }

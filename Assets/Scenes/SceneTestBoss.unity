@@ -378,7 +378,6 @@ GameObject:
   - component: {fileID: 288330582}
   - component: {fileID: 288330581}
   - component: {fileID: 288330580}
-  - component: {fileID: 288330579}
   m_Layer: 5
   m_Name: health boss
   m_TagString: Untagged
@@ -386,22 +385,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &288330579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 288330578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70bd250635991ab46a3e65b1bdd4cfc6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slider: {fileID: 1851448508}
-  health: 0
-  maxHealth: 1000
-  smoothTime: 0.2
 --- !u!114 &288330580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,7 +461,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1851448509}
-  m_Father: {fileID: 1762478249}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1993,7 +1976,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1751603069, guid: e75aff7ae9c3a9343bdc02dbd2095335, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2d30628e03849f6479e7f671d29ef1eb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2013,7 +1996,7 @@ Transform:
   m_GameObject: {fileID: 1236785836}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7863, y: -2.7528, z: 4.4}
+  m_LocalPosition: {x: 0.78, y: -10.44, z: 4.4}
   m_LocalScale: {x: 1.5921378, y: 1.619, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2327,7 +2310,6 @@ Transform:
   - {fileID: 502694508}
   - {fileID: 1965367266}
   - {fileID: 620783795}
-  - {fileID: 288330583}
   m_Father: {fileID: 812833170}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1762478250
@@ -2561,6 +2543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 1851448508}
+  fillImage: {fileID: 50494092}
   health: 0
   maxHealth: 1000
   smoothTime: 0.2
@@ -2649,9 +2632,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 500
-  m_WholeNumbers: 0
-  m_Value: 500
+  m_MaxValue: 1000
+  m_WholeNumbers: 1
+  m_Value: 1000
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2710,8 +2693,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 1851448508}
+  fillImage: {fileID: 50494092}
   health: 0
-  maxHealth: 100
+  maxHealth: 1000
   smoothTime: 0.2
 --- !u!1 &1904972127
 GameObject:
@@ -2891,4 +2875,5 @@ SceneRoots:
   - {fileID: 1236785838}
   - {fileID: 367183366}
   - {fileID: 1432691256}
+  - {fileID: 288330583}
   - {fileID: 1688502485}

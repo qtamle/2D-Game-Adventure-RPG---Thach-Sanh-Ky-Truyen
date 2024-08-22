@@ -43,8 +43,8 @@ GameObject:
   - component: {fileID: 8474739820015818587}
   - component: {fileID: 8620287203305925765}
   - component: {fileID: 5252669866866178333}
-  - component: {fileID: 4600101294446029379}
-  m_Layer: 6
+  - component: {fileID: 263541297890461945}
+  m_Layer: 0
   m_Name: TailSpike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,8 +131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageAmount: 10
---- !u!68 &4600101294446029379
-EdgeCollider2D:
+--- !u!61 &263541297890461945
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -163,19 +163,16 @@ EdgeCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.016335368, y: -0.09831786}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 7, y: 7}
+    newSize: {x: 7, y: 7}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.6022084, y: 6.8033643}
   m_EdgeRadius: 0
-  m_Points:
-  - {x: -1.817439, y: -3.4463053}
-  - {x: -0.67904985, y: 1.9324838}
-  - {x: -0.5151764, y: 2.8083427}
-  - {x: -0.024503231, y: 3.2807162}
-  - {x: 0.53073287, y: 2.8403637}
-  - {x: 0.80898917, y: 1.3198262}
-  - {x: 1.6515895, y: -2.819355}
-  - {x: 1.6931441, y: -3.488508}
-  - {x: -1.8417214, y: -3.4566536}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0

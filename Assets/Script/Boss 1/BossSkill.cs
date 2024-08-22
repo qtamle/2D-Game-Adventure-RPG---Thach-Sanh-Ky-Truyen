@@ -14,6 +14,7 @@ public class BossSkill : MonoBehaviour
     private float dashTime;
     private Vector2 moveDirection;
     public bool isFacingRight = true;
+    private bool hasDamaged = false;
 
     [Header("Skill Fire")]
     public Transform firePoint1; 
@@ -61,7 +62,11 @@ public class BossSkill : MonoBehaviour
     private PlayerMovement playerMovement;
     private void Start()
     {
-        playerMovement = GetComponent<PlayerMovement>();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerMovement = player.GetComponent<PlayerMovement>();
+        }
 
         shake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         shake1= GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
@@ -95,7 +100,7 @@ public class BossSkill : MonoBehaviour
         while (true)
         {
             // Chọn kỹ năng ngẫu nhiên để thực hiện
-            int skillIndex = Random.Range(2,2); 
+            int skillIndex = Random.Range(0,3); 
 
             switch (skillIndex)
             {
@@ -148,6 +153,9 @@ public class BossSkill : MonoBehaviour
         isDashing = true;
         dashTime = dashDuration;
         rb.velocity = moveDirection * dashSpeed;
+
+        hasDamaged = false;
+        StartCoroutine(CheckPlayerCollision());
     }
 
     private void EndDash()
@@ -155,7 +163,31 @@ public class BossSkill : MonoBehaviour
         isDashing = false;
         rb.velocity = Vector2.zero;
     }
+    private IEnumerator CheckPlayerCollision()
+    {
+        while (isDashing)
+        {
+            // Kiểm tra va chạm với người chơi
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 10f);
 
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hitCollider.CompareTag("Player"))
+                {
+                    if (!hasDamaged)
+                    {
+                        if (playerMovement != null)
+                        {
+                            playerMovement.TakeDamage(10f, 0f, 0f, 0f);
+                            hasDamaged = true;  
+                        }
+                    }
+                }
+            }
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Turn"))
@@ -268,7 +300,7 @@ public class BossSkill : MonoBehaviour
                     spawnPosition = playerPosition;
                 }
 
-                Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0.5f, 0);
+                Vector3 offset = new Vector3(Random.Range(-2f, 2f), 1f, 0);
                 spawnPosition += offset;
 
                 // Tạo dấu cảnh báo tại vị trí mới

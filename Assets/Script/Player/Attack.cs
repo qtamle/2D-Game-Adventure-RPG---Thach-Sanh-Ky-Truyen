@@ -89,7 +89,7 @@ public class Attack : MonoBehaviour
                 HealthBarBoss bossHealth = enemy.GetComponent<HealthBarBoss>();
                 if (bossHealth != null)
                 {
-                    bossHealth.TakeDamage(damage);
+                    bossHealth.TakeDamage(5);
                 }
             }
         }
