@@ -8,8 +8,8 @@ public class HealthBarBoss : MonoBehaviour
     public float health;
     public float maxHealth = 100f;
     public float smoothTime = 0.2f;
-    public Animator anim;
 
+    private Animator anim;
     private float targetHealth;
     private float currentHealth;
     private float healthVelocity = 0f;
@@ -17,12 +17,11 @@ public class HealthBarBoss : MonoBehaviour
 
     private void Start()
     {
-        anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>(); // Lấy Animator từ GameObject hiện tại
 
         health = maxHealth;
         targetHealth = health;
         currentHealth = health;
-
 
         if (slider != null)
         {
@@ -32,14 +31,18 @@ public class HealthBarBoss : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        UpdateHealthBarColor();
+    }
+
     public void TakeDamage(float damage)
     {
         targetHealth -= damage;
         if (targetHealth < 0) targetHealth = 0;
 
-        HealthBarShake();
         StartCoroutine(UpdateHealthBar());
-
+        HealthBarShake(); 
     }
 
     private IEnumerator UpdateHealthBar()
@@ -50,7 +53,6 @@ public class HealthBarBoss : MonoBehaviour
             if (slider != null)
             {
                 slider.value = currentHealth;
-                UpdateHealthBarColor();
             }
             yield return null;
         }
@@ -65,21 +67,26 @@ public class HealthBarBoss : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     private void UpdateHealthBarColor()
     {
-        if (targetHealth >= 80f)
+        if (fillImage == null) return; // Kiểm tra nếu fillImage không được thiết lập
+
+        float healthPercentage = targetHealth / maxHealth * 100f;
+
+        if (healthPercentage >= 80f)
         {
             fillImage.color = Color.green;
         }
-        else if (targetHealth >= 60f && targetHealth < 80f)
+        else if (healthPercentage >= 60f && healthPercentage < 80f)
         {
             fillImage.color = new Color(0.5f, 1f, 0.5f);
         }
-        else if (targetHealth >= 40f && targetHealth < 60f)
+        else if (healthPercentage >= 40f && healthPercentage < 60f)
         {
             fillImage.color = Color.yellow;
         }
-        else if (targetHealth >= 20f && targetHealth < 40f)
+        else if (healthPercentage >= 20f && healthPercentage < 40f)
         {
             fillImage.color = new Color(1f, 0.64f, 0f);
         }
@@ -88,9 +95,12 @@ public class HealthBarBoss : MonoBehaviour
             fillImage.color = Color.red;
         }
     }
+
     public void HealthBarShake()
     {
-        anim.SetTrigger("HealthbarShake");
+        if (anim != null)
+        {
+            anim.SetTrigger("HealthbarShake"); 
+        }
     }
-
 }
