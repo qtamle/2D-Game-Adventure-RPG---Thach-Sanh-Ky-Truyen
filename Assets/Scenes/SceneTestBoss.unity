@@ -168,7 +168,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -2.5, y: 0}
+  m_AnchoredPosition: {x: -2.499878, y: 0}
   m_SizeDelta: {x: 5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &50494092
@@ -461,7 +461,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1851448509}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1762478249}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2310,6 +2310,7 @@ Transform:
   - {fileID: 502694508}
   - {fileID: 1965367266}
   - {fileID: 620783795}
+  - {fileID: 288330583}
   m_Father: {fileID: 812833170}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1762478250
@@ -2543,10 +2544,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 1851448508}
-  fillImage: {fileID: 50494092}
   health: 0
   maxHealth: 1000
   smoothTime: 0.2
+  bloodEffect: {fileID: 6502919927498602294, guid: dee7303474760184c979e7260a0c098e, type: 3}
 --- !u!95 &1762478256
 Animator:
   serializedVersion: 5
@@ -2693,10 +2694,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 1851448508}
-  fillImage: {fileID: 50494092}
   health: 0
   maxHealth: 1000
   smoothTime: 0.2
+  bloodEffect: {fileID: 0}
 --- !u!1 &1904972127
 GameObject:
   m_ObjectHideFlags: 0
@@ -2875,5 +2876,4 @@ SceneRoots:
   - {fileID: 1236785838}
   - {fileID: 367183366}
   - {fileID: 1432691256}
-  - {fileID: 288330583}
   - {fileID: 1688502485}

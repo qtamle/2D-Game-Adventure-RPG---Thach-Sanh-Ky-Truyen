@@ -15,6 +15,7 @@ public class HealthBarBoss : MonoBehaviour
     private float healthVelocity = 0f;
     private Image fillImage;
 
+    public ParticleSystem bloodEffect;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -41,6 +42,7 @@ public class HealthBarBoss : MonoBehaviour
         health = targetHealth;
         StartCoroutine(UpdateHealthBar());
         HealthBarShake();
+        ShowBloodEffect();
     }
 
     private IEnumerator UpdateHealthBar()
@@ -101,6 +103,17 @@ public class HealthBarBoss : MonoBehaviour
         if (anim != null)
         {
             anim.SetTrigger("HealthbarShake");
+        }
+    }
+    
+    private void ShowBloodEffect()
+    {
+        if (bloodEffect != null)
+        {
+            Vector3 offset = new Vector3(0f, -2f, 0f); 
+            Vector3 effectPosition = transform.position + offset;
+            ParticleSystem blood = Instantiate(bloodEffect, effectPosition, Quaternion.identity);
+            Destroy(blood.gameObject, 0.5f);
         }
     }
 }
