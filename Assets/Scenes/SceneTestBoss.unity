@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &2795945 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1067744827731771293, guid: d39cec85ad230614e939528cb011a805, type: 3}
+  m_PrefabInstance: {fileID: 367183366}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799a7486dce649f42a602afb715973a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &50494090
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +379,6 @@ GameObject:
   - component: {fileID: 288330581}
   - component: {fileID: 288330580}
   - component: {fileID: 288330579}
-  - component: {fileID: 288330584}
   m_Layer: 5
   m_Name: health boss
   m_TagString: Untagged
@@ -475,27 +485,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!95 &288330584
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 288330578}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3e032befe381f004fb9cde5278948e4b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &314607283
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,6 +836,10 @@ PrefabInstance:
       propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5627404196120211271, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 2795945}
     - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.62
@@ -2489,7 +2482,7 @@ MonoBehaviour:
   minSpawnBullet: {x: -7, y: 8.59}
   maxSpawnBullet: {x: 12.87, y: 8.59}
   bulletDropSpeed: 10
-  spikePrefabs: {fileID: 1000788698618930335, guid: 2f2073b370ad25b47b90448773f5d13f, type: 3}
+  spikePrefabs: {fileID: 1526748087562114734, guid: 8b9dc04c94aea504b955860e346adb24, type: 3}
   spkieSpawn:
   - {fileID: 522163651}
   - {fileID: 107633035}
@@ -2504,6 +2497,7 @@ MonoBehaviour:
   spikeRiseDuration: 0.1
   spikeLowerDuration: 0.1
   warningMarkPrefab: {fileID: 6215205456343541741, guid: b1e21b1772d99184aa414dceea0f8745, type: 3}
+  damageAmount: 10
   bulletPoison: {fileID: 1130344944061562582, guid: b79b6ba5e2fb9c9419562041d843a30d, type: 3}
   poisonPrefabs: {fileID: 9179942655780859943, guid: 89464c701e2259347acdc168e3ead0eb, type: 3}
   poisonPosition: {fileID: 494115145}
@@ -2580,7 +2574,7 @@ Animator:
   m_GameObject: {fileID: 1762478248}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3e032befe381f004fb9cde5278948e4b, type: 2}
+  m_Controller: {fileID: 9100000, guid: ded49b4479b1ca449b38d6d6ffd89861, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2601,6 +2595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1851448509}
   - component: {fileID: 1851448508}
+  - component: {fileID: 1851448511}
   - component: {fileID: 1851448510}
   m_Layer: 5
   m_Name: Slider
@@ -2691,7 +2686,7 @@ Animator:
   m_GameObject: {fileID: 1851448507}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3e032befe381f004fb9cde5278948e4b, type: 2}
+  m_Controller: {fileID: 9100000, guid: ded49b4479b1ca449b38d6d6ffd89861, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2702,6 +2697,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1851448511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851448507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70bd250635991ab46a3e65b1bdd4cfc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1851448508}
+  health: 0
+  maxHealth: 100
+  smoothTime: 0.2
 --- !u!1 &1904972127
 GameObject:
   m_ObjectHideFlags: 0

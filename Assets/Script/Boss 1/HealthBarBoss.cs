@@ -17,7 +17,7 @@ public class HealthBarBoss : MonoBehaviour
 
     private void Start()
     {
-        anim = GetComponent<Animator>(); // Lấy Animator từ GameObject hiện tại
+        anim = GetComponent<Animator>(); 
 
         health = maxHealth;
         targetHealth = health;

@@ -45,6 +45,7 @@ public class BossSkill : MonoBehaviour
     public float spikeLowerDuration = 1f;
     private List<int> availableIndices;
     public GameObject warningMarkPrefab;
+    public float damageAmount = 10f;
 
     [Header("Skill Poison")]
     public GameObject bulletPoison;
@@ -57,8 +58,11 @@ public class BossSkill : MonoBehaviour
     private CameraShake shake;
     private CameraShake shake1;
 
+    private PlayerMovement playerMovement;
     private void Start()
     {
+        playerMovement = GetComponent<PlayerMovement>();
+
         shake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         shake1= GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         rb = GetComponent<Rigidbody2D>();
@@ -91,7 +95,7 @@ public class BossSkill : MonoBehaviour
         while (true)
         {
             // Chọn kỹ năng ngẫu nhiên để thực hiện
-            int skillIndex = Random.Range(0, 3); 
+            int skillIndex = Random.Range(2,2); 
 
             switch (skillIndex)
             {
@@ -274,6 +278,13 @@ public class BossSkill : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
 
                 GameObject spike = Instantiate(spikePrefabs, warningMark.transform.position, Quaternion.identity);
+                SpikeCollision spikeCollision = spike.GetComponent<SpikeCollision>();
+                if (spikeCollision == null)
+                {
+                    spikeCollision = spike.AddComponent<SpikeCollision>();
+                }
+                spikeCollision.damageAmount = 10f; 
+
                 StartCoroutine(RiseSpike(spike.transform));
                 StartCoroutine(LowerAndDestroySpike(spike.transform));
 
