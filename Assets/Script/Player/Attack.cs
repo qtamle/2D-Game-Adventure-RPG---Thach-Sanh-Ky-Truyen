@@ -9,6 +9,7 @@ public class Attack : MonoBehaviour
     public float angleAttack = 90f;
     public int attackSegments = 20;
     public float damage = 10f;
+    public float damageBoss = 5f;
     private int comboCount = 0;
     public float comboCooldown = 1f;
     private bool isCooldown = false;
@@ -62,7 +63,6 @@ public class Attack : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         playerMovement.speed = originalSpeed;
     }
-
     private void PlayerAttack()
     {
         Vector3 attackDirection = transform.localScale.x > 0 ? transform.right : -transform.right;
@@ -89,7 +89,7 @@ public class Attack : MonoBehaviour
                 HealthBarBoss bossHealth = enemy.GetComponent<HealthBarBoss>();
                 if (bossHealth != null)
                 {
-                    bossHealth.TakeDamage(5);
+                    bossHealth.TakeDamage(damageBoss);
                 }
             }
         }
