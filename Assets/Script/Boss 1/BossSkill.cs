@@ -60,6 +60,8 @@ public class BossSkill : MonoBehaviour
     private CameraShake shake1;
 
     private PlayerMovement playerMovement;
+
+    private bool isPhase2Activated = false;
     private void Start()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -69,7 +71,7 @@ public class BossSkill : MonoBehaviour
         }
 
         shake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
-        shake1= GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
+        shake1 = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         rb = GetComponent<Rigidbody2D>();
         moveDirection = Vector2.right;
 
@@ -86,8 +88,8 @@ public class BossSkill : MonoBehaviour
         StartCoroutine(StartSkillsWithDelay());
 
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
-
     }
+
 
     private IEnumerator StartSkillsWithDelay()
     {
@@ -97,10 +99,10 @@ public class BossSkill : MonoBehaviour
 
     private IEnumerator ExecuteRandomSkills()
     {
-        while (true)
+        while (!isPhase2Activated)
         {
             // Chọn kỹ năng ngẫu nhiên để thực hiện
-            int skillIndex = Random.Range(0,3); 
+            int skillIndex = Random.Range(2,2); 
 
             switch (skillIndex)
             {
@@ -122,6 +124,8 @@ public class BossSkill : MonoBehaviour
 
     private IEnumerator AutoDash()
     {
+        if (isPhase2Activated) yield break;
+
         int dashCount = Random.Range(2, 5);
 
         for (int i = 0; i < dashCount; i++)
@@ -209,6 +213,8 @@ public class BossSkill : MonoBehaviour
     }
     private IEnumerator FireProjectiles()
     {
+        if (isPhase2Activated) yield break;
+
         // Tìm đối tượng có tag là "Player"
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
@@ -248,6 +254,8 @@ public class BossSkill : MonoBehaviour
 
     private IEnumerator SmallBulletDrop()
     {
+        if (isPhase2Activated) yield break;
+
         Vector2 minSpawn, maxSpawn;
 
         if (isFacingRight)
@@ -277,6 +285,8 @@ public class BossSkill : MonoBehaviour
     }
     private IEnumerator SpikeSkill()
     {
+        if (isPhase2Activated) yield break;
+
         for (int i = 0; i < 6; i++)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -306,7 +316,6 @@ public class BossSkill : MonoBehaviour
                 // Tạo dấu cảnh báo tại vị trí mới
                 GameObject warningMark = Instantiate(warningMarkPrefab, spawnPosition, Quaternion.identity);
 
-                // Chờ 2 giây trước khi spike xuất hiện
                 yield return new WaitForSeconds(0.5f);
 
                 GameObject spike = Instantiate(spikePrefabs, warningMark.transform.position, Quaternion.identity);
@@ -416,5 +425,11 @@ public class BossSkill : MonoBehaviour
             GameObject poisonArea = Instantiate(poisonPrefabs, adjustedPoisonPosition, Quaternion.identity);
             Destroy(poisonArea, poisonDuration);
         }
+    }
+
+    public void ActivatePhase2()
+    {
+        isPhase2Activated = true;
+        StopAllCoroutines(); 
     }
 }

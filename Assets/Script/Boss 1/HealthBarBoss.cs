@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HealthBarBoss : MonoBehaviour
 {
@@ -16,6 +17,16 @@ public class HealthBarBoss : MonoBehaviour
     private Image fillImage;
 
     public ParticleSystem bloodEffect;
+
+    public SnakePhase2 snakePhase2;
+    public Transform treePosition;
+
+    private bool isPhase2Activated = false;
+
+    public BossSkill bossSkill;
+
+    public List<GameObject> objectsToRemove = new List<GameObject>();
+
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -29,20 +40,62 @@ public class HealthBarBoss : MonoBehaviour
             slider.maxValue = maxHealth;
             slider.value = health;
             fillImage = slider.fillRect.GetComponent<Image>();
-            UpdateHealthBarColor(); 
+            UpdateHealthBarColor();
+        }
+
+        if (snakePhase2 != null)
+        {
+            snakePhase2.enabled = false;
         }
     }
 
     public void TakeDamage(float damage)
     {
+        Debug.Log($"Damage received: {damage}");
         targetHealth -= damage;
         if (targetHealth < 0) targetHealth = 0;
 
-        // Cập nhật giá trị health hiện tại để phản ánh đúng trong UI
         health = targetHealth;
         StartCoroutine(UpdateHealthBar());
         HealthBarShake();
         ShowBloodEffect();
+
+        if (!isPhase2Activated && health <= maxHealth * 0.5f)
+        {
+            ActivatePhase2();
+        }
+    }
+
+    private void ActivatePhase2()
+    {
+        if (snakePhase2 != null)
+        {
+            snakePhase2.enabled = true;
+            snakePhase2.treePosition = treePosition;
+            Debug.Log("Phase 2 của rắn đã được kích hoạt!");
+        }
+
+        if (bossSkill != null)
+        {
+            bossSkill.ActivatePhase2();
+            Debug.Log("BossSkill đã bị vô hiệu hóa.");
+        }
+
+        isPhase2Activated = true;
+
+        RemoveRemainingObjects();
+    }
+
+    private void RemoveRemainingObjects()
+    {
+        foreach (GameObject obj in objectsToRemove)
+        {
+            if (obj != null && obj.activeInHierarchy)
+            {
+                Destroy(obj);
+                Debug.Log("Đã hủy GameObject: " + obj.name);
+            }
+        }
     }
 
     private IEnumerator UpdateHealthBar()
@@ -53,6 +106,7 @@ public class HealthBarBoss : MonoBehaviour
             if (slider != null)
             {
                 slider.value = currentHealth;
+                Debug.Log($"Current Health: {currentHealth}, Slider Value: {slider.value}");
                 UpdateHealthBarColor();
             }
             yield return null;
@@ -61,7 +115,8 @@ public class HealthBarBoss : MonoBehaviour
         if (slider != null)
         {
             slider.value = targetHealth;
-            UpdateHealthBarColor(); 
+            Debug.Log($"Final Target Health: {targetHealth}, Final Slider Value: {slider.value}");
+            UpdateHealthBarColor();
         }
 
         if (targetHealth <= 0)
@@ -72,7 +127,7 @@ public class HealthBarBoss : MonoBehaviour
 
     private void UpdateHealthBarColor()
     {
-        if (fillImage == null) return; 
+        if (fillImage == null) return;
 
         float healthPercentage = currentHealth / maxHealth;
 
@@ -105,12 +160,12 @@ public class HealthBarBoss : MonoBehaviour
             anim.SetTrigger("HealthbarShake");
         }
     }
-    
+
     private void ShowBloodEffect()
     {
         if (bloodEffect != null)
         {
-            Vector3 offset = new Vector3(0f, -2f, 0f); 
+            Vector3 offset = new Vector3(0f, -2f, 0f);
             Vector3 effectPosition = transform.position + offset;
             ParticleSystem blood = Instantiate(bloodEffect, effectPosition, Quaternion.identity);
             Destroy(blood.gameObject, 0.5f);

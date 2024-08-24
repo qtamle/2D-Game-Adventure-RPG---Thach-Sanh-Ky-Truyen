@@ -89,6 +89,7 @@ public class Attack : MonoBehaviour
                 HealthBarBoss bossHealth = enemy.GetComponent<HealthBarBoss>();
                 if (bossHealth != null)
                 {
+                    Debug.Log($"Damage to Boss: {damageBoss}");  // Thêm log để kiểm tra giá trị damageBoss
                     bossHealth.TakeDamage(damageBoss);
                 }
             }
