@@ -82,7 +82,7 @@ public class Boar : MonoBehaviour
                     // Tông trúng Player
                     if (playerMovement != null)
                     {
-                        playerMovement.TakeDamage(10, 10f, 5f, 0.5f);
+                        playerMovement.TakeDamage(10, 1.5f, 0.65f, 0.1f);
                     }
 
                     isCharging = false;

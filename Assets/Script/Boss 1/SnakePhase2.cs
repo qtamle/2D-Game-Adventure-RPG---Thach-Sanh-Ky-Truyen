@@ -68,7 +68,7 @@ public class SnakePhase2 : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
 
-        switch (Random.Range(1, 1))
+        switch (Random.Range(0, 2))
         {
             case 0:
                 targetPosition = playerTransform.position;

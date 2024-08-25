@@ -55,8 +55,9 @@ public class PlayerMovement : MonoBehaviour
     private Grappler grappler;
     private LedgeClimb ledgeClimb;
 
+    [Header("KnockBack")]
     public Vector3 knockbackDirection = Vector3.left;
-
+    public float knockbackY = 3f;
     private void Start()
     {
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Turn"), LayerMask.NameToLayer("Turn"), true);
@@ -312,7 +313,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 knockbackDirection = GetKnockbackDirection();
         StartCoroutine(ApplyKnockback(knockbackDirection, knockbackDistance, knockbackSpeed, knockbackDuration));
     }
-
     private Vector3 GetKnockbackDirection()
     {
         // Tìm tất cả enemy trong phạm vi
@@ -339,22 +339,36 @@ public class PlayerMovement : MonoBehaviour
 
         // Tính hướng knockback từ player đến enemy gần nhất
         Vector3 directionToEnemy = closestEnemy.transform.position - transform.position;
-        return -directionToEnemy.normalized; 
+
+        // Nếu kẻ thù ở phía trước của player, knockback sẽ ngược lại với hướng mà player đang quay mặt
+        if ((isFacingRight && directionToEnemy.x < 0) || (!isFacingRight && directionToEnemy.x > 0))
+        {
+            // Kẻ thù ở phía sau player, knockback về phía trước (theo hướng mà player đang quay mặt)
+            return isFacingRight ? Vector3.right : Vector3.left;
+        }
+        else
+        {
+            return -directionToEnemy.normalized;
+        }
     }
     private IEnumerator ApplyKnockback(Vector3 knockbackDirection, float knockbackDistance, float knockbackSpeed, float knockbackDuration)
     {
         float elapsedTime = 0f;
         Vector3 originalPosition = transform.position;
 
+        // Thêm knockback theo trục Y vào phương thức
+        Vector3 knockbackDirectionWithY = new Vector3(knockbackDirection.x, knockbackDirection.y + knockbackY, 0);
+
         while (elapsedTime < knockbackDuration)
         {
-            transform.position = Vector3.Lerp(originalPosition, originalPosition + knockbackDirection * knockbackDistance, (elapsedTime / knockbackDuration));
+            transform.position = Vector3.Lerp(originalPosition, originalPosition + knockbackDirectionWithY * knockbackDistance, (elapsedTime / knockbackDuration));
             elapsedTime += Time.deltaTime * knockbackSpeed;
             yield return null;
         }
 
-        transform.position = originalPosition + knockbackDirection * knockbackDistance;
+        transform.position = originalPosition + knockbackDirectionWithY * knockbackDistance;
     }
+
     public bool CanAttack()
     {
         return !isDashing && !isWallSliding && !isSwinging && !grappler.IsGrappling() && !ledgeClimb.IsClimbing();

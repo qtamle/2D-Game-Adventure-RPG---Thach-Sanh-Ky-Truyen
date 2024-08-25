@@ -93,7 +93,7 @@ public class TigerAttack : MonoBehaviour
 
         if (playerMovement != null)
         {
-            playerMovement.TakeDamage(10, 5f, 1f, 0.1f);
+            playerMovement.TakeDamage(10, 0.5f, 0.65f, 0.1f);
         }
         else
         {

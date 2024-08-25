@@ -13,7 +13,7 @@ public class FireBullet : MonoBehaviour
             PlayerMovement player = collision.gameObject.GetComponent<PlayerMovement>();
             if (player != null)
             {
-                player.TakeDamage(damage, 0f, 0f, 0f);
+                player.TakeDamage(damage, 0.5f, 0.65f, 0.1f);
             }
             Destroy(gameObject);
         }

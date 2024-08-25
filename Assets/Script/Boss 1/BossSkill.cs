@@ -102,7 +102,7 @@ public class BossSkill : MonoBehaviour
         while (!isPhase2Activated)
         {
             // Chọn kỹ năng ngẫu nhiên để thực hiện
-            int skillIndex = Random.Range(2,2); 
+            int skillIndex = Random.Range(0,3); 
 
             switch (skillIndex)
             {
@@ -182,7 +182,7 @@ public class BossSkill : MonoBehaviour
                     {
                         if (playerMovement != null)
                         {
-                            playerMovement.TakeDamage(10f, 0f, 0f, 0f);
+                            playerMovement.TakeDamage(10f, 1.5f, 0.65f, 0.1f);
                             hasDamaged = true;  
                         }
                     }
