@@ -1034,6 +1034,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PauseGameCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 4304815530533156639, guid: 5ae7e65929e6d3a49bf339f3f18994b3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1831921318}
+    - target: {fileID: 4304815530533156639, guid: 5ae7e65929e6d3a49bf339f3f18994b3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Continue
+      objectReference: {fileID: 0}
     - target: {fileID: 8852788122933677548, guid: 5ae7e65929e6d3a49bf339f3f18994b3, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2835,6 +2843,17 @@ MonoBehaviour:
   projectilePrefab: {fileID: 2600567102980707795, guid: 58a943e8a0ce2e645a46cd84a6f41443, type: 3}
   projectileSpeed: 30
   projectileInterval: 2
+--- !u!114 &1831921318 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 419590516498011025, guid: 9ac82812301c4ea41a0911e0a3740ffa, type: 3}
+  m_PrefabInstance: {fileID: 810416104}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4ea566955d693040a5a15147e30e044, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1851448507
 GameObject:
   m_ObjectHideFlags: 0

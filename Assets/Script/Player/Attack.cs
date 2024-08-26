@@ -21,21 +21,26 @@ public class Attack : MonoBehaviour
 
     private LadderMovement ladder;
     private PlayerMovement playerMovement;
+    private Stamina stamina;
 
+    public float staminaCostPerAttack = 5f;
     private void Start()
     {
         ladder = GetComponent<LadderMovement>();
         playerMovement = GetComponent<PlayerMovement>();
+        stamina = GetComponent<Stamina>();
 
         originalSpeed = playerMovement.speed;
     }
-
     private void Update()
     {
+        // Kiểm tra các điều kiện để thực hiện tấn công
         if (Input.GetKeyDown(KeyCode.J) && !ladder.isClimbing && !playerMovement.isSwinging && playerMovement.CanAttack())
         {
-            if (!isCooldown)
+            // Kiểm tra xem stamina có đủ để thực hiện tấn công không
+            if (!isCooldown && stamina.CurrentStamina > staminaCostPerAttack)
             {
+                stamina.DecreaseStamina(staminaCostPerAttack);
                 StartCoroutine(AttackRoutine());
                 Debug.Log($"Attack {comboCount + 1}");
                 comboCount++;
@@ -46,8 +51,13 @@ public class Attack : MonoBehaviour
                     StartCoroutine(ComboCooldownRoutine());
                 }
             }
+            else
+            {
+                Debug.Log("Not enough stamina to attack!");
+            }
         }
 
+        // Reset combo count nếu đã qua thời gian reset
         if (Time.time - lastAttackTime > comboResetTime && comboCount > 0)
         {
             comboCount = 0;

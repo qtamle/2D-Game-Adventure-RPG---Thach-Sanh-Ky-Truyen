@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 1067744827731771293}
   - component: {fileID: 4872468910867452117}
   - component: {fileID: 3933060322756379230}
+  - component: {fileID: 2083324538028742533}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -349,7 +350,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -802059172, guid: b34aca9cc4e801c4a865440427123ada, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -419,10 +420,11 @@ MonoBehaviour:
   ledgeLayer:
     serializedVersion: 2
     m_Bits: 256
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 1067744827731771293}
   attackScript: {fileID: 4872468910867452117}
   ledgeDetected: 0
   knockbackDirection: {x: -1, y: 0, z: 0}
+  knockbackY: 0.5
 --- !u!96 &3238486048305510355
 TrailRenderer:
   serializedVersion: 3
@@ -581,7 +583,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 9.524726
+  m_Distance: 5.6321664
   m_MaxDistanceOnly: 0
 --- !u!120 &326936305264123032
 LineRenderer:
@@ -734,9 +736,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radiusAttack: 1.2
-  angleAttack: 90
-  attackSegments: 90
+  angleAttack: 180
+  attackSegments: 180
   damage: 10
+  damageBoss: 20
   comboCooldown: 0.5
   comboResetTime: 2
   reducedSpeed: 2
@@ -758,3 +761,18 @@ MonoBehaviour:
   raycastDistance: 0.6
   climbOffset: {x: 0.5, y: 1}
   climbSpeed: 3.5
+--- !u!114 &2083324538028742533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8515709444757130615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b04ee033d72e064a95073d7f4c4a51e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  staminaSlider: {fileID: 0}
+  maxStamina: 100
+  staminaDecreaseAmount: 10

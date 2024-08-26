@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private float dashingPower = 20f;
     private float dashingTime = 0.2f;
     private float dashingCooldown = 1f;
+    private float staminaDecreaseAmount = 10f;
 
     [Header("Wall Slide and Wall Jump")]
     private bool isWallSliding;
@@ -54,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
     private LadderMovement ladderMovement;
     private Grappler grappler;
     private LedgeClimb ledgeClimb;
+    private Stamina stamina;
 
     [Header("KnockBack")]
     public Vector3 knockbackDirection = Vector3.left;
@@ -71,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
         ladderMovement = GetComponent<LadderMovement>();
         grappler = GetComponent<Grappler>();
         ledgeClimb = GetComponent<LedgeClimb>();
+        stamina = GetComponent<Stamina>();
     }
     private void Update()
     {
@@ -222,18 +225,26 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Dash()
     {
-        canDash = false;
-        isDashing = true;
-        float originalGravity = rb2d.gravityScale;
-        rb2d.gravityScale = 0f;
-        rb2d.velocity = new Vector2((isFacingRight ? 1 : -1) * dashingPower, 0f);
-        tr.emitting = true;
-        yield return new WaitForSeconds(dashingTime);
-        tr.emitting = false;
-        rb2d.gravityScale = originalGravity;
-        isDashing = false;
-        yield return new WaitForSeconds(dashingCooldown);
-        canDash = true;
+        if (stamina.CurrentStamina >= staminaDecreaseAmount)
+        {
+            stamina.DecreaseStamina(staminaDecreaseAmount);
+            canDash = false;
+            isDashing = true;
+            float originalGravity = rb2d.gravityScale;
+            rb2d.gravityScale = 0f;
+            rb2d.velocity = new Vector2((isFacingRight ? 1 : -1) * dashingPower, 0f);
+            tr.emitting = true;
+            yield return new WaitForSeconds(dashingTime);
+            tr.emitting = false;
+            rb2d.gravityScale = originalGravity;
+            isDashing = false;
+            yield return new WaitForSeconds(dashingCooldown);
+            canDash = true;
+        }
+        else
+        {
+            Debug.Log("Not enough stamina to dash!");
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
