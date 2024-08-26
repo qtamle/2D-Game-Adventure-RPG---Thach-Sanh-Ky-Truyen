@@ -25,7 +25,7 @@ public class HealthBarBoss : MonoBehaviour
 
     public BossSkill bossSkill;
 
-    public List<GameObject> objectsToRemove = new List<GameObject>();
+    public ObjectManager objectManager;
 
     private void Start()
     {
@@ -78,23 +78,20 @@ public class HealthBarBoss : MonoBehaviour
         if (bossSkill != null)
         {
             bossSkill.ActivatePhase2();
+            bossSkill.DestroyAllSpikeEffects();
             Debug.Log("BossSkill đã bị vô hiệu hóa.");
         }
 
         isPhase2Activated = true;
 
-        RemoveRemainingObjects();
-    }
-
-    private void RemoveRemainingObjects()
-    {
-        foreach (GameObject obj in objectsToRemove)
+        if (objectManager != null)
         {
-            if (obj != null && obj.activeInHierarchy)
-            {
-                Destroy(obj);
-                Debug.Log("Đã hủy GameObject: " + obj.name);
-            }
+            Debug.Log("Gọi RemoveAllObjects từ ActivatePhase2.");
+            objectManager.RemoveAllObjects();
+        }
+        else
+        {
+            Debug.Log("Không có object nào");
         }
     }
 
@@ -106,7 +103,6 @@ public class HealthBarBoss : MonoBehaviour
             if (slider != null)
             {
                 slider.value = currentHealth;
-                Debug.Log($"Current Health: {currentHealth}, Slider Value: {slider.value}");
                 UpdateHealthBarColor();
             }
             yield return null;
@@ -115,7 +111,6 @@ public class HealthBarBoss : MonoBehaviour
         if (slider != null)
         {
             slider.value = targetHealth;
-            Debug.Log($"Final Target Health: {targetHealth}, Final Slider Value: {slider.value}");
             UpdateHealthBarColor();
         }
 

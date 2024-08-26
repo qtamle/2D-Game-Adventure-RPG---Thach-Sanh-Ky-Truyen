@@ -48,6 +48,9 @@ public class BossSkill : MonoBehaviour
     public GameObject warningMarkPrefab;
     public float damageAmount = 10f;
 
+    private List<GameObject> warningMarks = new List<GameObject>();
+    private List<GameObject> spikes = new List<GameObject>();
+
     [Header("Skill Poison")]
     public GameObject bulletPoison;
     public GameObject poisonPrefabs;
@@ -296,35 +299,34 @@ public class BossSkill : MonoBehaviour
                 Vector3 playerPosition = player.transform.position;
                 Vector3 spawnPosition;
 
-                // Kiểm tra xem người chơi có đang ở trên không
                 RaycastHit2D hit = Physics2D.Raycast(playerPosition, Vector2.down, Mathf.Infinity, LayerMask.GetMask("Ground"));
 
                 if (hit.collider != null)
                 {
-                    // Nếu người chơi đang bay, đặt spike ở vị trí mặt đất
                     spawnPosition = new Vector3(playerPosition.x, hit.point.y, playerPosition.z);
                 }
                 else
                 {
-                    // Nếu người chơi đang trên mặt đất, đặt spike ở vị trí hiện tại
                     spawnPosition = playerPosition;
                 }
 
                 Vector3 offset = new Vector3(Random.Range(-2f, 2f), 1f, 0);
                 spawnPosition += offset;
 
-                // Tạo dấu cảnh báo tại vị trí mới
                 GameObject warningMark = Instantiate(warningMarkPrefab, spawnPosition, Quaternion.identity);
+                warningMarks.Add(warningMark);
 
                 yield return new WaitForSeconds(0.5f);
 
                 GameObject spike = Instantiate(spikePrefabs, warningMark.transform.position, Quaternion.identity);
+                spikes.Add(spike);
+
                 SpikeCollision spikeCollision = spike.GetComponent<SpikeCollision>();
                 if (spikeCollision == null)
                 {
                     spikeCollision = spike.AddComponent<SpikeCollision>();
                 }
-                spikeCollision.damageAmount = 10f; 
+                spikeCollision.damageAmount = 10f;
 
                 StartCoroutine(RiseSpike(spike.transform));
                 StartCoroutine(LowerAndDestroySpike(spike.transform));
@@ -339,6 +341,27 @@ public class BossSkill : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void DestroyAllSpikeEffects()
+    {
+        foreach (GameObject warningMark in warningMarks)
+        {
+            if (warningMark != null)
+            {
+                Destroy(warningMark);
+            }
+        }
+        warningMarks.Clear();
+
+        foreach (GameObject spike in spikes)
+        {
+            if (spike != null)
+            {
+                Destroy(spike);
+            }
+        }
+        spikes.Clear();
     }
 
     private int GetRandomIndex()
