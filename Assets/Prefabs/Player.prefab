@@ -239,6 +239,7 @@ GameObject:
   - component: {fileID: 4872468910867452117}
   - component: {fileID: 3933060322756379230}
   - component: {fileID: 2083324538028742533}
+  - component: {fileID: 4822431292817540752}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -406,7 +407,7 @@ MonoBehaviour:
   jumpPower: 15
   isFacingRight: 0
   isSwinging: 0
-  swingForce: 300
+  swingForce: 500
   rb2d: {fileID: 4913328015523292965}
   groundCheck: {fileID: 8923216577154813477}
   groundLayer:
@@ -743,6 +744,7 @@ MonoBehaviour:
   comboCooldown: 0.5
   comboResetTime: 2
   reducedSpeed: 2
+  staminaCostPerAttack: 8
 --- !u!114 &3933060322756379230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -776,3 +778,20 @@ MonoBehaviour:
   staminaSlider: {fileID: 0}
   maxStamina: 100
   staminaDecreaseAmount: 10
+  staminaRegenRate: 5
+  smoothTime: 0.2
+--- !u!114 &4822431292817540752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8515709444757130615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222a4ace6c4a8ee636e7e65eb96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  bleedDuration: 5
+  bleedInterval: 1

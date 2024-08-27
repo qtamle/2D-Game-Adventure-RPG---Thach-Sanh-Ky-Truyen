@@ -15,8 +15,11 @@ public class Stamina : MonoBehaviour
     private float targetStamina;
     private float staminaVelocity = 0f; 
 
+    private StatusEffects statusEffects;
     private void Start()
     {
+        statusEffects = GetComponent<StatusEffects>();
+
         currentStamina = maxStamina;
         targetStamina = currentStamina;
         staminaSlider.value = currentStamina;
@@ -29,6 +32,11 @@ public class Stamina : MonoBehaviour
 
         currentStamina = Mathf.SmoothDamp(currentStamina, targetStamina, ref staminaVelocity, smoothTime);
         UpdateStaminaUI();
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            statusEffects.ApplyStaminaReduction();
+        }
     }
 
     public void DecreaseStamina(float amount)

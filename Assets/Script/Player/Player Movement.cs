@@ -51,11 +51,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Attack attackScript;
 
     [HideInInspector] public bool ledgeDetected;
+    [HideInInspector] public bool isStunned = false;
 
     private LadderMovement ladderMovement;
     private Grappler grappler;
     private LedgeClimb ledgeClimb;
     private Stamina stamina;
+    private StatusEffects statusEffects;
 
     [Header("KnockBack")]
     public Vector3 knockbackDirection = Vector3.left;
@@ -74,9 +76,11 @@ public class PlayerMovement : MonoBehaviour
         grappler = GetComponent<Grappler>();
         ledgeClimb = GetComponent<LedgeClimb>();
         stamina = GetComponent<Stamina>();
+        statusEffects = GetComponent<StatusEffects>();
     }
     private void Update()
     {
+        if (isStunned) return;
 
         if (ladderMovement != null && ladderMovement.isClimbing)
         {
@@ -101,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
+            stamina.DecreaseStamina(5f);
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && rb2d.velocity.y > 0f)
@@ -120,10 +125,18 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            statusEffects.ApplySlow();
+            Debug.Log("Dang bi slow");
+        }
     }
 
     private void FixedUpdate()
     {
+        if(isStunned) return; 
+
         if (!isWallJumping && !isDashing && !isSwinging)
         {
             rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
@@ -382,7 +395,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool CanAttack()
     {
-        return !isDashing && !isWallSliding && !isSwinging && !grappler.IsGrappling() && !ledgeClimb.IsClimbing();
+        return !isDashing && !isWallSliding && !isSwinging && !grappler.IsGrappling() && !ledgeClimb.IsClimbing() && !isStunned;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -390,6 +403,14 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Turn"))
         {
             Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
+        }
+    }
+    public void SetStunned(bool stunned)
+    {
+        isStunned = stunned;
+        if (isStunned)
+        {
+            rb2d.velocity = Vector2.zero;
         }
     }
 }

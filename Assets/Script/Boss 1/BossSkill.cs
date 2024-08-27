@@ -145,15 +145,15 @@ public class BossSkill : MonoBehaviour
         }
     }
 
-    private void ScaleBoss()
+    /*private void ScaleBoss()
     {
         transform.localScale = newScale;
-    }
+    }*/
 
-    private void OldScaleBoss()
+    /*private void OldScaleBoss()
     {
         transform.localScale = oldScale;
-    }
+    }*/
 
     private void StartDash()
     {
@@ -364,7 +364,7 @@ public class BossSkill : MonoBehaviour
         spikes.Clear();
     }
 
-    private int GetRandomIndex()
+    /*private int GetRandomIndex()
     {
         if (availableIndices.Count == 0)
         {
@@ -379,7 +379,7 @@ public class BossSkill : MonoBehaviour
         availableIndices.RemoveAt(randomIndex);
 
         return index;
-    }
+    }*/
 
     private IEnumerator RiseSpike(Transform spikeTransform)
     {
@@ -421,7 +421,7 @@ public class BossSkill : MonoBehaviour
 
         Destroy(spikeTransform.gameObject);
     }
-    private IEnumerator StartPoisonSkill()
+    /*private IEnumerator StartPoisonSkill()
     {
         // Tìm đối tượng có tag là "Player"
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -448,7 +448,7 @@ public class BossSkill : MonoBehaviour
             GameObject poisonArea = Instantiate(poisonPrefabs, adjustedPoisonPosition, Quaternion.identity);
             Destroy(poisonArea, poisonDuration);
         }
-    }
+    }*/
 
     public void ActivatePhase2()
     {
