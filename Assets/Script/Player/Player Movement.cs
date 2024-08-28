@@ -106,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && stamina.CurrentStamina > staminaJump)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
-            stamina.DecreaseStamina(5f);
+            stamina.DecreaseStamina(staminaJump);
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && rb2d.velocity.y > 0f && stamina.CurrentStamina > staminaJump)
