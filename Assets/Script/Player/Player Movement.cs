@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 5f;
     public float jumpPower = 10f;
     public bool isFacingRight = true;
+    private float staminaJump = 5f;
 
     [Header("Dash")]
     private bool canDash = true;
@@ -102,13 +103,13 @@ public class PlayerMovement : MonoBehaviour
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && stamina.CurrentStamina > staminaJump)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
             stamina.DecreaseStamina(5f);
         }
 
-        if (Input.GetKeyUp(KeyCode.Space) && rb2d.velocity.y > 0f)
+        if (Input.GetKeyUp(KeyCode.Space) && rb2d.velocity.y > 0f && stamina.CurrentStamina > staminaJump)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y * 0.5f);
         }
