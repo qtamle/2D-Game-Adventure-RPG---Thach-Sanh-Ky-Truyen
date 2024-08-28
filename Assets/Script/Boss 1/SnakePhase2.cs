@@ -102,7 +102,7 @@ public class SnakePhase2 : MonoBehaviour
 
         Debug.Log("Rắn đã quay về vị trí trên cây.");
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
 
         isReturning = false;
         hasJumped = false;
@@ -118,7 +118,7 @@ public class SnakePhase2 : MonoBehaviour
         Debug.Log("Bắt đầu phun đạn...");
         yield return new WaitForSeconds(2f); 
 
-        int numberOfShots = 3; 
+        int numberOfShots = Random.Range(3,5); 
 
         for (int shot = 0; shot < numberOfShots; shot++)
         {
