@@ -63,8 +63,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("KnockBack")]
     public Vector3 knockbackDirection = Vector3.left;
     public float knockbackY = 3f;
+
+    [Header("Bow")]
+    [SerializeField] private Bow bowScript;
     private void Start()
     {
+        if (bowScript == null)
+        {
+            bowScript = FindObjectOfType<Bow>(); 
+        }
+
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Turn"), LayerMask.NameToLayer("Turn"), true);
 
         // Khởi tạo HealthBar
@@ -78,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
         ledgeClimb = GetComponent<LedgeClimb>();
         stamina = GetComponent<Stamina>();
         statusEffects = GetComponent<StatusEffects>();
+        bowScript = GetComponent<Bow>();
     }
     private void Update()
     {
@@ -122,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
         WallSlide();
         WallJump();
 
-        if (!isWallJumping && !isSwinging)
+        if (!isWallJumping && !isSwinging && !isDashing && horizontal != 0)
         {
             Flip();
         }
@@ -131,6 +140,15 @@ public class PlayerMovement : MonoBehaviour
         {
             statusEffects.ApplySlow();
             Debug.Log("Dang bi slow");
+        }
+
+        if (!bowScript.isAiming && bowScript != null)
+        {
+            bool bowFacingRight = bowScript.GetPlayerFacingRight();
+            if (isFacingRight != bowFacingRight)
+            {
+                Flip(); 
+            }
         }
     }
 
@@ -154,19 +172,10 @@ public class PlayerMovement : MonoBehaviour
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
-
-    private void Flip()
+    public void Flip()
     {
-        if (isSwinging)
+        if (!isSwinging && horizontal != 0)
         {
-            isFacingRight = !isFacingRight;
-            Vector3 localScale = transform.localScale;
-            localScale.x *= -1;
-            transform.localScale = localScale;
-        }
-        else if (horizontal != 0)
-        {
-            // Flip hướng khi di chuyển
             if (horizontal > 0 && !isFacingRight || horizontal < 0 && isFacingRight)
             {
                 isFacingRight = !isFacingRight;
@@ -414,4 +423,5 @@ public class PlayerMovement : MonoBehaviour
             rb2d.velocity = Vector2.zero;
         }
     }
+
 }

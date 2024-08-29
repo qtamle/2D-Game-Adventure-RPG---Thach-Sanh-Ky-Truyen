@@ -30,34 +30,10 @@ public class HealthbarEnemy : MonoBehaviour
         {
             slider.maxValue = maxHealth;
             slider.value = health;
-            slider.gameObject.SetActive(false); // Ẩn thanh máu ban đầu
             fillImage = slider.fillRect.GetComponent<Image>();
         }
     }
         
-    private void Update()
-    {
-        if (player != null)
-        {
-            float distance = Vector3.Distance(transform.position, player.position);
-
-            if (distance <= detectionRadius)
-            {
-                if (slider != null)
-                {
-                    slider.gameObject.SetActive(true); // Hiện thanh máu khi Player gần
-                }
-            }
-            else
-            {
-                if (slider != null)
-                {
-                    slider.gameObject.SetActive(false); // Ẩn thanh máu khi Player xa
-                }
-            }
-        }
-    }
-
     public void TakeDamage(float damage, Vector2 knockbackDirection)
     {
         targetHealth -= damage;
