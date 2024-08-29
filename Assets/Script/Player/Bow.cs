@@ -19,6 +19,7 @@ public class Bow : MonoBehaviour
 
     private PlayerMovement playerMovement;
     private bool playerFacingRight = false;
+    private bool isDrawing = false;
 
     private void Start()
     {
@@ -53,29 +54,83 @@ public class Bow : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            isAiming = true;
-            // Disable PlayerMovement script
-            if (playerMovement != null)
+            if (!isDrawing)
             {
-                playerMovement.enabled = false;
-                Debug.Log("PlayerMovement disabled");
+                StartCoroutine(DrawBow(direction));
             }
-            Debug.Log("Aiming started");
         }
         if (Input.GetMouseButtonUp(1))
         {
-            if (isAiming)
+            if (isDrawing)
             {
-                isAiming = false;
-                Shoot(direction);
-                // Enable PlayerMovement script
-                if (playerMovement != null)
-                {
-                    playerMovement.enabled = true;
-                    Debug.Log("PlayerMovement enabled");
-                }
-                Debug.Log("Aiming ended and shot fired");
+                CancelDraw();
             }
+            else if (isAiming)
+            {
+                StartCoroutine(ShootWithDelay(direction));
+            }
+        }
+    }
+
+    private IEnumerator DrawBow(Vector3 direction)
+    {
+        isDrawing = true;
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = false;
+            Debug.Log("PlayerMovement disabled");
+        }
+        Debug.Log("Gồng cung...");
+
+        float drawTime = 1f;  
+        float elapsedTime = 0f;
+
+        while (elapsedTime < drawTime)
+        {
+            if (Input.GetMouseButtonUp(1))
+            {
+                CancelDraw();
+                yield break;
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        isAiming = true;
+        isDrawing = false;
+        Debug.Log("Vào tư thế bắn");
+    }
+
+    private void CancelDraw()
+    {
+        isDrawing = false;
+        isAiming = false;
+
+        // Re-enable PlayerMovement if it was disabled
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = true;
+            Debug.Log("PlayerMovement enabled");
+        }
+
+        Debug.Log("Hủy gồng cung, không bắn mũi tên");
+    }
+
+    private IEnumerator ShootWithDelay(Vector3 direction)
+    {
+        isAiming = false;
+        Debug.Log("Đang bắn...");
+        yield return new WaitForSeconds(0.5f);
+
+        Shoot(direction);
+        Debug.Log("Đã bắn xong!");
+
+        // Enable PlayerMovement script
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = true;
+            Debug.Log("PlayerMovement enabled");
         }
     }
 
