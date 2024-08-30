@@ -6,6 +6,7 @@ public class Bow : MonoBehaviour
 {
     [SerializeField] private Transform bow;
     [SerializeField] private float bowDistance;
+    [SerializeField] private float staminaBow;
 
     [Header("Bullet")]
     [SerializeField] private GameObject arrowPrefab;
@@ -18,12 +19,14 @@ public class Bow : MonoBehaviour
     public bool isAiming = false;
 
     private PlayerMovement playerMovement;
+    private Stamina stamina;
     private bool playerFacingRight = false;
     private bool isDrawing = false;
 
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        stamina = GetComponent<Stamina>();
     }
 
     private void Update()
@@ -52,10 +55,11 @@ public class Bow : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && stamina.CurrentStamina > staminaBow)
         {
             if (!isDrawing)
             {
+                stamina.DecreaseStamina(staminaBow);
                 StartCoroutine(DrawBow(direction));
             }
         }

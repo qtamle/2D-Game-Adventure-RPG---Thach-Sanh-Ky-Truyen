@@ -545,6 +545,7 @@ MonoBehaviour:
   isStunned: 0
   knockbackDirection: {x: -1, y: 0, z: 0}
   knockbackY: 0.5
+  bowScript: {fileID: 0}
 --- !u!96 &3238486048305510355
 TrailRenderer:
   serializedVersion: 3
@@ -839,10 +840,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 0}
+  lostHealthSlider: {fileID: 0}
   maxHealth: 100
   health: 0
   lerpSpeed: 5
   fillImage: {fileID: 0}
+  lostFillImage: {fileID: 0}
 --- !u!114 &4872468910867452117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -932,5 +935,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bow: {fileID: 7933423619241463409}
   bowDistance: 0.5
+  staminaBow: 10
   arrowPrefab: {fileID: 516782397638517213, guid: fba56dd4e4e92a041b4fdeadd15aae30, type: 3}
   arrowSpeed: 50
+  player: {fileID: 6387777369730315925}
+  isAiming: 0
