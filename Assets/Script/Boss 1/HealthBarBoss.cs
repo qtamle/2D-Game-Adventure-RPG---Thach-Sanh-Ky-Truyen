@@ -1,30 +1,29 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using System.Collections.Generic;
 
 public class HealthBarBoss : MonoBehaviour
 {
     [SerializeField] private Slider slider;
+    [SerializeField] private Slider lostHealthSlider;
     public float health;
     public float maxHealth = 1000f;
     public float smoothTime = 0.2f;
+    public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
 
     private Animator anim;
     private float targetHealth;
     private float currentHealth;
     private float healthVelocity = 0f;
+    private float delayedHealth;
     private Image fillImage;
+    private Image lostFillImage;
 
     public ParticleSystem bloodEffect;
-
     public SnakePhase2 snakePhase2;
     public Transform treePosition;
-
     private bool isPhase2Activated = false;
-
     public BossSkill bossSkill;
-
     public ObjectManager objectManager;
 
     private void Start()
@@ -34,6 +33,7 @@ public class HealthBarBoss : MonoBehaviour
         health = maxHealth;
         targetHealth = health;
         currentHealth = health;
+        delayedHealth = health;
 
         if (slider != null)
         {
@@ -41,6 +41,13 @@ public class HealthBarBoss : MonoBehaviour
             slider.value = health;
             fillImage = slider.fillRect.GetComponent<Image>();
             UpdateHealthBarColor();
+        }
+
+        if (lostHealthSlider != null)
+        {
+            lostHealthSlider.maxValue = maxHealth;
+            lostHealthSlider.value = health;
+            lostFillImage = lostHealthSlider.fillRect.GetComponent<Image>();
         }
 
         if (snakePhase2 != null)
@@ -51,12 +58,12 @@ public class HealthBarBoss : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Debug.Log($"Damage received: {damage}");
         targetHealth -= damage;
         if (targetHealth < 0) targetHealth = 0;
 
         health = targetHealth;
         StartCoroutine(UpdateHealthBar());
+        StartCoroutine(UpdateLostHealthBar());
         HealthBarShake();
         ShowBloodEffect();
 
@@ -72,26 +79,19 @@ public class HealthBarBoss : MonoBehaviour
         {
             snakePhase2.enabled = true;
             snakePhase2.treePosition = treePosition;
-            Debug.Log("Phase 2 của rắn đã được kích hoạt!");
         }
 
         if (bossSkill != null)
         {
             bossSkill.ActivatePhase2();
             bossSkill.DestroyAllSpikeEffects();
-            Debug.Log("BossSkill đã bị vô hiệu hóa.");
         }
 
         isPhase2Activated = true;
 
         if (objectManager != null)
         {
-            Debug.Log("Gọi RemoveAllObjects từ ActivatePhase2.");
             objectManager.RemoveAllObjects();
-        }
-        else
-        {
-            Debug.Log("Không có object nào");
         }
     }
 
@@ -117,6 +117,26 @@ public class HealthBarBoss : MonoBehaviour
         if (targetHealth <= 0)
         {
             Destroy(gameObject);
+        }
+    }
+
+    private IEnumerator UpdateLostHealthBar()
+    {
+        yield return new WaitForSeconds(1.5f); 
+
+        while (Mathf.Abs(delayedHealth - health) > 0.01f)
+        {
+            delayedHealth = Mathf.Lerp(delayedHealth, health, Time.deltaTime * lostHealthLerpSpeed);
+            if (lostHealthSlider != null)
+            {
+                lostHealthSlider.value = delayedHealth;
+            }
+            yield return null;
+        }
+
+        if (lostHealthSlider != null)
+        {
+            lostHealthSlider.value = health;
         }
     }
 
