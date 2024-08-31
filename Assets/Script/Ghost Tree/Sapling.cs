@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Sapling : MonoBehaviour
@@ -7,23 +6,25 @@ public class Sapling : MonoBehaviour
     [Header("Move")]
     public float speed = 2f;
     public float radius = 10f;
-    public Transform playerTransform;
     public LayerMask playerMask;
     public bool moveRight = true;
     private bool isChasing = false;
+    private bool isPrepare = false;
+    private bool isExploded = false;
+    private bool isInExplosionRange = false;
+    private Transform playerTransform;
     public Collider2D playerCollider;
 
     [Header("Explode")]
     public float radiusExplode = 10f;
     public float explodeDelay = 2f;
     public float damage = 5f;
-    public bool isPrepare = false;
-    public bool isExploded = false;
-    private bool isInExplosionRange = false;
 
     private void Start()
     {
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"), true);
+        FindPlayer();
+
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
 
         if (playerCollider != null)
         {
@@ -31,12 +32,24 @@ public class Sapling : MonoBehaviour
         }
     }
 
+    private void FindPlayer()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerTransform = player.transform;
+            playerCollider = player.GetComponent<Collider2D>();
+        }
+        else
+        {
+            Debug.LogWarning("Player with tag 'Player' not found.");
+        }
+    }
+
     private void Update()
     {
-        // Kiểm tra xem Player có nằm trong bán kính phát hiện không
         isChasing = Physics2D.OverlapCircle(transform.position, radius, playerMask);
 
-        // Kiểm tra xem Player có nằm trong bán kính kích hoạt vụ nổ không
         isInExplosionRange = Physics2D.OverlapCircle(transform.position, radiusExplode, playerMask);
 
         if (isChasing && !isInExplosionRange && playerTransform != null && !isPrepare)

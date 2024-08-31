@@ -1,11 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Vine : MonoBehaviour
 {
     public float holdDuration = 5f;
-    public float missDuration = 1f;
+    public float missDuration = 0.3f;
 
     private bool isHitPlayer = false;
 

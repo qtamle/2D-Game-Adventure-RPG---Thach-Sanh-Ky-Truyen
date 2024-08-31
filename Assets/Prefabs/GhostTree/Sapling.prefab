@@ -173,14 +173,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   radius: 22
-  playerTransform: {fileID: 0}
   playerMask:
     serializedVersion: 2
     m_Bits: 64
   moveRight: 1
   playerCollider: {fileID: 0}
-  radiusExplode: 2
+  radiusExplode: 2.5
   explodeDelay: 1
   damage: 5
-  isPrepare: 0
-  isExploded: 0
