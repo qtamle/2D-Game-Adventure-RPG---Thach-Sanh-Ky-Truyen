@@ -33,10 +33,6 @@ public class Stamina : MonoBehaviour
         currentStamina = Mathf.SmoothDamp(currentStamina, targetStamina, ref staminaVelocity, smoothTime);
         UpdateStaminaUI();
 
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            statusEffects.ApplyStaminaReduction();
-        }
     }
 
     public void DecreaseStamina(float amount)

@@ -45,11 +45,6 @@ public class HealthBar : MonoBehaviour
         {
             health = maxHealth;
         }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            TakeDamage(10);
-        }
     }
 
     public void TakeDamage(float damage)
