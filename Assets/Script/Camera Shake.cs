@@ -15,4 +15,8 @@ public class CameraShake : MonoBehaviour
     {
         animator.SetTrigger("shake1");
     }
+    public void CamShakeGhostTree()
+    {
+        animator.SetTrigger("shakeGhost");
+    }
 }

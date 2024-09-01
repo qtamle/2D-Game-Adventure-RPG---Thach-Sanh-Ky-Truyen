@@ -609,12 +609,24 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -1.3137
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3137
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3137
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.29
+      value: -1.13
       objectReference: {fileID: 0}
     - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.41
+      value: -6.57
       objectReference: {fileID: 0}
     - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2039,7 +2051,7 @@ MonoBehaviour:
   leftHandStartPosition: {fileID: 990108269}
   rightHandStartPosition: {fileID: 1455725970}
   handSmashPoint: {fileID: 2140177755}
-  handMoveSpeed: 12
+  handMoveSpeed: 18
   sapling: {fileID: 8627815532120731267, guid: fcac8f036c043ec4abe70d569044f4fb, type: 3}
   minSpawnX: -10.51
   maxSpawnX: 11.69
@@ -2075,7 +2087,7 @@ Transform:
   m_GameObject: {fileID: 2140177754}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.32, y: -1.25, z: 0}
+  m_LocalPosition: {x: -1.32, y: -1.21, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

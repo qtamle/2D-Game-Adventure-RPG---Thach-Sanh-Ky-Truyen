@@ -6,12 +6,19 @@ public class HandCollision : MonoBehaviour
 {
     public Transform handRetract;
     public float speedRetract = 10f;
+    public GameObject collisionParticlePrefab;
+    public Transform particleSpawnPoint;
+    public float damage = 10f;
 
-    private bool isRetracting = false;
+    public bool isRetracting = false;
+    public bool isAttack = false;
+
     private Rigidbody2D rb;
-
+    private CameraShake cameraShake;
+    public LayerMask playerLayer;
     private void Start()
     {
+        cameraShake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
@@ -19,10 +26,26 @@ public class HandCollision : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+
         if (other.CompareTag("Hand"))
         {
+            cameraShake.CamShakeGhostTree();
             Debug.Log($"{gameObject.name} đã va chạm với {other.gameObject.name}.");
             isRetracting = true;
+            GameObject shock = Instantiate(collisionParticlePrefab, particleSpawnPoint.position, Quaternion.identity);
+            Destroy(shock, 2f);
+        }
+        if ((playerLayer & (1 << other.gameObject.layer)) != 0)
+        {
+            if (!isAttack)
+            {
+                PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
+                if (player != null)
+                {
+                    player.TakeDamage(damage, 0f, 0f, 0f);
+                    isAttack = true;
+                }
+            }
         }
     }
 
@@ -30,15 +53,12 @@ public class HandCollision : MonoBehaviour
     {
         if (isRetracting)
         {
-            Debug.Log($"Di chuyển từ {transform.position} đến {handRetract.position}");
             transform.position = Vector3.MoveTowards(transform.position, handRetract.position, speedRetract * Time.deltaTime);
 
-            if (Vector3.Distance(transform.position, handRetract.position) <= 0.1f)
+            if (Vector3.Distance(transform.position, handRetract.position) <= 0.1f || isRetracting)
             {
-                Debug.Log($"{gameObject.name} đã thu về vị trí ban đầu.");
                 Destroy(gameObject, 5f);
             }
-            Destroy(gameObject, 5f);
         }
     }
 }
