@@ -18,11 +18,8 @@ public class GhostTreeSkill : MonoBehaviour
     public Transform rightHandStartPosition;
     public Transform handSmashPoint;
     public float handMoveSpeed = 5f;
-    public float handRetractSpeed = 5f;
-    private Transform playerTransform;
     private GameObject leftHand;
     private GameObject rightHand;
-    private bool handsCollided = false;
 
     [Header("Spawn")]
     public GameObject sapling;
@@ -37,6 +34,8 @@ public class GhostTreeSkill : MonoBehaviour
     public float spikeSpeed = 10f;
     public Transform[] spawnPoints;
 
+    [HideInInspector]
+    private Transform playerTransform;
     private void Start()
     {
         numberOfSpawns = Random.Range(3, 8);
@@ -109,97 +108,35 @@ public class GhostTreeSkill : MonoBehaviour
         leftHand = Instantiate(leftHandPrefab, leftHandStartPosition.position, Quaternion.identity);
         rightHand = Instantiate(rightHandPrefab, rightHandStartPosition.position, Quaternion.identity);
 
-        AddColliderAndDebug(leftHand);
-        AddColliderAndDebug(rightHand);
-
-        Vector3 leftHandStart = leftHandStartPosition.position;
-        Vector3 rightHandStart = rightHandStartPosition.position;
         Vector3 smashPoint = handSmashPoint.position;
 
-        while (Vector3.Distance(leftHand.transform.position, smashPoint) > 0.1f &&
-               Vector3.Distance(rightHand.transform.position, smashPoint) > 0.1f)
+        while ((leftHand != null && Vector3.Distance(leftHand.transform.position, smashPoint) > 0.1f) &&
+               (rightHand != null && Vector3.Distance(rightHand.transform.position, smashPoint) > 0.1f))
         {
-            if (handsCollided) break;
-
-            leftHand.transform.position = Vector3.MoveTowards(leftHand.transform.position, smashPoint, handMoveSpeed * Time.deltaTime);
-            rightHand.transform.position = Vector3.MoveTowards(rightHand.transform.position, smashPoint, handMoveSpeed * Time.deltaTime);
-
-            yield return null;
-        }
-
-        if (!handsCollided)
-        {
-            leftHand.transform.position = smashPoint;
-            rightHand.transform.position = smashPoint;
-        }
-
-        yield return new WaitForSeconds(0.1f);
-
-        if (handsCollided)
-        {
-            StartCoroutine(HandleHandsCollision());
-        }
-        else
-        {
-            while (Vector3.Distance(leftHand.transform.position, leftHandStart) > 0.1f ||
-                   Vector3.Distance(rightHand.transform.position, rightHandStart) > 0.1f)
+            if (leftHand != null)
             {
-                leftHand.transform.position = Vector3.MoveTowards(leftHand.transform.position, leftHandStart, handRetractSpeed * Time.deltaTime);
-                rightHand.transform.position = Vector3.MoveTowards(rightHand.transform.position, rightHandStart, handRetractSpeed * Time.deltaTime);
-
-                yield return null;
+                leftHand.transform.position = Vector3.MoveTowards(leftHand.transform.position, smashPoint, handMoveSpeed * Time.deltaTime);
             }
 
-            leftHand.transform.position = leftHandStart;
-            rightHand.transform.position = rightHandStart;
-        }
-    }
-
-    private void AddColliderAndDebug(GameObject hand)
-    {
-        if (hand.GetComponent<Collider2D>() == null)
-        {
-            Debug.LogWarning($"{hand.name} does not have a Collider2D component. Adding BoxCollider2D.");
-            hand.AddComponent<BoxCollider2D>();
-        }
-        else
-        {
-            Debug.Log($"{hand.name} has Collider2D.");
-        }
-
-        if (hand.GetComponent<Rigidbody2D>() == null)
-        {
-            Debug.LogWarning($"{hand.name} does not have a Rigidbody2D component. Adding Rigidbody2D.");
-            Rigidbody2D rb = hand.AddComponent<Rigidbody2D>();
-            rb.isKinematic = true;  // Sử dụng isKinematic = true để không ảnh hưởng đến vật lý.
-        }
-        else
-        {
-            Debug.Log($"{hand.name} has Rigidbody2D.");
-        }
-    }
-
-    private IEnumerator HandleHandsCollision()
-    {
-        // Wait for a short moment before starting retraction
-        yield return new WaitForSeconds(0.5f);
-
-        // Stop hands and start retracting
-        while (Vector3.Distance(leftHand.transform.position, leftHandStartPosition.position) > 0.1f ||
-               Vector3.Distance(rightHand.transform.position, rightHandStartPosition.position) > 0.1f)
-        {
-            leftHand.transform.position = Vector3.MoveTowards(leftHand.transform.position, leftHandStartPosition.position, handRetractSpeed * Time.deltaTime);
-            rightHand.transform.position = Vector3.MoveTowards(rightHand.transform.position, rightHandStartPosition.position, handRetractSpeed * Time.deltaTime);
+            if (rightHand != null)
+            {
+                rightHand.transform.position = Vector3.MoveTowards(rightHand.transform.position, smashPoint, handMoveSpeed * Time.deltaTime);
+            }
 
             yield return null;
         }
 
-        leftHand.transform.position = leftHandStartPosition.position;
-        rightHand.transform.position = rightHandStartPosition.position;
+        if (leftHand != null)
+        {
+            leftHand.transform.position = smashPoint;
+        }
 
-        Destroy(leftHand);
-        Destroy(rightHand);
+        if (rightHand != null)
+        {
+            rightHand.transform.position = smashPoint;
+        }
     }
+
 
     private IEnumerator SpawnMiniMonsters()
     {

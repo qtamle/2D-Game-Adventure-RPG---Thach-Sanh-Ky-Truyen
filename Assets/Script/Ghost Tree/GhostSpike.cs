@@ -12,6 +12,7 @@ public class GhostSpike : MonoBehaviour
     public LayerMask playerMask;
     private bool isStuck = false;
 
+    private Rigidbody2D rb2d;
     private void Start()
     {
         Collider2D[] playerColliders = GameObject.FindGameObjectWithTag("Player").GetComponents<Collider2D>();
@@ -19,12 +20,15 @@ public class GhostSpike : MonoBehaviour
         {
             Physics2D.IgnoreCollision(GetComponent<Collider2D>(), playerCollider);
         }
+
+        rb2d = GetComponent<Rigidbody2D>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
+            rb2d.isKinematic = true;
             if (!isStuck)
             {
                 isStuck = true;

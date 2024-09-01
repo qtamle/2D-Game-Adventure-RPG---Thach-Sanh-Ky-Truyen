@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1533332822531947923}
   - component: {fileID: 5550992114090798444}
   - component: {fileID: 4926663230152023812}
+  - component: {fileID: -1111381315118060237}
   m_Layer: 0
   m_Name: LeftHand
   m_TagString: Hand
@@ -28,10 +29,11 @@ Transform:
   m_GameObject: {fileID: 244233511409003611}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.5006, y: -7.016282, z: -11.250231}
-  m_LocalScale: {x: 26.872154, y: 1, z: 1}
+  m_LocalPosition: {x: -13.5006, y: -6.7969, z: -11.250231}
+  m_LocalScale: {x: 26.872154, y: 1.4387, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 899629120505389010}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1533332822531947923
@@ -118,7 +120,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0006316602, y: 0.0000008940697}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -129,7 +131,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.012157, y: 1.1344517}
   m_EdgeRadius: 0
 --- !u!50 &4926663230152023812
 Rigidbody2D:
@@ -156,5 +158,50 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &-1111381315118060237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244233511409003611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78496397204463746a16bc2730bd9765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handRetract: {fileID: 899629120505389010}
+  speedRetract: 20
+--- !u!1 &3612733612490390984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 899629120505389010}
+  m_Layer: 0
+  m_Name: move
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &899629120505389010
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3612733612490390984}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.857, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3793056324916518254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
