@@ -38,7 +38,7 @@ public class GhostTreeSkill : MonoBehaviour
     private Transform playerTransform;
     private void Start()
     {
-        numberOfSpawns = Random.Range(3, 8);
+        numberOfSpawns = Random.Range(5, 8);
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         StartCoroutine(ManageSkills());
     }

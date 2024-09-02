@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3340002019844027459}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Move
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 3088167076485429327}
   - component: {fileID: 3768044838132180222}
   - component: {fileID: 8945121186518019698}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: RightHand
   m_TagString: Hand
   m_Icon: {fileID: 0}
@@ -209,6 +209,8 @@ MonoBehaviour:
   speedRetract: 25
   collisionParticlePrefab: {fileID: 6396275811351691238, guid: 15c83eecc4946c84c85081f7f5ea3b1d, type: 3}
   particleSpawnPoint: {fileID: 3834372399759480712}
+  damage: 7.5
+  isRetracting: 0
   isAttack: 0
   playerLayer:
     serializedVersion: 2
@@ -267,7 +269,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3834372399759480712}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: transform
   m_TagString: Untagged
   m_Icon: {fileID: 0}

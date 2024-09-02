@@ -57,7 +57,7 @@ public class HandCollision : MonoBehaviour
 
             if (Vector3.Distance(transform.position, handRetract.position) <= 0.1f || isRetracting)
             {
-                Destroy(gameObject, 5f);
+                Destroy(gameObject, 3f);
             }
         }
     }

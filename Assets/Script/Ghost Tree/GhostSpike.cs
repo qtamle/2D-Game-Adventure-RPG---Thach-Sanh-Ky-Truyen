@@ -49,7 +49,7 @@ public class GhostSpike : MonoBehaviour
             if (rb != null)
             {
                 Vector2 direction = (spawnPoint.position - (Vector3)transform.position).normalized;
-                rb.velocity = direction * 15f;
+                rb.velocity = direction * 20f;
             }
         }
 
