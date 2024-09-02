@@ -203,7 +203,7 @@ RectTransform:
   m_Father: {fileID: 573483304}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.742, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -2.499878, y: 0}
   m_SizeDelta: {x: 5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -887,6 +887,14 @@ PrefabInstance:
       propertyPath: staminaSlider
       value: 
       objectReference: {fileID: 799183900}
+    - target: {fileID: 2083324538028742533, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: staminaRegenRate
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: damageBoss
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5567442368471490339, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: player
       value: 
@@ -1502,7 +1510,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &812833170
 Transform:
   m_ObjectHideFlags: 0
@@ -3369,7 +3377,7 @@ RectTransform:
   m_Father: {fileID: 1216275151}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -2.499878, y: 0}
   m_SizeDelta: {x: 5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

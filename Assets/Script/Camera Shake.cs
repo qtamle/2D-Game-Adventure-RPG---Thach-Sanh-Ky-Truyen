@@ -19,4 +19,9 @@ public class CameraShake : MonoBehaviour
     {
         animator.SetTrigger("shakeGhost");
     }
+
+    public void AttackShake()
+    {
+        animator.SetTrigger("attackShake");
+    }
 }

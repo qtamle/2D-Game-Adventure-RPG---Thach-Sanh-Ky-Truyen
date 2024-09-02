@@ -49,7 +49,7 @@ public class GhostTreeSkill : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
 
-            int skillIndex = Random.Range(1, 1);
+            int skillIndex = Random.Range(0, 4);
             switch (skillIndex)
             {
                 case 0:
@@ -66,7 +66,7 @@ public class GhostTreeSkill : MonoBehaviour
                     break;
             }
 
-            float waitTime = Random.Range(3f, 5f);
+            float waitTime = Random.Range(1f, 3f);
             yield return new WaitForSeconds(waitTime);
         }
     }

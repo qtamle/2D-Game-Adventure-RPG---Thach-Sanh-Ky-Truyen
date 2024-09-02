@@ -32,6 +32,8 @@ public class GhostSpike : MonoBehaviour
             if (!isStuck)
             {
                 isStuck = true;
+                rb2d.isKinematic = false;
+                rb2d.velocity = Vector2.zero;
                 StartCoroutine(HandleExplosion());
             }
         }

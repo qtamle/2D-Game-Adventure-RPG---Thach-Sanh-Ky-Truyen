@@ -24,7 +24,10 @@ public class Sapling : MonoBehaviour
     {
         FindPlayer();
 
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
+        int saplingLayer = gameObject.layer;
+
+        Physics2D.IgnoreLayerCollision(saplingLayer, enemyLayer, true);
 
         if (playerCollider != null)
         {

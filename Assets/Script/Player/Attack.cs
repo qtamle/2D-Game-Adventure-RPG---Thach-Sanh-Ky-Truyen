@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class Attack : MonoBehaviour
@@ -50,6 +51,7 @@ public class Attack : MonoBehaviour
                 {
                     StartCoroutine(ComboCooldownRoutine());
                 }
+
             }
             else
             {
@@ -87,6 +89,8 @@ public class Attack : MonoBehaviour
             Vector2 directionToEnemy = (enemy.transform.position - transform.position).normalized;
             float angleToEnemy = Vector2.Angle(attackDirection, directionToEnemy);
 
+            Debug.Log($"Attacking enemy: {enemy.name}, Angle: {angleToEnemy}");
+
             if (angleToEnemy <= halfAngle)
             {
                 HealthbarEnemy enemyHealth = enemy.GetComponent<HealthbarEnemy>();
@@ -99,12 +103,23 @@ public class Attack : MonoBehaviour
                 HealthBarBoss bossHealth = enemy.GetComponent<HealthBarBoss>();
                 if (bossHealth != null)
                 {
-                    Debug.Log($"Damage to Boss: {damageBoss}");  // Thêm log để kiểm tra giá trị damageBoss
                     bossHealth.TakeDamage(damageBoss);
+                }
+
+                GhostTreeHealth ghostTreeHealth = enemy.GetComponent<GhostTreeHealth>();
+                if (ghostTreeHealth != null)
+                {
+                    Debug.Log("Ghost Tree detected and attacked");
+                    ghostTreeHealth.TakeDamage(damageBoss);
+                }
+                else
+                {
+                    Debug.Log("Ghost Tree not detected");
                 }
             }
         }
     }
+
 
     private IEnumerator ComboCooldownRoutine()
     {
