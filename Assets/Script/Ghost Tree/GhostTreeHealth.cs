@@ -19,7 +19,6 @@ public class GhostTreeHealth : MonoBehaviour
     private float delayedHealth;
     private Image fillImage;
     private Image lostFillImage;
-    
 
     private void Start()
     {
@@ -50,13 +49,13 @@ public class GhostTreeHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         targetHealth -= damage;
+        Attacked();
         dameflash.CallDamageFlash();
         if (targetHealth < 0) targetHealth = 0;
 
         health = targetHealth;
         StartCoroutine(UpdateHealthBar());
         StartCoroutine(UpdateLostHealthBar());
-        HealthBarShake();
     }
 
     private IEnumerator UpdateHealthBar()
@@ -132,12 +131,8 @@ public class GhostTreeHealth : MonoBehaviour
         }
     }
 
-    public void HealthBarShake()
+    public void Attacked()
     {
-        if (anim != null)
-        {
-            anim.SetTrigger("HealthbarShake");
-        }
+        anim.SetTrigger("attacked");
     }
-
 }
