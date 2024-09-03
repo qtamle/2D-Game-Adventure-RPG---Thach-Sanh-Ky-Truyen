@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class GhostTreeSkill : MonoBehaviour
 {
     [Header("Vine")]
     public GameObject vineObject;
     public GameObject warningPrefab;
-    public float timeAppears = 1.5f;
+    public float timeAppears = 1f;
     public float warningDuration = 1f;
     public float groundCheckDistance = 10f;
     public float warningOffsetY = 1f;
@@ -66,42 +67,52 @@ public class GhostTreeSkill : MonoBehaviour
                     break;
             }
 
-            float waitTime = Random.Range(1f, 3f);
+            float waitTime = Random.Range(1f, 2.5f);
             yield return new WaitForSeconds(waitTime);
         }
     }
-
     private IEnumerator SpawnVine()
     {
-        Vector3 spawnPosition = playerTransform.position;
-        Vector3 groundPosition = Vector3.zero;
-
-        // Kiểm tra mặt đất dưới người chơi
-        RaycastHit2D groundCheck = Physics2D.Raycast(spawnPosition, Vector2.down, groundCheckDistance, LayerMask.GetMask("Ground"));
-
-        if (groundCheck.collider != null)
+        VineTie vineTie = FindObjectOfType<VineTie>();
+        if (vineTie != null && vineTie.isHitPlayer)
         {
-            groundPosition = groundCheck.point;
-
-            // Thêm offset theo trục y cho vị trí hiển thị của cảnh báo
-            Vector3 warningPosition = new Vector3(groundPosition.x, groundPosition.y + warningOffsetY, groundPosition.z);
-
-            // Hiện cảnh báo và dây leo
-            GameObject warning = Instantiate(warningPrefab, warningPosition, Quaternion.identity);
-
-            yield return new WaitForSeconds(warningDuration);
-
-            Destroy(warning);
-
-            yield return new WaitForSeconds(timeAppears);
-
-            GameObject vine = Instantiate(vineObject, groundPosition, Quaternion.identity);
+            Debug.Log("Player đang bị trói, không thể spawn vine");
+            yield break;
         }
-        else
+
+        int vineSpawnCount = Random.Range(1, 4); 
+
+        for (int i = 0; i < vineSpawnCount; i++)
         {
-            Debug.Log("No ground detected below the player.");
+            Vector3 spawnPosition = playerTransform.position;
+            Vector3 groundPosition = Vector3.zero;
+
+            // Kiểm tra mặt đất dưới người chơi
+            RaycastHit2D groundCheck = Physics2D.Raycast(spawnPosition, Vector2.down, Mathf.Infinity, LayerMask.GetMask("Ground"));
+
+            if (groundCheck.collider != null)
+            {
+                // Lấy vị trí mặt đất
+                groundPosition = new Vector3(spawnPosition.x, groundCheck.point.y, spawnPosition.z);
+                Vector3 warningPosition = new Vector3(groundPosition.x, groundPosition.y + warningOffsetY, groundPosition.z);
+                GameObject warning = Instantiate(warningPrefab, warningPosition, Quaternion.identity);
+
+                yield return new WaitForSeconds(warningDuration);
+                Destroy(warning);
+                yield return new WaitForSeconds(timeAppears);
+
+                GameObject vine = Instantiate(vineObject, groundPosition, Quaternion.identity);
+                vine.layer = LayerMask.NameToLayer("Ground");
+            }
+            else
+            {
+                Debug.Log("No ground detected below the player.");
+            }
+
+            yield return new WaitForSeconds(1.5f);
         }
     }
+
 
     private IEnumerator MoveHands()
     {
@@ -140,7 +151,7 @@ public class GhostTreeSkill : MonoBehaviour
 
     private IEnumerator SpawnMiniMonsters()
     {
-        // Wait for 2 seconds before starting to spawn mini monsters
+       
         yield return new WaitForSeconds(2f);
 
         for (int i = 0; i < numberOfSpawns; i++)

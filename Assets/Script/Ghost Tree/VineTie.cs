@@ -2,16 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Vine : MonoBehaviour
+public class VineTie : MonoBehaviour
 {
     public float holdDuration = 5f;
-    public float missDuration = 0.3f;
+    public float missDuration = 0.1f;
+    public float damagePerSecond = 5f;
 
-    private bool isHitPlayer = false;
+    public bool isHitPlayer = false;
+    private PlayerMovement playerMovement;
+    private HealthBar playerHealth;
+    private QuickTimeEvents quickTimeEvents;
 
     private void Start()
     {
+        playerMovement = GetComponent<PlayerMovement>();
+        quickTimeEvents = QuickTimeEvents.Instance;
+
         StartCoroutine(Drop());
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -19,23 +27,59 @@ public class Vine : MonoBehaviour
         {
             isHitPlayer = true;
 
-            PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>();
+            playerMovement = collision.GetComponent<PlayerMovement>();
+            playerHealth = collision.GetComponent<HealthBar>();
 
             if (playerMovement != null)
             {
                 playerMovement.enabled = false;
-
-                StartCoroutine(ReleasePlayer(playerMovement));
+                if (quickTimeEvents != null)
+                {
+                    quickTimeEvents.ShowKeyPrompts();
+                    quickTimeEvents.OnAllKeysPressed += OnAllKeysPressed;
+                }
+                StopCoroutine(Drop()); 
+                StartCoroutine(ReleasePlayer());
+                StartCoroutine(DealDamageOverTime());
             }
         }
     }
 
-    private IEnumerator ReleasePlayer(PlayerMovement playerMovement)
+    private void OnAllKeysPressed()
     {
-        yield return new WaitForSeconds(holdDuration);
+        Debug.Log("Tất cả phím đã được ấn, thả người chơi."); 
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = true;
+            if (quickTimeEvents != null)
+            {
+                quickTimeEvents.HideKeyPrompts();
+                quickTimeEvents.OnAllKeysPressed -= OnAllKeysPressed; 
+            }
+            StopAllCoroutines();
+            Destroy(gameObject);
+        }
+    }
 
-        playerMovement.enabled = true;
-        Destroy(gameObject);
+    private IEnumerator ReleasePlayer()
+    {
+        while (quickTimeEvents.IsActive)
+        {
+            yield return null;
+        }
+
+        Debug.Log("Hết thời gian, thả người chơi."); 
+
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = true;
+            if (quickTimeEvents != null)
+            {
+                quickTimeEvents.HideKeyPrompts();
+                quickTimeEvents.OnAllKeysPressed -= OnAllKeysPressed; 
+            }
+            Destroy(gameObject);
+        }
     }
 
     private IEnumerator Drop()
@@ -48,4 +92,15 @@ public class Vine : MonoBehaviour
         }
     }
 
+    private IEnumerator DealDamageOverTime()
+    {
+        while (isHitPlayer)
+        {
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damagePerSecond * Time.deltaTime);
+            }
+            yield return null;
+        }
+    }
 }
