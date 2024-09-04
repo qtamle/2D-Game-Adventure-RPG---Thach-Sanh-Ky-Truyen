@@ -136,12 +136,6 @@ public class PlayerMovement : MonoBehaviour
             Flip();
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            statusEffects.ApplySlow();
-            Debug.Log("Dang bi slow");
-        }
-
         if (!bowScript.isAiming && bowScript != null)
         {
             bool bowFacingRight = bowScript.GetPlayerFacingRight();
