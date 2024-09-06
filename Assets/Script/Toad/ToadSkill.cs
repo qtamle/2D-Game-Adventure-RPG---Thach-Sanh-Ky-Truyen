@@ -17,7 +17,6 @@ public class ToadSkill : MonoBehaviour
     private bool hasDamagedPlayer = false;
     private bool hasCamShaken = false;
     private bool isGrounded = false;
-    private bool isUsingSkill = false;
 
     [Header("Tongue Attack")]
     public GameObject tonguePrefab;
@@ -41,13 +40,16 @@ public class ToadSkill : MonoBehaviour
     public float maxSkillDelay = 8f;
     public float skillCooldown = 2f;
 
+    [Header("Foot Impact")]
+    public GameObject footImpactParticlePrefab;
+    public Transform transformImpact;
+
     private GameObject tongue;
     private Vector3 tongueOriginalScale;
     private Vector3 tongueDirection;
     private ToadHealth healthToad;
     private PlayerMovement playerMovement;
     private CameraShake cameraShake;
-
     void Start()
     {
         healthToad = GetComponent<ToadHealth>();
@@ -60,16 +62,11 @@ public class ToadSkill : MonoBehaviour
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Bug"), true);
 
+        StartCoroutine(JumpAndUseSkillRoutine());
     }
 
     void Update()
     {
-        if (isGrounded && !isJumped && !isUsingSkill)
-        {
-            cameraShake.ToadJumpShake();
-            isJumped = true;
-        }
-
         if (isGrounded && !isJumped && !hasCamShaken)
         {
             cameraShake.ToadJumpShake();
@@ -77,10 +74,56 @@ public class ToadSkill : MonoBehaviour
         }
     }
 
+    IEnumerator JumpAndUseSkillRoutine()
+    {
+        yield return new WaitForSeconds(2f);
+
+        while (true)
+        {
+            int jumpTimes = Random.Range(5, 9);
+
+            for (int i = 0; i < jumpTimes; i++)
+            {
+                if (!isJumped)
+                {
+                    Jump(originalJumpForce); 
+                }
+
+                yield return new WaitForSeconds(1f); 
+            }
+
+            rb.velocity = Vector2.zero;
+            isJumped = true; 
+            yield return new WaitUntil(() => isGrounded);
+
+            yield return new WaitForSeconds(2f);
+
+            int randomSkill = Random.Range(0, 3);
+            if (healthToad.health < 400f && randomSkill == 0)
+            {
+                CatchBugs();
+            }
+            else
+            {
+                if (randomSkill == 1)
+                {
+                    ShootTongue();
+                }
+                else if (randomSkill == 2)
+                {
+                    ShootBubble();
+                }
+            }
+
+            yield return new WaitForSeconds(2f);
+
+            isJumped = false;
+        }
+    }
+
     void Jump(float currentJumpForce)
     {
         isJumped = true;
-        isUsingSkill = false;
         hasDamagedPlayer = false;
         hasCamShaken = false;
 
@@ -101,10 +144,15 @@ public class ToadSkill : MonoBehaviour
         {
             Flip();
             Jump(10f);
-            isGrounded = false; 
+            isGrounded = false;
         }
         else if (collision.contacts[0].normal.y > 0.5f)
         {
+            if (footImpactParticlePrefab != null)
+            { 
+                GameObject particleEffect = Instantiate(footImpactParticlePrefab, transformImpact.position, Quaternion.identity);
+                Destroy(particleEffect, 1f);
+            }
             isGrounded = true;
             isJumped = false;
 
@@ -137,8 +185,41 @@ public class ToadSkill : MonoBehaviour
         transform.localScale = localScale;
     }
 
+    GameObject FindPlayer()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        return player;
+    }
+
     void ShootTongue()
     {
+        StartCoroutine(ShootTongueRoutine());
+    }
+
+    IEnumerator ShootTongueRoutine()
+    {
+        GameObject player = FindPlayer();
+
+        if (player == null)
+        {
+            Debug.LogWarning("Player not found for ShootTongue!");
+            yield break; 
+        }
+
+        Vector3 playerPosition = player.transform.position;
+        Vector3 directionToPlayer = (playerPosition - transform.position).normalized;
+
+        if (directionToPlayer.x > 0 && !isFacingRight)
+        {
+            Flip(); 
+        }
+        else if (directionToPlayer.x < 0 && isFacingRight)
+        {
+            Flip(); 
+        }
+
+        yield return new WaitForSeconds(1f);
+
         if (tongue == null)
         {
             tongueDirection = isFacingRight ? Vector3.right : Vector3.left;
@@ -235,14 +316,25 @@ public class ToadSkill : MonoBehaviour
 
         if (bugsInRange.Length > 0)
         {
-            Collider2D firstBug = bugsInRange[0];
+            Collider2D closestBug = bugsInRange[0];
+            float closestDistance = Vector2.Distance(transform.position, closestBug.transform.position);
 
-            if (firstBug != null)
+            for (int i = 1; i < bugsInRange.Length; i++)
             {
-                StartCoroutine(ShootTongueAtBug(firstBug.transform));
+                float distance = Vector2.Distance(transform.position, bugsInRange[i].transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestBug = bugsInRange[i];
+                }
+            }
+            if (closestBug != null)
+            {
+                StartCoroutine(ShootTongueAtBug(closestBug.transform));
             }
         }
     }
+
     IEnumerator ShootTongueAtBug(Transform bugTransform)
     {
 
@@ -309,7 +401,7 @@ public class ToadSkill : MonoBehaviour
             Destroy(bugTransform.gameObject);
         }
         Destroy(tongue);
-        healthToad.UpHealth(50);
+        healthToad.UpHealth(100f);
     }
 
     private void OnDrawGizmosSelected()
