@@ -112,9 +112,11 @@ public class Attack : MonoBehaviour
                     Debug.Log("Ghost Tree detected and attacked");
                     ghostTreeHealth.TakeDamage(damageBoss);
                 }
-                else
+                
+                ToadHealth toadhealth = enemy.GetComponent<ToadHealth>();
+                if (toadhealth != null)
                 {
-                    Debug.Log("Ghost Tree not detected");
+                    toadhealth.TakeDamage(damageBoss);
                 }
             }
         }

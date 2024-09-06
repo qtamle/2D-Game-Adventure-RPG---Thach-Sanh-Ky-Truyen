@@ -24,4 +24,9 @@ public class CameraShake : MonoBehaviour
     {
         animator.SetTrigger("attackShake");
     }
+
+    public void ToadJumpShake()
+    {
+        animator.SetTrigger("toadJump");
+    }
 }

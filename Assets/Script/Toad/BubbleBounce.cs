@@ -46,5 +46,17 @@ public class BubbleBounce : MonoBehaviour
             var direction = Vector2.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
             rb.velocity = direction * Mathf.Max(speed, 0);
         }
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerMovement player = collision.gameObject.GetComponent<PlayerMovement>();
+            StatusEffects playerStatus = collision.gameObject.GetComponentInChildren<StatusEffects>();
+            if (player != null)
+            {
+                player.TakeDamage(10, 0f, 0f, 0f);
+                playerStatus.ApplyStun();
+            }
+            Destroy(gameObject);
+        }
     }
 }
