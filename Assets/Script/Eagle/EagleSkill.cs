@@ -56,6 +56,10 @@ public class EagleSkill : MonoBehaviour
     public float windGustDuration = 3f;
     public float windGustForce = 10f;
     public float flySpeedToCorner = 5f;
+
+    public bool isSkillActive = false;
+    private float skillCooldownMin = 2f;
+    private float skillCooldownMax = 4f;
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -72,39 +76,58 @@ public class EagleSkill : MonoBehaviour
         currentDivePosition = selectedCorner;
         startFallPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1.2f, 0));
 
+        StartCoroutine(RunRandomSkillRoutine());
     }
 
-    private void Update()
+    private IEnumerator RunRandomSkillRoutine()
     {
-        if(Input.GetKeyDown(KeyCode.P))
+        yield return new WaitForSeconds(3f);
+
+        while (true)
         {
-            StartCoroutine(ShootWindCut());
+            if (!isSkillActive)
+            {
+                Debug.Log("Starting new skill execution.");
+                yield return StartCoroutine(ExecuteRandomSkill());
+                yield return new WaitForSeconds(Random.Range(skillCooldownMin, skillCooldownMax));
+            }
+            yield return null;
+        }
+    }
+
+    private IEnumerator ExecuteRandomSkill()
+    {
+        isSkillActive = true;
+        Debug.Log("Skill is active.");
+
+        int skillIndex = Random.Range(0, 6);
+        Debug.Log($"Executing skill index: {skillIndex}");
+
+        switch (skillIndex)
+        {
+            case 0:
+                yield return StartCoroutine(ShootWindCut());
+                break;
+            case 1:
+                yield return StartCoroutine(ActivateTornadoSkill());
+                break;
+            case 2:
+                yield return StartCoroutine(EagleDiveAttack(4));
+                break;
+            case 3:
+                yield return StartCoroutine(FeatherShotSkill());
+                break;
+            case 4:
+                yield return StartCoroutine(StompAttack());
+                break;
+            case 5:
+                yield return StartCoroutine(ActivateWindGustSkill());
+                break;
         }
 
-        if (Input.GetKeyDown(KeyCode.I)) 
-        {
-            StartCoroutine(ActivateTornadoSkill());
-        }
-
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            StartCoroutine(EagleDiveAttack(4));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            StartCoroutine(FeatherShotSkill());
-        }
-
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            StartCoroutine(StompAttack());
-        }
-
-        if (Input.GetKeyDown(KeyCode.T)) // Thay đổi phím nếu cần
-        {
-            StartCoroutine(ActivateWindGustSkill());
-        }
+        // Đặt lại isSkillActive sau khi kỹ năng hoàn tất
+        isSkillActive = false;
+        Debug.Log("Skill has completed and isSkillActive set to false.");
     }
 
     // bắn vết cắt gió
@@ -232,11 +255,23 @@ public class EagleSkill : MonoBehaviour
         Vector2 topLeftCorner = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, 0)) + new Vector3(cornerOffset, -cornerOffset, 0);
         Vector2 topRightCorner = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0)) + new Vector3(-cornerOffset, -cornerOffset, 0);
 
-        Vector2 selectedCorner = Random.Range(0,2) == 0 ? topLeftCorner : topRightCorner;
+        // Chọn ngẫu nhiên góc ban đầu
+        Vector2 firstCorner = Random.Range(0, 2) == 0 ? topLeftCorner : topRightCorner;
+        Vector2 secondCorner = firstCorner == topLeftCorner ? topRightCorner : topLeftCorner;
 
-        while (Vector2.Distance(transform.position, selectedCorner) > 0.1f)
+        yield return MoveToCornerAndShootFeathers(firstCorner);
+
+        yield return MoveToCornerAndShootFeathers(secondCorner);
+
+        yield return MoveOffScreen();
+    }
+
+    private IEnumerator MoveToCornerAndShootFeathers(Vector2 corner)
+    {
+        // Di chuyển đến góc đã chọn
+        while (Vector2.Distance(transform.position, corner) > 0.1f)
         {
-            transform.position = Vector2.MoveTowards(transform.position, selectedCorner, flySpeedforFeather * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, corner, flySpeedforFeather * Time.deltaTime);
             yield return null;
         }
 
@@ -253,7 +288,10 @@ public class EagleSkill : MonoBehaviour
             Vector2 direction = new Vector2(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad));
             ShootFeather(direction);
         }
+
+        yield return new WaitForSeconds(1f);
     }
+
     private void ShootFeather(Vector2 direction)
     {
         GameObject feather = Instantiate(feartherPrefab, transform.position, Quaternion.identity);
@@ -375,6 +413,28 @@ public class EagleSkill : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
+
+        float timeElapsed = 0f;
+        Vector2 moveDirection = Vector2.right;
+        while (timeElapsed < 3f)
+        {
+            transform.Translate(moveDirection * flyExit * Time.deltaTime);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = startFallPosition;
+
+        float fallDuration = 3f;
+        float elapsedTime = 0f;
+        while (elapsedTime < fallDuration)
+        {
+            float t = elapsedTime / fallDuration;
+            transform.position = Vector2.Lerp(startFallPosition, fallTarget.position, t);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = fallTarget.position;
     }
 
     private void CreateWindGust(Vector2 position)
@@ -398,6 +458,32 @@ public class EagleSkill : MonoBehaviour
 
         player.position = initialPosition + direction * windGustForce;
     }
+
+    private IEnumerator MoveOffScreen()
+    {
+        float timeElapsed = 0f;
+        Vector2 moveDirection = Vector2.right;
+        while (timeElapsed < 3f)
+        {
+            transform.Translate(moveDirection * flyExit * Time.deltaTime);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = startFallPosition;
+
+        float fallDuration = 3f;
+        float elapsedTime = 0f;
+        while (elapsedTime < fallDuration)
+        {
+            float t = elapsedTime / fallDuration;
+            transform.position = Vector2.Lerp(startFallPosition, fallTarget.position, t);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = fallTarget.position;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

@@ -125,7 +125,7 @@ public class Bow : MonoBehaviour
     {
         isAiming = false;
         Debug.Log("Đang bắn...");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0f);
 
         Shoot(direction);
         Debug.Log("Đã bắn xong!");
