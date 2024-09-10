@@ -343,6 +343,7 @@ Transform:
   - {fileID: 1903449841}
   - {fileID: 1979796342}
   - {fileID: 1363227096}
+  - {fileID: 697006027}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &299721182
@@ -1156,6 +1157,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.87, y: 0.87}
   m_EdgeRadius: 0
+--- !u!1 &697006026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 697006027}
+  m_Layer: 0
+  m_Name: PositionGust
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &697006027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697006026}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.12, y: -5.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 216734592}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &748712302 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6128628418308707935, guid: 5ae7e65929e6d3a49bf339f3f18994b3, type: 3}
@@ -2109,6 +2141,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  windGustPrefab: {fileID: 7041696816828163196, guid: 05b664b2fe8d19c46aed66325791b4c6, type: 3}
+  windGustDuration: 5
+  windGustForce: 10
+  flySpeedToCorner: 10
 --- !u!61 &1903449845
 BoxCollider2D:
   m_ObjectHideFlags: 0

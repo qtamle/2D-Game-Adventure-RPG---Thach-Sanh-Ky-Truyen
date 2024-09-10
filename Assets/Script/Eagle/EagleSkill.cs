@@ -50,9 +50,16 @@ public class EagleSkill : MonoBehaviour
     public string turnTag = "TurnOn";
     public LayerMask playerMask;
     public LayerMask groundLayer;
+
+    [Header("Gust of Wind")]
+    public GameObject windGustPrefab;
+    public float windGustDuration = 3f;
+    public float windGustForce = 10f;
+    public float flySpeedToCorner = 5f;
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+
         initialPosition = transform.position;
 
         corners = new Vector2[4];
@@ -92,6 +99,11 @@ public class EagleSkill : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.U))
         {
             StartCoroutine(StompAttack());
+        }
+
+        if (Input.GetKeyDown(KeyCode.T)) // Thay đổi phím nếu cần
+        {
+            StartCoroutine(ActivateWindGustSkill());
         }
     }
 
@@ -336,6 +348,56 @@ public class EagleSkill : MonoBehaviour
         }
     }
 
+    // lực gió đẩy
+    private IEnumerator ActivateWindGustSkill()
+    {
+        Vector2 topLeftCorner = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, 0)) + new Vector3(cornerOffset, -cornerOffset, 0);
+        Vector2 topRightCorner = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0)) + new Vector3(-cornerOffset, -cornerOffset, 0);
+
+        Vector2 targetCorner = Random.Range(0, 2) == 0 ? topLeftCorner : topRightCorner;
+
+        while (Vector2.Distance(transform.position, targetCorner) > 0.1f)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, targetCorner, flySpeedToCorner * Time.deltaTime);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1.5f);
+
+        Vector2 positionCreate = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0f, 0));
+        CreateWindGust(positionCreate);
+
+        Vector2 windDirection = transform.position.x < positionCreate.x ? Vector2.right : Vector2.left;
+
+        if (player != null)
+        {
+            StartCoroutine(SmoothPushPlayer(windDirection));
+        }
+
+        yield return new WaitForSeconds(1f);
+    }
+
+    private void CreateWindGust(Vector2 position)
+    {
+        GameObject windGust = Instantiate(windGustPrefab, position, Quaternion.identity);
+        Destroy(windGust, windGustDuration); 
+    }
+
+    private IEnumerator SmoothPushPlayer(Vector2 direction)
+    {
+        float pushDuration = 5f; 
+        float elapsedTime = 0f;
+        Vector2 initialPosition = player.position;
+
+        while (elapsedTime < pushDuration)
+        {
+            player.position = Vector2.Lerp(initialPosition, initialPosition + direction * windGustForce, elapsedTime / pushDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        player.position = initialPosition + direction * windGustForce;
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -345,3 +407,4 @@ public class EagleSkill : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + Vector3.down * 6f);
     }
 }
+
