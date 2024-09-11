@@ -223,10 +223,16 @@ public class EagleSkill : MonoBehaviour
     // lốc xoáy
     private IEnumerator ActivateTornadoSkill()
     {
+        yield return new WaitForSeconds(2f);
+
         Vector2 screenCenter = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
         currentTornado = Instantiate(tornadoPrefab, screenCenter, Quaternion.identity);
 
+        TornadoButtonPress buttonPressScript = player.GetComponent<TornadoButtonPress>();
+        StartCoroutine(buttonPressScript.StartButtonPress());
+
         float elapsedTime = 0f;
+
         while (elapsedTime < tornadoDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -235,10 +241,13 @@ public class EagleSkill : MonoBehaviour
             {
                 Vector2 playerPosition = player.position;
                 Vector2 tornadoPosition = currentTornado.transform.position;
-                Vector2 directionToTornado = (tornadoPosition - playerPosition).normalized;
+
+                bool isButtonPressedCorrectly = buttonPressScript.IsButtonPressedCorrectly();
+
+                float adjustedPullForce = isButtonPressedCorrectly ? pullForce * 0.65f : pullForce;
 
                 player.position = new Vector2(
-                    Mathf.MoveTowards(player.position.x, tornadoPosition.x, pullForce * Time.deltaTime),
+                    Mathf.MoveTowards(player.position.x, tornadoPosition.x, adjustedPullForce * Time.deltaTime),
                     player.position.y
                 );
             }
