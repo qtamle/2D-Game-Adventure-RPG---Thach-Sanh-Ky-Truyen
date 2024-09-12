@@ -349,6 +349,7 @@ Transform:
   - {fileID: 1979796342}
   - {fileID: 1363227096}
   - {fileID: 697006027}
+  - {fileID: 841093732}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &230227867
@@ -874,7 +875,7 @@ Animator:
   m_GameObject: {fileID: 360230168}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3e08c704d34b3c14bb5150f939db3d54, type: 2}
+  m_Controller: {fileID: 9100000, guid: 27934fbba86ccdc448578e220e9864d2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1591,6 +1592,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &841093731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 841093732}
+  m_Layer: 0
+  m_Name: Tornado
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &841093732
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841093731}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.08, y: -8.33, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 216734592}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &852769170 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 286339419353854057, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
@@ -1799,6 +1831,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1229909844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1229909845}
+  m_Layer: 0
+  m_Name: SmokeSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1229909845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229909844}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.061257627, y: -3.44, z: 0}
+  m_LocalScale: {x: 0.47121295, y: 0.47121295, z: 0.47121295}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1903449841}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1236785836
 GameObject:
   m_ObjectHideFlags: 0
@@ -2353,7 +2416,8 @@ Transform:
   m_LocalPosition: {x: 3.91, y: 7.82, z: 0}
   m_LocalScale: {x: 2.1221826, y: 2.1221826, z: 2.1221826}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1229909845}
   m_Father: {fileID: 216734592}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1903449842
@@ -2456,9 +2520,10 @@ MonoBehaviour:
   offScreenDistance: 20
   overshootDistance: 35
   fallTarget: {fileID: 1979796342}
-  tornadoPrefab: {fileID: 1917221257051395734, guid: 3955264330202874d87f3fcb13dce41b, type: 3}
-  tornadoDuration: 3
+  tornadoPrefab: {fileID: 7000531118275220206, guid: 1da159208915e1443a26a3fa925a0f42, type: 3}
+  tornadoDuration: 5
   pullForce: 2
+  tornadoSpawn: {fileID: 841093732}
   feartherPrefab: {fileID: 8860428269429958845, guid: f50802d39546bc04ab58995127195a31, type: 3}
   featherSpeed: 25
   flySpeedforFeather: 25
@@ -2478,10 +2543,12 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  windGustPrefab: {fileID: 7041696816828163196, guid: 05b664b2fe8d19c46aed66325791b4c6, type: 3}
+  windGustPrefab: {fileID: 6449717893403484343, guid: 1a01cc24f34dd214b928c4b2685422fc, type: 3}
   windGustDuration: 5
   windGustForce: 15
-  flySpeedToCorner: 10
+  flySpeedToCorner: 12
+  smoke: {fileID: 5444793455177376103, guid: 589c61b2e9e569c4d98fa6c9e9f636d5, type: 3}
+  smokeSpawn: {fileID: 1229909845}
   isSkillActive: 0
 --- !u!61 &1903449845
 BoxCollider2D:

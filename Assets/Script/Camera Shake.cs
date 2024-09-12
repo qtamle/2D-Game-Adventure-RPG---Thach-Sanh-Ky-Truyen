@@ -29,4 +29,9 @@ public class CameraShake : MonoBehaviour
     {
         animator.SetTrigger("toadJump");
     }
+    
+    public void EagleShake()
+    {
+        animator.SetTrigger("EagleShake");
+    }
 }

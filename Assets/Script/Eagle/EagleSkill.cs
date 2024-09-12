@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class EagleSkill : MonoBehaviour
@@ -26,6 +27,7 @@ public class EagleSkill : MonoBehaviour
     public GameObject tornadoPrefab;
     public float tornadoDuration = 3f;
     public float pullForce = 5f;
+    public Transform tornadoSpawn;
     private GameObject currentTornado;
 
     [Header("Feather Shot")]
@@ -57,11 +59,18 @@ public class EagleSkill : MonoBehaviour
     public float windGustForce = 10f;
     public float flySpeedToCorner = 5f;
 
+    [Header("Other")]
+    public ParticleSystem smoke;
+    public Transform smokeSpawn;
+
     public bool isSkillActive = false;
-    private float skillCooldownMin = 2f;
-    private float skillCooldownMax = 4f;
+    private float skillCooldownMin = 4f;
+    private float skillCooldownMax = 6f;
+
+    private CameraShake cam;
     private void Start()
     {
+        cam = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         initialPosition = transform.position;
@@ -100,7 +109,7 @@ public class EagleSkill : MonoBehaviour
         isSkillActive = true;
         Debug.Log("Skill is active.");
 
-        int skillIndex = Random.Range(0, 6);
+        int skillIndex = Random.Range(5, 5);
         Debug.Log($"Executing skill index: {skillIndex}");
 
         switch (skillIndex)
@@ -225,8 +234,7 @@ public class EagleSkill : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        Vector2 screenCenter = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
-        currentTornado = Instantiate(tornadoPrefab, screenCenter, Quaternion.identity);
+        currentTornado = Instantiate(tornadoPrefab, tornadoSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
 
         TornadoButtonPress buttonPressScript = player.GetComponent<TornadoButtonPress>();
         StartCoroutine(buttonPressScript.StartButtonPress());
@@ -381,6 +389,10 @@ public class EagleSkill : MonoBehaviour
             RaycastHit2D groundHit = Physics2D.Raycast(transform.position, Vector2.down, 6f, groundLayer);
             if (groundHit.collider != null)
             {
+                ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
+                StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
+
+                cam.EagleShake();
                 yield return new WaitForSeconds(1f);
                 break; 
             }
@@ -411,21 +423,36 @@ public class EagleSkill : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        Vector2 positionCreate = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0f, 0));
-        CreateWindGust(positionCreate);
+        Vector2 windGustSpawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0f, 0));
 
-        Vector2 windDirection = transform.position.x < positionCreate.x ? Vector2.right : Vector2.left;
+        Vector2 windDirection = transform.position.x < windGustSpawnPosition.x ? Vector2.right : Vector2.left;
+
+        if (windDirection == Vector2.right)
+        {
+            // Gió thổi từ trái qua phải, điều chỉnh vị trí X, Y
+            windGustSpawnPosition.x += -30f;
+            windGustSpawnPosition.y = -5.9f;
+            CreateWindGust(windGustSpawnPosition);
+        }
+        else
+        {
+            // Gió thổi từ phải qua trái, điều chỉnh vị trí X, Y
+            windGustSpawnPosition.x -= -30f;
+            windGustSpawnPosition.y = -5.9f;
+            CreateFlippedWindGust(windGustSpawnPosition);
+        }
 
         if (player != null)
         {
             StartCoroutine(SmoothPushPlayer(windDirection));
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(windGustDuration);
 
+        // Sau khi Wind Gust kết thúc, mới thực hiện flyExit
         float timeElapsed = 0f;
         Vector2 moveDirection = Vector2.right;
-        while (timeElapsed < 3f)
+        while (timeElapsed < 5f)
         {
             transform.Translate(moveDirection * flyExit * Time.deltaTime);
             timeElapsed += Time.deltaTime;
@@ -452,9 +479,16 @@ public class EagleSkill : MonoBehaviour
         Destroy(windGust, windGustDuration); 
     }
 
+    private void CreateFlippedWindGust(Vector2 position)
+    {
+        GameObject windGust = Instantiate(windGustPrefab, position, Quaternion.identity);
+        windGust.transform.localScale = new Vector3(-1, 1, 1); 
+        Destroy(windGust, windGustDuration); 
+    }
+
     private IEnumerator SmoothPushPlayer(Vector2 direction)
     {
-        float pushDuration = 5f; 
+        float pushDuration = 5f;
         float elapsedTime = 0f;
         Vector2 initialPosition = player.position;
 
@@ -491,6 +525,12 @@ public class EagleSkill : MonoBehaviour
             yield return null;
         }
         transform.position = fallTarget.position;
+    }
+
+    IEnumerator DestroyAfterTime(ParticleSystem ps, float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(ps.gameObject);
     }
 
     private void OnDrawGizmos()
