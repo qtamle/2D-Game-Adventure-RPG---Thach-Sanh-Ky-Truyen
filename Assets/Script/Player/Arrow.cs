@@ -5,7 +5,7 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
     private Rigidbody2D rb;
-    public float damage = 10f;
+    public float damage = 15f;
     public LayerMask bossLayer;
     public LayerMask healthbarEnemyLayer;
     private void Start()
@@ -26,6 +26,13 @@ public class Arrow : MonoBehaviour
             if (bossHealth != null)
             {
                 bossHealth.TakeDamage(damage);
+                Destroy(gameObject);
+            }
+
+            EagleHealthbar eagleBoss = collision.gameObject.GetComponent<EagleHealthbar>();
+            if (eagleBoss != null)
+            {
+                eagleBoss.TakeDamage(10,damage);
                 Destroy(gameObject);
             }
 

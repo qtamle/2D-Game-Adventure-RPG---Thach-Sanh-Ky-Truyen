@@ -66,12 +66,19 @@ public class EagleSkill : MonoBehaviour
     public bool isSkillActive = false;
     private float skillCooldownMin = 4f;
     private float skillCooldownMax = 6f;
+    private bool isStunned = false;
+    private bool isMovingOffScreen = false;
 
     private CameraShake cam;
+    private BoxCollider2D boxCollider;
+    private Rigidbody2D rb;
     private void Start()
     {
         cam = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        boxCollider = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
 
         initialPosition = transform.position;
 
@@ -87,14 +94,13 @@ public class EagleSkill : MonoBehaviour
 
         StartCoroutine(RunRandomSkillRoutine());
     }
-
     private IEnumerator RunRandomSkillRoutine()
     {
         yield return new WaitForSeconds(3f);
 
         while (true)
         {
-            if (!isSkillActive)
+            if (!isSkillActive && !isStunned)
             {
                 Debug.Log("Starting new skill execution.");
                 yield return StartCoroutine(ExecuteRandomSkill());
@@ -103,13 +109,14 @@ public class EagleSkill : MonoBehaviour
             yield return null;
         }
     }
-
     private IEnumerator ExecuteRandomSkill()
     {
         isSkillActive = true;
         Debug.Log("Skill is active.");
 
-        int skillIndex = Random.Range(5, 5);
+        boxCollider.enabled = false;
+
+        int skillIndex = Random.Range(0, 6); // Chọn ngẫu nhiên kỹ năng từ 0 đến 5
         Debug.Log($"Executing skill index: {skillIndex}");
 
         switch (skillIndex)
@@ -137,6 +144,8 @@ public class EagleSkill : MonoBehaviour
         // Đặt lại isSkillActive sau khi kỹ năng hoàn tất
         isSkillActive = false;
         Debug.Log("Skill has completed and isSkillActive set to false.");
+
+        boxCollider.enabled = true;
     }
 
     // bắn vết cắt gió
@@ -525,6 +534,100 @@ public class EagleSkill : MonoBehaviour
             yield return null;
         }
         transform.position = fallTarget.position;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && isStunned)
+        {
+            StartCoroutine(HandleGroundCollision());
+        }
+    }
+
+    private IEnumerator HandleGroundCollision()
+    {
+        rb.velocity = Vector2.zero;
+        rb.isKinematic = true;
+
+        yield return new WaitForSeconds(5f);
+
+        if (!isMovingOffScreen)
+        {
+            isMovingOffScreen = true;
+            StartCoroutine(MoveOffScreen2());
+        }
+    }
+
+    public void OnShieldDepleted()
+    {
+        StartCoroutine(FallAndReposition());
+    }
+
+    private IEnumerator FallAndReposition()
+    {
+        // Chuyển thành dynamic để rơi
+        rb.isKinematic = false;
+        rb.bodyType = RigidbodyType2D.Dynamic;
+
+        isStunned = true;
+
+        float fallDuration = 3f;
+        Vector2 fallStartPosition = transform.position;
+        Vector2 fallEndPosition = startFallPosition;
+
+        float elapsedTime = 0f;
+        while (elapsedTime < fallDuration)
+        {
+            float t = elapsedTime / fallDuration;
+            transform.position = Vector2.Lerp(fallStartPosition, fallEndPosition, t);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = fallEndPosition;
+
+        rb.velocity = Vector2.zero; 
+        rb.bodyType = RigidbodyType2D.Dynamic; 
+
+        yield return new WaitForSeconds(5f);
+
+        if (!isMovingOffScreen)
+        {
+            isMovingOffScreen = true;
+            StartCoroutine(MoveOffScreen2());
+        }
+    }
+    private IEnumerator MoveOffScreen2()
+    {
+        float timeElapsed = 0f;
+        Vector2 moveDirection = Vector2.right;
+        while (timeElapsed < 5f)
+        {
+            transform.Translate(moveDirection * flyExit * Time.deltaTime);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = startFallPosition;
+
+        float fallDuration = 3f;
+        float elapsedTime = 0f;
+        while (elapsedTime < fallDuration)
+        {
+            float t = elapsedTime / fallDuration;
+            transform.position = Vector2.Lerp(startFallPosition, fallTarget.position, t);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = fallTarget.position;
+
+        rb.bodyType = RigidbodyType2D.Kinematic; 
+
+        yield return new WaitForSeconds(5f);
+
+        isStunned = false;
+        rb.isKinematic = true;
+        isMovingOffScreen = false;
+        StartCoroutine(RunRandomSkillRoutine());
     }
 
     IEnumerator DestroyAfterTime(ParticleSystem ps, float time)
