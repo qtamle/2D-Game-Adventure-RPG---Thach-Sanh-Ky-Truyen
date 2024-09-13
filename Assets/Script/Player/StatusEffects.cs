@@ -39,6 +39,7 @@ public class StatusEffects : MonoBehaviour
         isBleeding = true;
         bleedTimer = bleedDuration;
         StartCoroutine(Bleed());
+        Debug.Log("Dang chay mau");
     }
 
     private IEnumerator Bleed()

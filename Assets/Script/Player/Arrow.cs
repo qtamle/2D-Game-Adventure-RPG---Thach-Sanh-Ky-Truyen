@@ -32,7 +32,7 @@ public class Arrow : MonoBehaviour
             EagleHealthbar eagleBoss = collision.gameObject.GetComponent<EagleHealthbar>();
             if (eagleBoss != null)
             {
-                eagleBoss.TakeDamage(10,damage);
+                eagleBoss.TakeDamage(20,damage);
                 Destroy(gameObject);
             }
 

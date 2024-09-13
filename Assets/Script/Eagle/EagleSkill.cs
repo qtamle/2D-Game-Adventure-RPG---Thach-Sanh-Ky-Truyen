@@ -22,6 +22,8 @@ public class EagleSkill : MonoBehaviour
     private Vector2 currentDivePosition;
     private Vector2 startFallPosition;
     public Transform fallTarget;
+    public float damageRadius = 1f;
+    public Transform damageTransform;
 
     [Header("Tornado Skill")]
     public GameObject tornadoPrefab;
@@ -52,6 +54,8 @@ public class EagleSkill : MonoBehaviour
     public string turnTag = "TurnOn";
     public LayerMask playerMask;
     public LayerMask groundLayer;
+    public float stompRadius = 1f;
+    public Transform positionStompAttack;
 
     [Header("Gust of Wind")]
     public GameObject windGustPrefab;
@@ -116,7 +120,7 @@ public class EagleSkill : MonoBehaviour
 
         boxCollider.enabled = false;
 
-        int skillIndex = Random.Range(0, 6); // Chọn ngẫu nhiên kỹ năng từ 0 đến 5
+        int skillIndex = Random.Range(0,6);
         Debug.Log($"Executing skill index: {skillIndex}");
 
         switch (skillIndex)
@@ -209,10 +213,32 @@ public class EagleSkill : MonoBehaviour
             Vector2 overshootPosition = playerPosition + directionToPlayer * overshootDistance; 
 
             float diveTime = 0f;
+            bool hasDamaged = false;
             while (diveTime < 4f && Vector2.Distance(transform.position, overshootPosition) > 0.1f)
             {
                 transform.position = Vector2.MoveTowards(transform.position, overshootPosition, diveSpeed * Time.deltaTime);
                 diveTime += Time.deltaTime;
+
+                if (!hasDamaged)
+                {
+                    Collider2D[] colliders = Physics2D.OverlapCircleAll(damageTransform.position, damageRadius);
+                    foreach (var collider in colliders)
+                    {
+                        if (collider.CompareTag("Player"))
+                        {
+                            PlayerMovement playerMovement = collider.GetComponent<PlayerMovement>();
+                            StatusEffects playerStatus = collider.gameObject.GetComponentInChildren<StatusEffects>();
+                            if (playerMovement != null)
+                            {
+                                playerMovement.TakeDamage(10f, 0.5f, 0.65f, 0.1f);
+                                playerStatus.ApplyBleed();
+                                hasDamaged = true;
+                                break; 
+                            }
+                        }
+                    }
+                }
+
                 yield return null;
             }
 
@@ -391,6 +417,8 @@ public class EagleSkill : MonoBehaviour
     }
     private IEnumerator StompOnPlayer(Vector2 playerPosition)
     {
+        bool hasDamaged = false;
+
         while (Vector2.Distance(transform.position, playerPosition) > 0.1f)
         {
             transform.position = Vector2.MoveTowards(transform.position, playerPosition, stompSpeed * Time.deltaTime);
@@ -398,14 +426,29 @@ public class EagleSkill : MonoBehaviour
             RaycastHit2D groundHit = Physics2D.Raycast(transform.position, Vector2.down, 6f, groundLayer);
             if (groundHit.collider != null)
             {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(positionStompAttack.position, stompRadius, playerMask);
+                foreach (var collider in colliders)
+                {
+                    if (collider.CompareTag("Player"))
+                    {
+                        if (!hasDamaged)
+                        {
+                            PlayerMovement playerMovement = collider.GetComponent<PlayerMovement>();
+                            if (playerMovement != null)
+                            {
+                                playerMovement.TakeDamage(15f, 0.5f, 0.65f, 0.1f);
+                            }
+                            hasDamaged = true;
+                        }
+                    }
+                }
                 ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                 StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
 
                 cam.EagleShake();
                 yield return new WaitForSeconds(1f);
-                break; 
+                break;
             }
-
             yield return null;
         }
 
@@ -643,6 +686,12 @@ public class EagleSkill : MonoBehaviour
 
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.down * 6f);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(positionStompAttack.position, stompRadius);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(damageTransform.position, damageRadius);
     }
 }
 

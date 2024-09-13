@@ -74,13 +74,6 @@ public class EagleHealthbar : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            TakeDamage(10, 50);
-        }
-    }
     public void TakeDamage(float damageShield, float damageHealth)
     {
         if (damageShield <= 0 && damageHealth <= 0) return;

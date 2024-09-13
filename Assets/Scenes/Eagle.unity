@@ -310,7 +310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 95784368}
   - component: {fileID: 95784369}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: endurance 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 163730626}
   - component: {fileID: 163730628}
   - component: {fileID: 163730627}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 194118043}
   - component: {fileID: 194118044}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: health bar 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -578,7 +578,7 @@ GameObject:
   m_Component:
   - component: {fileID: 216734592}
   - component: {fileID: 216734593}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: EagleBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,7 +664,7 @@ GameObject:
   - component: {fileID: 225543624}
   - component: {fileID: 225543626}
   - component: {fileID: 225543625}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -818,7 +818,7 @@ GameObject:
   - component: {fileID: 236426221}
   - component: {fileID: 236426223}
   - component: {fileID: 236426222}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -882,6 +882,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 236426220}
   m_CullTransparentMesh: 1
+--- !u!1 &254006725
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 254006726}
+  m_Layer: 11
+  m_Name: DamageDive
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &254006726
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254006725}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.97, y: -0.88, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1903449841}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &280214994
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,7 +922,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 280214995}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1405,6 +1436,10 @@ PrefabInstance:
       propertyPath: staminaRegenRate
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 4822431292817540752, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: damage
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: damageBoss
       value: 5
@@ -1721,7 +1756,7 @@ GameObject:
   m_Component:
   - component: {fileID: 612415796}
   - component: {fileID: 612415797}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: endurance 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1939,7 +1974,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 697006027}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PositionGust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2177,7 +2212,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 841093732}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tornado
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2406,7 +2441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1097077056}
   - component: {fileID: 1097077057}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: health bar 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2495,7 +2530,7 @@ GameObject:
   - component: {fileID: 1132734622}
   - component: {fileID: 1132734624}
   - component: {fileID: 1132734623}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2579,7 +2614,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1229909845}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SmokeSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2694,7 +2729,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1363227096}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PositionShoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2860,7 +2895,7 @@ GameObject:
   - component: {fileID: 1433666985}
   - component: {fileID: 1433666987}
   - component: {fileID: 1433666986}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2933,7 +2968,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1484462193}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3232,7 +3267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1741583386}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3270,7 +3305,7 @@ GameObject:
   - component: {fileID: 1788741664}
   - component: {fileID: 1788741666}
   - component: {fileID: 1788741665}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3359,7 +3394,7 @@ GameObject:
   - component: {fileID: 1903449844}
   - component: {fileID: 1903449845}
   - component: {fileID: 1903449846}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Eagle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3380,6 +3415,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1229909845}
+  - {fileID: 2035097801}
+  - {fileID: 254006726}
   m_Father: {fileID: 216734592}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1903449842
@@ -3482,6 +3519,8 @@ MonoBehaviour:
   offScreenDistance: 20
   overshootDistance: 35
   fallTarget: {fileID: 1979796342}
+  damageRadius: 1
+  damageTransform: {fileID: 254006726}
   tornadoPrefab: {fileID: 7000531118275220206, guid: 1da159208915e1443a26a3fa925a0f42, type: 3}
   tornadoDuration: 5
   pullForce: 2
@@ -3505,6 +3544,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  stompRadius: 1.5
+  positionStompAttack: {fileID: 2035097801}
   windGustPrefab: {fileID: 6449717893403484343, guid: 1a01cc24f34dd214b928c4b2685422fc, type: 3}
   windGustDuration: 5
   windGustForce: 15
@@ -3590,7 +3631,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1943327074}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3626,7 +3667,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1979796342}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PositionDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3648,6 +3689,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 216734592}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2035097800
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2035097801}
+  m_Layer: 11
+  m_Name: StompAttackPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2035097801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2035097800}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.35, y: -2.09, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1903449841}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2117995525
 GameObject:
   m_ObjectHideFlags: 0
@@ -3660,7 +3732,7 @@ GameObject:
   - component: {fileID: 2117995529}
   - component: {fileID: 2117995528}
   - component: {fileID: 2117995527}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: health boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
