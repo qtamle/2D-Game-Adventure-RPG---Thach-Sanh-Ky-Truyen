@@ -105,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
             }
             if (isSwinging && Input.GetKeyDown(KeyCode.Q))
             {
-                Flip();
+                Flip2();
             }
             return;
         }
@@ -146,10 +146,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-
     private void FixedUpdate()
     {
-        if(isStunned) return; 
+        if (isStunned) return;
 
         if (!isWallJumping && !isDashing && !isSwinging)
         {
@@ -200,35 +199,54 @@ public class PlayerMovement : MonoBehaviour
             Flip();
         }
     }
-
     private void WallJump()
     {
         if (isWallSliding)
         {
-            isWallJumping = true;
-            wallJumpingDirection = -transform.localScale.x;
-            wallJumpingCounter = wallJumpingTime;
+            // Cập nhật hướng nhảy dựa vào vị trí hiện tại của nhân vật
+            if (isFacingRight)
+            {
+                wallJumpingDirection = -1f; // Nếu đang nhìn phải (x = 1), bật sẽ sang trái
+            }
+            else
+            {
+                wallJumpingDirection = 1f; // Nếu đang nhìn trái (x = -1), bật sẽ sang phải
+            }
 
+            wallJumpingCounter = wallJumpingTime;
+            horizontal = 0f;
             CancelInvoke(nameof(StopWallJumping));
         }
         else
         {
             wallJumpingCounter -= Time.deltaTime;
         }
+
         if (Input.GetKeyDown(KeyCode.Space) && wallJumpingCounter > 0f)
         {
             isWallJumping = true;
+
+            // Kiểm tra và lật nhân vật nếu cần thiết
+            if ((wallJumpingDirection == 1f && !isFacingRight) || (wallJumpingDirection == -1f && isFacingRight))
+            {
+                Flip2(); // Lật nhân vật nếu đang quay sai hướng
+            }
+
+            // Thực hiện nhảy theo hướng đã xác định
             rb2d.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
-            if (transform.localScale.x != wallJumpingDirection)
-            {
-                isFacingRight = !isFacingRight;
-                Vector3 localScale = transform.localScale;
-                localScale.x *= -1;
-                transform.localScale = localScale;
-            }
+
             Invoke(nameof(StopWallJumping), wallJumpingDuration);
         }
+    }
+
+    private void Flip2()
+    {
+        // Cập nhật trạng thái isFacingRight và lật nhân vật
+        isFacingRight = !isFacingRight; // Đảo ngược trạng thái hướng
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1; // Lật nhân vật qua trục X
+        transform.localScale = localScale;
     }
 
     private void StopWallJumping()

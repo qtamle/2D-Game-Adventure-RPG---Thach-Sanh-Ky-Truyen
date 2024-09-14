@@ -201,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 87673594}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.46, y: -3.67, z: 0}
+  m_LocalPosition: {x: 1.8, y: -2.41, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -349,7 +349,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -802059172, guid: b34aca9cc4e801c4a865440427123ada, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 66b045ad13537a842b940a030c1c5263, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -392,18 +392,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0010181665, y: 0.0038504004}
+  m_Offset: {x: -0.25653172, y: -0.31398427}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.97, y: 1.27}
+    oldSize: {x: 3.125, y: 3.125}
     newSize: {x: 1.28, y: 2.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.99796414, y: 1.2492355}
+  m_Size: {x: 1.5089912, y: 2.283756}
   m_EdgeRadius: 0
 --- !u!4 &171858707
 Transform:
@@ -487,6 +487,7 @@ MonoBehaviour:
   isStunned: 0
   knockbackDirection: {x: -1, y: 0, z: 0}
   knockbackY: 3
+  bowScript: {fileID: 0}
 --- !u!96 &171858710
 TrailRenderer:
   serializedVersion: 3
@@ -1652,7 +1653,7 @@ Transform:
   m_GameObject: {fileID: 620027909}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.45, y: -0.15, z: 0}
+  m_LocalPosition: {x: -1, y: -0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2200,7 +2201,7 @@ Transform:
   m_GameObject: {fileID: 1056484113}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.79, z: 0}
+  m_LocalPosition: {x: -0.22, y: -1.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3752,10 +3753,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 2096506959}
+  lostHealthSlider: {fileID: 0}
   maxHealth: 100
   health: 0
   lerpSpeed: 10
   fillImage: {fileID: 0}
+  lostFillImage: {fileID: 0}
 --- !u!1 &2140085476
 GameObject:
   m_ObjectHideFlags: 0
