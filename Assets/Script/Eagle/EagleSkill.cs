@@ -200,7 +200,17 @@ public class EagleSkill : MonoBehaviour
     // đại bàng lao tới
     private void SelectRandomCorner()
     {
+        // Chọn góc ngẫu nhiên
         selectedCorner = corners[Random.Range(0, corners.Length)];
+
+        if (selectedCorner.x > transform.position.x)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
     }
 
     IEnumerator EagleDiveAttack(int maxDives)
@@ -220,9 +230,18 @@ public class EagleSkill : MonoBehaviour
             // Lưu vị trí cuối cùng của player
             Vector2 playerPosition = player.position;
 
+            if (playerPosition.x > transform.position.x)
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Hướng về bên phải
+            }
+            else if (playerPosition.x < transform.position.x)
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Hướng về bên trái
+            }
+
             // Tính toán điểm vượt qua vị trí player
-            Vector2 directionToPlayer = (playerPosition - (Vector2)transform.position).normalized; 
-            Vector2 overshootPosition = playerPosition + directionToPlayer * overshootDistance; 
+            Vector2 directionToPlayer = (playerPosition - (Vector2)transform.position).normalized;
+            Vector2 overshootPosition = playerPosition + directionToPlayer * overshootDistance;
 
             float diveTime = 0f;
             bool hasDamaged = false;
@@ -245,7 +264,7 @@ public class EagleSkill : MonoBehaviour
                                 playerMovement.TakeDamage(10f, 0.5f, 0.65f, 0.1f);
                                 playerStatus.ApplyBleed();
                                 hasDamaged = true;
-                                break; 
+                                break;
                             }
                         }
                     }
@@ -260,9 +279,10 @@ public class EagleSkill : MonoBehaviour
 
             diveCount++;
         }
-        float fallDuration = 3f; 
+
+        float fallDuration = 3f;
         float elapsedTime = 0f;
-        Vector2 startFallPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1.2f, 0)); 
+        Vector2 startFallPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1.2f, 0));
 
         while (elapsedTime < fallDuration)
         {
@@ -273,7 +293,6 @@ public class EagleSkill : MonoBehaviour
         }
 
         transform.position = fallTarget.position;
-
     }
 
     // lốc xoáy
@@ -329,7 +348,6 @@ public class EagleSkill : MonoBehaviour
 
         yield return MoveOffScreen();
     }
-
     private IEnumerator MoveToCornerAndShootFeathers(Vector2 corner)
     {
         // Di chuyển đến góc đã chọn
@@ -341,8 +359,27 @@ public class EagleSkill : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        lastKnownPlayerPosition = player.position;
+        if (corner.x > transform.position.x)
+        {
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
 
+        yield return new WaitForSeconds(1f);
+
+        if (player.position.x > transform.position.x)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+
+        lastKnownPlayerPosition = player.position;
         Vector2 directionToPlayer = (lastKnownPlayerPosition - (Vector2)transform.position).normalized;
         float startAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg - spreadAngle / 2f;
 
@@ -377,13 +414,24 @@ public class EagleSkill : MonoBehaviour
 
         while (stompCount < maxStomps)
         {
+            // Xác định hướng di chuyển
             float horizontalDirection = movingRight ? 1f : -1f;
             transform.Translate(Vector2.right * horizontalDirection * horizontalFlySpeed * Time.deltaTime);
 
+            if (horizontalDirection > 0)
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Quay mặt phải
+            }
+            else if (horizontalDirection < 0)
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Quay mặt trái
+            }
+
+            // Kiểm tra va chạm với tag để đổi hướng
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right * horizontalDirection, 0.1f);
             if (hit.collider != null)
             {
-                movingRight = !movingRight;
+                movingRight = !movingRight; // Đổi hướng nếu va chạm
             }
 
             // Kiểm tra nếu phát hiện Player ở dưới
@@ -392,8 +440,8 @@ public class EagleSkill : MonoBehaviour
             {
                 // Lưu vị trí hiện tại trước khi lao xuống
                 initialPosition = transform.position;
-                yield return StompOnPlayer(playerHit.point); 
-                stompCount++; 
+                yield return StompOnPlayer(playerHit.point);
+                stompCount++;
             }
             yield return null;
         }
@@ -406,7 +454,7 @@ public class EagleSkill : MonoBehaviour
         }
 
         float timeElapsed = 0f;
-        Vector2 moveDirection = Vector2.right; 
+        Vector2 moveDirection = Vector2.right;
         while (timeElapsed < 3f)
         {
             transform.Translate(moveDirection * flyExit * Time.deltaTime);
@@ -427,6 +475,7 @@ public class EagleSkill : MonoBehaviour
         }
         transform.position = fallTarget.position;
     }
+
     private IEnumerator StompOnPlayer(Vector2 playerPosition)
     {
         bool hasDamaged = false;
@@ -479,9 +528,21 @@ public class EagleSkill : MonoBehaviour
 
         Vector2 targetCorner = Random.Range(0, 2) == 0 ? topLeftCorner : topRightCorner;
 
+        // Di chuyển đến góc đã chọn và flip theo hướng di chuyển
         while (Vector2.Distance(transform.position, targetCorner) > 0.1f)
         {
             transform.position = Vector2.MoveTowards(transform.position, targetCorner, flySpeedToCorner * Time.deltaTime);
+
+            // Flip khi di chuyển sang trái hoặc phải
+            if (targetCorner == topLeftCorner)
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Quay mặt trái
+            }
+            else
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Quay mặt phải
+            }
+
             yield return null;
         }
 
@@ -490,6 +551,19 @@ public class EagleSkill : MonoBehaviour
         Vector2 windGustSpawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0f, 0));
 
         Vector2 windDirection = transform.position.x < windGustSpawnPosition.x ? Vector2.right : Vector2.left;
+
+        // Flip đối tượng để nhìn về hướng người chơi
+        if (player != null)
+        {
+            if (transform.position.x < player.position.x)
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Nhìn về bên phải
+            }
+            else
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Nhìn về bên trái
+            }
+        }
 
         if (windDirection == Vector2.right)
         {
@@ -513,7 +587,7 @@ public class EagleSkill : MonoBehaviour
 
         yield return new WaitForSeconds(windGustDuration);
 
-        // Sau khi Wind Gust kết thúc, mới thực hiện flyExit
+        // Sau khi Wind Gust kết thúc, thực hiện flyExit
         float timeElapsed = 0f;
         Vector2 moveDirection = Vector2.right;
         while (timeElapsed < 5f)
@@ -595,6 +669,10 @@ public class EagleSkill : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && rb.bodyType == RigidbodyType2D.Dynamic)
         {
+            cam.EagleShakeFall();
+            ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
+            StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
+
             Debug.Log("Eagle has collided with the ground.");
             StopAllCoroutines();
             StartCoroutine(HandleGroundCollision());
@@ -635,11 +713,11 @@ public class EagleSkill : MonoBehaviour
         Vector2 fallEndPosition = startFallPosition;
 
         float elapsedTime = 0f;
-        while (elapsedTime < 1f) 
+        while (elapsedTime < fallDuration)
         {
-            float t = elapsedTime / 1f;
+            float t = elapsedTime / fallDuration;
             transform.position = Vector2.Lerp(fallStartPosition, fallEndPosition, t);
-            rb.velocity = new Vector2(0, -fallSpeed); 
+            rb.velocity = new Vector2(0, -fallSpeed);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -668,7 +746,6 @@ public class EagleSkill : MonoBehaviour
             StartCoroutine(MoveOffScreen2());
         }
     }
-
     private IEnumerator MoveOffScreen2()
     {
         Debug.Log("Eagle is flying off-screen.");
@@ -677,6 +754,16 @@ public class EagleSkill : MonoBehaviour
         Vector2 moveDirection = Vector2.right;
         while (timeElapsed < 5f)
         {
+            // Flip hướng đối tượng theo hướng di chuyển
+            if (moveDirection == Vector2.right)
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Nhìn về bên phải
+            }
+            else
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // Nhìn về bên trái
+            }
+
             transform.Translate(moveDirection * flyExit * Time.deltaTime);
             timeElapsed += Time.deltaTime;
             yield return null;

@@ -883,6 +883,30 @@ PrefabInstance:
       propertyPath: lostHealthSlider
       value: 
       objectReference: {fileID: 902021327}
+    - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_Size.x
+      value: 1.6591722
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_Size.y
+      value: 2.6749654
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.3316223
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.0064809322
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 3.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 3.125
+      objectReference: {fileID: 0}
     - target: {fileID: 2083324538028742533, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: staminaSlider
       value: 
@@ -891,9 +915,21 @@ PrefabInstance:
       propertyPath: staminaRegenRate
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 3509560276715210735, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.04
+      objectReference: {fileID: 0}
     - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: damageBoss
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: radiusAttack
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5110609761515964969, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.05
       objectReference: {fileID: 0}
     - target: {fileID: 5567442368471490339, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: player
@@ -955,9 +991,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6667744938242702059, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 66b045ad13537a842b940a030c1c5263, type: 3}
+    - target: {fileID: 7933423619241463409, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.41
+      objectReference: {fileID: 0}
     - target: {fileID: 8515709444757130615, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8923216577154813477, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 8923216577154813477, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.41
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

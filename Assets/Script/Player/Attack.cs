@@ -77,7 +77,7 @@ public class Attack : MonoBehaviour
     }
     private void PlayerAttack()
     {
-        Vector3 attackDirection = transform.localScale.x > 0 ? transform.right : -transform.right;
+        Vector3 attackDirection = transform.localScale.x > 0 ? -transform.right : transform.right;
 
         float halfAngle = angleAttack / 2f;
         float angleStep = angleAttack / attackSegments;
@@ -93,6 +93,7 @@ public class Attack : MonoBehaviour
 
             if (angleToEnemy <= halfAngle)
             {
+                // Process damage to enemies and bosses
                 HealthbarEnemy enemyHealth = enemy.GetComponent<HealthbarEnemy>();
                 if (enemyHealth != null)
                 {
@@ -119,7 +120,7 @@ public class Attack : MonoBehaviour
                     Debug.Log("Eagle da bi tan cong");
                     eagleBoss.TakeDamage(10, 15);
                 }
-                
+
                 ToadHealth toadhealth = enemy.GetComponent<ToadHealth>();
                 if (toadhealth != null)
                 {
@@ -128,8 +129,6 @@ public class Attack : MonoBehaviour
             }
         }
     }
-
-
     private IEnumerator ComboCooldownRoutine()
     {
         isCooldown = true;
@@ -145,10 +144,11 @@ public class Attack : MonoBehaviour
         Gizmos.color = Color.blue;
         float halfAngle = angleAttack / 2f;
 
-        Vector3 forward = transform.localScale.x > 0 ? transform.right : -transform.right;
+        Vector3 forward = transform.localScale.x > 0 ? -transform.right : transform.right;
         Vector3 leftBoundary = Quaternion.Euler(0, 0, -halfAngle) * forward;
         Vector3 rightBoundary = Quaternion.Euler(0, 0, halfAngle) * forward;
 
+        // Vẽ phạm vi tấn công
         Gizmos.DrawLine(transform.position, transform.position + leftBoundary * radiusAttack);
         Gizmos.DrawLine(transform.position, transform.position + rightBoundary * radiusAttack);
 
@@ -160,4 +160,5 @@ public class Attack : MonoBehaviour
             Gizmos.DrawLine(transform.position + dir * radiusAttack, transform.position);
         }
     }
+
 }

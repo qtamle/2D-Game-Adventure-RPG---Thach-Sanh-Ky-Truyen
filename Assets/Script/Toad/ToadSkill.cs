@@ -150,8 +150,8 @@ public class ToadSkill : MonoBehaviour
         {
             if (footImpactParticlePrefab != null)
             { 
-                GameObject particleEffect = Instantiate(footImpactParticlePrefab, transformImpact.position, Quaternion.identity);
-                Destroy(particleEffect, 1f);
+                GameObject particleEffect = Instantiate(footImpactParticlePrefab, transformImpact.position, Quaternion.Euler(0f,0f,90f));
+                Destroy(particleEffect, 2f);
             }
             isGrounded = true;
             isJumped = false;

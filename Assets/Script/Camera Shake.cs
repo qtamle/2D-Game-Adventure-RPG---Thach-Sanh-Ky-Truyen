@@ -34,4 +34,9 @@ public class CameraShake : MonoBehaviour
     {
         animator.SetTrigger("EagleShake");
     }
+
+    public void EagleShakeFall()
+    {
+        animator.SetTrigger("fall");
+    }
 }
