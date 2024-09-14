@@ -66,12 +66,14 @@ public class EagleSkill : MonoBehaviour
     [Header("Other")]
     public ParticleSystem smoke;
     public Transform smokeSpawn;
+    public float fallSpeed = 5f;
 
     public bool isSkillActive = false;
     private float skillCooldownMin = 4f;
     private float skillCooldownMax = 6f;
     private bool isStunned = false;
     private bool isMovingOffScreen = false;
+    private bool isRepositioning = false;
 
     private CameraShake cam;
     private BoxCollider2D boxCollider;
@@ -100,11 +102,16 @@ public class EagleSkill : MonoBehaviour
     }
     private IEnumerator RunRandomSkillRoutine()
     {
+        while (isStunned || isRepositioning)
+        {
+            yield return null; 
+        }
+
         yield return new WaitForSeconds(3f);
 
         while (true)
         {
-            if (!isSkillActive && !isStunned)
+            if (!isSkillActive && !isStunned && !isRepositioning)
             {
                 Debug.Log("Starting new skill execution.");
                 yield return StartCoroutine(ExecuteRandomSkill());
@@ -115,12 +122,18 @@ public class EagleSkill : MonoBehaviour
     }
     private IEnumerator ExecuteRandomSkill()
     {
+        if (isStunned)
+        {
+            Debug.Log("Eagle is stunned and cannot use skills.");
+            yield break; 
+        }
+
         isSkillActive = true;
         Debug.Log("Skill is active.");
 
         boxCollider.enabled = false;
 
-        int skillIndex = Random.Range(0,6);
+        int skillIndex = Random.Range(0, 6);
         Debug.Log($"Executing skill index: {skillIndex}");
 
         switch (skillIndex)
@@ -145,7 +158,6 @@ public class EagleSkill : MonoBehaviour
                 break;
         }
 
-        // Đặt lại isSkillActive sau khi kỹ năng hoàn tất
         isSkillActive = false;
         Debug.Log("Skill has completed and isSkillActive set to false.");
 
@@ -581,66 +593,86 @@ public class EagleSkill : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && isStunned)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && rb.bodyType == RigidbodyType2D.Dynamic)
         {
+            Debug.Log("Eagle has collided with the ground.");
+            StopAllCoroutines();
             StartCoroutine(HandleGroundCollision());
         }
     }
-
     private IEnumerator HandleGroundCollision()
     {
         rb.velocity = Vector2.zero;
         rb.isKinematic = true;
 
+        Debug.Log("Eagle is stunned and waiting on the ground.");
+
         yield return new WaitForSeconds(5f);
 
         if (!isMovingOffScreen)
         {
+            Debug.Log("Eagle is moving off-screen after ground collision.");
             isMovingOffScreen = true;
             StartCoroutine(MoveOffScreen2());
         }
     }
-
     public void OnShieldDepleted()
     {
+        Debug.Log("Eagle shield is depleted, starting fall and reposition.");
         StartCoroutine(FallAndReposition());
     }
-
     private IEnumerator FallAndReposition()
     {
-        // Chuyển thành dynamic để rơi
+        isRepositioning = true;
+
         rb.isKinematic = false;
         rb.bodyType = RigidbodyType2D.Dynamic;
 
-        isStunned = true;
+        Debug.Log("Eagle is falling...");
 
         float fallDuration = 3f;
         Vector2 fallStartPosition = transform.position;
         Vector2 fallEndPosition = startFallPosition;
 
         float elapsedTime = 0f;
-        while (elapsedTime < fallDuration)
+        while (elapsedTime < 1f) 
         {
-            float t = elapsedTime / fallDuration;
+            float t = elapsedTime / 1f;
             transform.position = Vector2.Lerp(fallStartPosition, fallEndPosition, t);
+            rb.velocity = new Vector2(0, -fallSpeed); 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         transform.position = fallEndPosition;
 
-        rb.velocity = Vector2.zero; 
-        rb.bodyType = RigidbodyType2D.Dynamic; 
+        bool hasHitGround = false;
 
-        yield return new WaitForSeconds(5f);
+        float waitTime = 0f;
+        while (waitTime < 5f)
+        {
+            if (hasHitGround)
+            {
+                break;
+            }
+            waitTime += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.velocity = Vector2.zero;
+        rb.isKinematic = true;
 
         if (!isMovingOffScreen)
         {
+            Debug.Log("Eagle is moving off-screen after falling.");
             isMovingOffScreen = true;
             StartCoroutine(MoveOffScreen2());
         }
     }
+
     private IEnumerator MoveOffScreen2()
     {
+        Debug.Log("Eagle is flying off-screen.");
+
         float timeElapsed = 0f;
         Vector2 moveDirection = Vector2.right;
         while (timeElapsed < 5f)
@@ -663,16 +695,16 @@ public class EagleSkill : MonoBehaviour
         }
         transform.position = fallTarget.position;
 
-        rb.bodyType = RigidbodyType2D.Kinematic; 
-
-        yield return new WaitForSeconds(5f);
+        rb.isKinematic = true;
 
         isStunned = false;
-        rb.isKinematic = true;
         isMovingOffScreen = false;
+        isRepositioning = false;
+
+        Debug.Log("Eagle has recovered and can use skills again.");
+
         StartCoroutine(RunRandomSkillRoutine());
     }
-
     IEnumerator DestroyAfterTime(ParticleSystem ps, float time)
     {
         yield return new WaitForSeconds(time);

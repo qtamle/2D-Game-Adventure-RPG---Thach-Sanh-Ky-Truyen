@@ -31,6 +31,8 @@ public class EagleHealthbar : MonoBehaviour
     private Image shieldFillImage;
     private Image lostShieldFillImage;
 
+    public Transform glassSpawn;
+    [SerializeField] private ParticleSystem shieldDepletedEffect;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -74,6 +76,14 @@ public class EagleHealthbar : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            TakeDamage(10, 0);
+        }
+    }
+
     public void TakeDamage(float damageShield, float damageHealth)
     {
         if (damageShield <= 0 && damageHealth <= 0) return;
@@ -98,6 +108,13 @@ public class EagleHealthbar : MonoBehaviour
         if (shield <= 0)
         {
             shield = 0;
+            if (shieldDepletedEffect != null)
+            {
+                ParticleSystem effect = Instantiate(shieldDepletedEffect, glassSpawn.position, Quaternion.identity);
+                effect.Play();
+                Destroy(effect.gameObject, 3f);
+            }
+
             StartCoroutine(RegenerateShield());
             NotifyShieldDepleted(); 
         }

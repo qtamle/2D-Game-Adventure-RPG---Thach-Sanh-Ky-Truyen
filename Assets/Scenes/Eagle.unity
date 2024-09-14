@@ -907,7 +907,7 @@ Transform:
   m_GameObject: {fileID: 254006725}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.97, y: -0.88, z: 0}
+  m_LocalPosition: {x: 1.08, y: -0.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1457,6 +1457,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1490018972}
     - target: {fileID: 5567442368471490339, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: playerStop
+      value: 
+      objectReference: {fileID: 106748467}
+    - target: {fileID: 5567442368471490339, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: staminaBow
       value: 10
       objectReference: {fileID: 0}
@@ -1518,7 +1522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7800297452373403686, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_Distance
-      value: 5.7868505
+      value: 6.0626297
       objectReference: {fileID: 0}
     - target: {fileID: 8515709444757130615, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_Name
@@ -3552,6 +3556,7 @@ MonoBehaviour:
   flySpeedToCorner: 12
   smoke: {fileID: 5444793455177376103, guid: 589c61b2e9e569c4d98fa6c9e9f636d5, type: 3}
   smokeSpawn: {fileID: 1229909845}
+  fallSpeed: 2
   isSkillActive: 0
 --- !u!61 &1903449845
 BoxCollider2D:
@@ -3585,7 +3590,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.041032225, y: -1.6055734}
+  m_Offset: {x: 0.041032195, y: -1.8567556}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -3596,7 +3601,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.0252278, y: 1.1722627}
+  m_Size: {x: 2.0252278, y: 1.6746271}
   m_EdgeRadius: 0
 --- !u!114 &1903449846
 MonoBehaviour:
@@ -3622,6 +3627,8 @@ MonoBehaviour:
   smoothTime: 0.2
   lostHealthLerpSpeed: 5
   lostShieldLerpSpeed: 5
+  glassSpawn: {fileID: 1977017411}
+  shieldDepletedEffect: {fileID: 4786750073510007990, guid: 1f9377a300d3a0f498574de9c4b5e84d, type: 3}
 --- !u!1 &1943327073
 GameObject:
   m_ObjectHideFlags: 0
@@ -3658,6 +3665,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0.062194824, y: 0.8125992}
   m_SizeDelta: {x: -22.8768, y: -16.2516}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1977017410
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1977017411}
+  m_Layer: 0
+  m_Name: PositionGlassBroken
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1977017411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977017410}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.96, y: -10.41, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1979796341
 GameObject:
   m_ObjectHideFlags: 0
@@ -3842,3 +3880,4 @@ SceneRoots:
   - {fileID: 27989273}
   - {fileID: 1605745431}
   - {fileID: 216734592}
+  - {fileID: 1977017411}

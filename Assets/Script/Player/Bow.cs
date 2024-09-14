@@ -14,6 +14,7 @@ public class Bow : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] private Transform player;
+    [SerializeField] private GameObject playerStop;
 
     private bool bowFacingRight = false;
     public bool isAiming = false;
@@ -81,7 +82,10 @@ public class Bow : MonoBehaviour
         isDrawing = true;
         if (playerMovement != null)
         {
+            Rigidbody2D playerMove = playerStop.GetComponent<Rigidbody2D>();
+
             playerMovement.enabled = false;
+            playerMove.velocity = Vector2.zero;
             Debug.Log("PlayerMovement disabled");
         }
         Debug.Log("Gồng cung...");
