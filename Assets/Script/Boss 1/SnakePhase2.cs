@@ -44,10 +44,6 @@ public class SnakePhase2 : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && hasJumped)
-        {
-            StartCoroutine(BlowFireStream());
-        }
     }
     private void JumpToTree()
     {
@@ -69,28 +65,25 @@ public class SnakePhase2 : MonoBehaviour
 
         if (!isAttacking && !isShooting && !isShootingInProgress)
         {
-            int skillIndex = Random.Range(0, 100); 
+            int skillIndex = Random.Range(0, 100);
 
-            if (skillIndex < 25) // 25% xác suất cho BlowFireStream
+            if (skillIndex < 25) 
             {
-                isShooting = false;
-                isAttacking = false;
+                isShootingInProgress = true; 
                 Debug.Log("Rắn bắt đầu phun lửa!");
                 StartCoroutine(BlowFireStream());
             }
-            else if (skillIndex < 50) // 25% xác suất cho ShootProjectiles
+            else if (skillIndex < 50) 
             {
-                isShooting = true;
-                isAttacking = false;
+                isShootingInProgress = true; 
                 Debug.Log("Rắn bắt đầu phun đạn!");
                 maxProjectiles = Random.Range(5, 9);
                 StartCoroutine(ShootProjectiles());
             }
-            else // 50% xác suất cho skill còn lại
+            else 
             {
                 targetPosition = playerTransform.position;
                 isAttacking = true;
-                isShooting = false;
                 Debug.Log("Rắn bắt đầu tấn công!");
             }
         }

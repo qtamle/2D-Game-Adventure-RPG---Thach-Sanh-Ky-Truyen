@@ -56,6 +56,13 @@ public class HealthBarBoss : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            TakeDamage(50);
+        }
+    }
     public void TakeDamage(float damage)
     {
         targetHealth -= damage;
