@@ -11,6 +11,7 @@ public class GhostTreeSkill : MonoBehaviour
     public float warningDuration = 1f;
     public float groundCheckDistance = 10f;
     public float warningOffsetY = 1f;
+    private bool isVineSpawned = false;
 
     [Header("Hands")]
     public GameObject leftHandPrefab;
@@ -73,6 +74,12 @@ public class GhostTreeSkill : MonoBehaviour
     }
     private IEnumerator SpawnVine()
     {
+        if (VineTie.isVineActive)
+        {
+            Debug.Log("Vine hiện tại vẫn tồn tại, không thể spawn Vine mới.");
+            yield break;
+        }
+
         VineTie vineTie = FindObjectOfType<VineTie>();
         if (vineTie != null && vineTie.isHitPlayer)
         {
@@ -80,7 +87,7 @@ public class GhostTreeSkill : MonoBehaviour
             yield break;
         }
 
-        int vineSpawnCount = Random.Range(1, 4); 
+        int vineSpawnCount = Random.Range(1, 4);
 
         for (int i = 0; i < vineSpawnCount; i++)
         {
@@ -109,8 +116,14 @@ public class GhostTreeSkill : MonoBehaviour
                 Debug.Log("No ground detected below the player.");
             }
 
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(3f);
         }
+    }
+
+    private IEnumerator ResetVineSpawn(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isVineSpawned = false;
     }
 
 

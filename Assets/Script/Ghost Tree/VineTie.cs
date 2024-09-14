@@ -13,14 +13,22 @@ public class VineTie : MonoBehaviour
     private HealthBar playerHealth;
     private QuickTimeEvents quickTimeEvents;
 
+    public static bool isVineActive = false;
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
         quickTimeEvents = QuickTimeEvents.Instance;
+        isVineActive = true;
 
         StartCoroutine(Drop());
 
     }
+
+    private void OnDestroy()
+    {
+        isVineActive = false; 
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))

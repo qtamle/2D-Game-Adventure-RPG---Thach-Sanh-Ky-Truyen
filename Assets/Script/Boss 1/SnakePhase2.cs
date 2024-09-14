@@ -20,6 +20,11 @@ public class SnakePhase2 : MonoBehaviour
 
     private int maxProjectiles;
 
+    public GameObject fireStreamPrefab;
+    public Transform fireStreamSpawnPosition;
+    public float fireStreamSpeed = 5f;
+    public float fireStreamRotationSpeed = 30f;
+
     void Start()
     {
         originalPosition = transform.position;
@@ -38,28 +43,42 @@ public class SnakePhase2 : MonoBehaviour
                 MoveToTarget();
             }
         }
-    }
 
+        if (Input.GetKeyDown(KeyCode.Q) && hasJumped)
+        {
+            StartCoroutine(BlowFireStream());
+        }
+    }
     private void JumpToTree()
     {
-        transform.position = Vector3.MoveTowards(transform.position, treePosition.position, speed * Time.deltaTime);
+        Vector3 adjustedTreePosition = new Vector3(treePosition.position.x, treePosition.position.y + 2f, treePosition.position.z);
 
-        if (Vector3.Distance(transform.position, treePosition.position) < 0.1f)
+        transform.position = Vector3.MoveTowards(transform.position, adjustedTreePosition, speed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, adjustedTreePosition) < 0.01f)
         {
             Debug.Log("Rắn đã nhảy lên cây và ẩn mình!");
             hasJumped = true;
             StartCoroutine(WaitBeforeAttack());
         }
     }
+
     private IEnumerator WaitBeforeAttack()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
-        int skillIndex = Random.Range(0, 10);
-
-        if (skillIndex < 4) // 40% xác suất
+        if (!isAttacking && !isShooting && !isShootingInProgress)
         {
-            if (!isShootingInProgress)
+            int skillIndex = Random.Range(0, 100); 
+
+            if (skillIndex < 25) // 25% xác suất cho BlowFireStream
+            {
+                isShooting = false;
+                isAttacking = false;
+                Debug.Log("Rắn bắt đầu phun lửa!");
+                StartCoroutine(BlowFireStream());
+            }
+            else if (skillIndex < 50) // 25% xác suất cho ShootProjectiles
             {
                 isShooting = true;
                 isAttacking = false;
@@ -67,15 +86,16 @@ public class SnakePhase2 : MonoBehaviour
                 maxProjectiles = Random.Range(5, 9);
                 StartCoroutine(ShootProjectiles());
             }
-        }
-        else
-        {
-            targetPosition = playerTransform.position;
-            isAttacking = true;
-            isShooting = false;
-            Debug.Log("Rắn bắt đầu tấn công!");
+            else // 50% xác suất cho skill còn lại
+            {
+                targetPosition = playerTransform.position;
+                isAttacking = true;
+                isShooting = false;
+                Debug.Log("Rắn bắt đầu tấn công!");
+            }
         }
     }
+
     private void MoveToTarget()
     {
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
@@ -107,18 +127,17 @@ public class SnakePhase2 : MonoBehaviour
         isReturning = false;
         hasJumped = false;
 
-        // Sau khi trở về cây, bắt đầu chọn kỹ năng mới
         StartCoroutine(WaitBeforeAttack());
     }
-
     private IEnumerator ShootProjectiles()
     {
-        isShootingInProgress = true; // Đánh dấu rằng coroutine đang chạy
+        isShootingInProgress = true;
+        isShooting = true; 
 
         Debug.Log("Bắt đầu phun đạn...");
-        yield return new WaitForSeconds(2f); 
+        yield return new WaitForSeconds(2f);
 
-        int numberOfShots = Random.Range(3,5); 
+        int numberOfShots = Random.Range(3, 5);
 
         for (int shot = 0; shot < numberOfShots; shot++)
         {
@@ -148,17 +167,54 @@ public class SnakePhase2 : MonoBehaviour
                     Debug.LogError("Không tìm thấy Rigidbody2D trên prefab của viên đạn!");
                 }
 
-                Destroy(projectile, 3f); 
+                Destroy(projectile, 3f);
             }
 
             Debug.Log("Hoàn tất đợt bắn thứ " + (shot + 1));
-            yield return new WaitForSeconds(3f); 
+            yield return new WaitForSeconds(3f);
         }
 
         Debug.Log("Hoàn tất phun đạn.");
+
+        isShootingInProgress = false; 
+        isShooting = false; 
+
+        StartCoroutine(ReturnToTree());
+    }
+    private IEnumerator BlowFireStream()
+    {
+        isShootingInProgress = true; 
+
+        GameObject fireStream = Instantiate(fireStreamPrefab, fireStreamSpawnPosition.position, Quaternion.Euler(55, 90, 0));
+        Transform fireStreamTransform = fireStream.transform;
+
+        Quaternion startRotation = Quaternion.Euler(55, 90, 0);
+        Quaternion endRotation = Quaternion.Euler(115, 90, 0);
+
+        float duration = 5f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            float t = elapsedTime / duration;
+
+            // Cập nhật vị trí và rotation của luồng lửa
+            fireStreamTransform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
+            fireStreamTransform.position = Vector3.MoveTowards(fireStreamTransform.position, fireStreamSpawnPosition.position + Vector3.up * 5f, fireStreamSpeed * Time.deltaTime);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        fireStreamTransform.rotation = endRotation;
+
+        Destroy(fireStream);
+
+        Debug.Log("Ngọn lửa đã hoàn tất và bị hủy.");
 
         isShootingInProgress = false; 
 
         StartCoroutine(ReturnToTree());
     }
 }
+
