@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public float horizontal;
     public float speed = 5f;
     public float jumpPower = 10f;
-    public bool isFacingRight = false;
+    public bool isFacingRight = true;
     private float staminaJump = 5f;
 
     [Header("Dash")]
@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Wall Slide and Wall Jump")]
     private bool isWallSliding;
+    private float wallJumpDirection;
     private float wallSlidingSpeed = 1f;
 
     private bool isWallJumping;
@@ -168,12 +169,18 @@ public class PlayerMovement : MonoBehaviour
     }
     public void Flip()
     {
-        if (horizontal != 0f && !isSwinging) 
+        if (isWallSliding || isWallJumping)
         {
-            isFacingRight = horizontal > 0f; 
+            return;
+        }
+
+        if (horizontal != 0f && !isSwinging)
+        {
+            isFacingRight = horizontal > 0f;
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x) * Mathf.Sign(horizontal), transform.localScale.y, transform.localScale.z);
         }
     }
+
     private bool IsWalled()
     {
         return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
@@ -187,6 +194,8 @@ public class PlayerMovement : MonoBehaviour
         {
             isWallSliding = true;
             rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Clamp(rb2d.velocity.y, -wallSlidingSpeed, float.MaxValue));
+
+            wallJumpDirection = isFacingRight ? -1f : 1f;
         }
         else
         {
@@ -203,18 +212,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isWallSliding)
         {
-            // Cập nhật hướng nhảy dựa vào vị trí hiện tại của nhân vật
-            if (isFacingRight)
-            {
-                wallJumpingDirection = -1f; // Nếu đang nhìn phải (x = 1), bật sẽ sang trái
-            }
-            else
-            {
-                wallJumpingDirection = 1f; // Nếu đang nhìn trái (x = -1), bật sẽ sang phải
-            }
+            wallJumpingDirection = isFacingRight ? -1f : 1f; // Cập nhật hướng nhảy dựa vào hướng đang nhìn của nhân vật
 
             wallJumpingCounter = wallJumpingTime;
-            horizontal = 0f;
             CancelInvoke(nameof(StopWallJumping));
         }
         else
@@ -226,13 +226,21 @@ public class PlayerMovement : MonoBehaviour
         {
             isWallJumping = true;
 
-            // Kiểm tra và lật nhân vật nếu cần thiết
-            if ((wallJumpingDirection == 1f && !isFacingRight) || (wallJumpingDirection == -1f && isFacingRight))
+            // Kiểm tra và lật mặt nếu cần
+            if (isFacingRight && wallJumpingDirection == 1f)
             {
-                Flip2(); // Lật nhân vật nếu đang quay sai hướng
+                // Nếu đang nhìn phải và bật sang phải thì không cần flip
+            }
+            else if (!isFacingRight && wallJumpingDirection == -1f)
+            {
+                // Nếu đang nhìn trái và bật sang trái thì không cần flip
+            }
+            else
+            {
+                Flip2(); // Lật mặt khi cần thiết
             }
 
-            // Thực hiện nhảy theo hướng đã xác định
+            // Thực hiện nhảy tường theo hướng đã xác định
             rb2d.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
 
@@ -242,10 +250,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Flip2()
     {
-        // Cập nhật trạng thái isFacingRight và lật nhân vật
-        isFacingRight = !isFacingRight; // Đảo ngược trạng thái hướng
+        isFacingRight = !isFacingRight; // Cập nhật lại trạng thái isFacingRight
         Vector3 localScale = transform.localScale;
-        localScale.x *= -1; // Lật nhân vật qua trục X
+        localScale.x *= -1; // Lật mặt nhân vật
         transform.localScale = localScale;
     }
 
