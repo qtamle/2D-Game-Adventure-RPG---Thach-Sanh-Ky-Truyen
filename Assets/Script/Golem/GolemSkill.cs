@@ -23,14 +23,23 @@ public class GolemSkill : MonoBehaviour
     public int maxSpikes = 5;
     public Transform spikeStartPoint;
 
+    [Header("Jump Attack")]
+    public float jumpForce;
+    public float stompDelay;
+    public float stomDuration;
+
     [Header("Other")]
     public LayerMask golemLayer;
     public LayerMask playerLayer;
-
+    public GameObject rollingStone;
+    public float throwForceStone;
+    public Transform throwStoneRoll;
 
     private Rigidbody2D rb;
     private Transform player;
     private Vector2 lastPlayerPosition;
+    private bool isPerformingSkill = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -50,7 +59,7 @@ public class GolemSkill : MonoBehaviour
             rb.velocity = new Vector2((facingRight ? 1 : -1) * dashSpeed, rb.velocity.y);
 
             dashTimeCounter -= Time.deltaTime;
-            if (dashTimeCounter <= 0) 
+            if (dashTimeCounter <= 0)
             {
                 StopDash();
             }
@@ -64,6 +73,11 @@ public class GolemSkill : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             StartCoroutine(SpawnSpikes());
+        }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            StartCoroutine(GolemCombo());
         }
     }
 
@@ -80,14 +94,17 @@ public class GolemSkill : MonoBehaviour
     {
         isDashing = true;
         dashTimeCounter = dashDuration;
+        isPerformingSkill = true;
     }
 
     void StopDash()
     {
         isDashing = false;
         rb.velocity = Vector2.zero;
+        isPerformingSkill = false;
     }
 
+    // ném đá
     IEnumerator ThrowStone()
     {
         int numThrows = Random.Range(3, 6);
@@ -114,6 +131,8 @@ public class GolemSkill : MonoBehaviour
             yield return new WaitForSeconds(throwDelay);
         }
     }
+
+    // gai đá
     IEnumerator SpawnSpikes()
     {
         yield return new WaitForSeconds(1f);
@@ -152,13 +171,117 @@ public class GolemSkill : MonoBehaviour
         }
     }
 
+    //combo
+    IEnumerator DashForwad()
+    {
+        isDashing = true;
+        dashTimeCounter = dashDuration;
+        isPerformingSkill = true;
+
+        while (dashTimeCounter > 0)
+        {
+            rb.velocity = new Vector2((facingRight ? 1 : -1) * dashSpeed, rb.velocity.y);
+            dashTimeCounter -= Time.deltaTime;
+            yield return null;
+        }
+
+        StopDash();
+    }
+
+    IEnumerator JumpAndStomp()
+    {
+        yield return new WaitForSeconds(stompDelay);
+
+        lastPlayerPosition = player.position;
+        Vector2 directionToPlayer = (lastPlayerPosition - (Vector2)transform.position).normalized;
+        rb.velocity = new Vector2(directionToPlayer.x * Mathf.Abs(jumpForce), jumpForce);
+
+        yield return new WaitUntil(() => Mathf.Abs(transform.position.x - lastPlayerPosition.x) < 0.5f);
+        rb.velocity = new Vector2(0, -Mathf.Abs(jumpForce * 5f));
+        yield return new WaitUntil(() => rb.velocity.y == 0);
+
+        rb.velocity = Vector2.zero;
+    }
+
+    IEnumerator ThrowRollingStone()
+    {
+        yield return new WaitForSeconds(1f);
+
+        GameObject stone = Instantiate(rollingStone, throwStoneRoll.position, Quaternion.identity);
+
+        Vector2 throwDirection = (player.position - transform.position).normalized;
+
+        if (!facingRight)
+        {
+            throwDirection.x = -Mathf.Abs(throwDirection.x);
+        }
+
+        Rigidbody2D stoneRb = stone.GetComponent<Rigidbody2D>();
+        stoneRb.gravityScale = 1;
+        stoneRb.AddForce(new Vector2(throwDirection.x * throwForceStone, 0), ForceMode2D.Impulse);
+
+        Collider2D stoneCollider = stone.GetComponent<Collider2D>();
+        if (stoneCollider != null)
+        {
+            PhysicsMaterial2D rollingMaterial = new PhysicsMaterial2D
+            {
+                friction = 0.4f,
+                bounciness = 0f
+            };
+            stoneCollider.sharedMaterial = rollingMaterial;
+        }
+    }
+
+    IEnumerator GolemCombo()
+    {
+        yield return DashForwad();
+
+        yield return new WaitForSeconds(1f);
+
+        if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
+        {
+            Flip();
+        }
+
+        yield return JumpAndStomp();
+
+        yield return new WaitForSeconds(1f);
+
+        if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
+        {
+            Flip();
+        }
+
+        yield return ThrowRollingStone();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("TurnOn"))
+        if (collision.gameObject.CompareTag("TurnOn") && isPerformingSkill)
+        {
+            StopDash();
+            rb.velocity = Vector2.zero;
+            StartCoroutine(StandStillAndResumeSkill());
+        }
+        else if (collision.gameObject.CompareTag("TurnOn"))
         {
             StopDash();
             Flip();
         }
     }
 
+    IEnumerator StandStillAndResumeSkill()
+    {
+        yield return new WaitForSeconds(3f);
+
+        if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
+        {
+            Flip();
+        }
+
+        if (isDashing)
+        {
+            StartDash(); 
+        }
+    }
 }
