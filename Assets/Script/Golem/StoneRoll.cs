@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class StoneRoll : MonoBehaviour
 {
+    public float damage = 10f;
+    private PlayerMovement playerMovement;
+
     private void Start()
     {
         int stoneLayer = LayerMask.NameToLayer("StoneRoll");
         int enemyLayer = LayerMask.NameToLayer("Enemy");
-        int playerLayer = LayerMask.NameToLayer("Player");
         int turnOnLayer = LayerMask.NameToLayer("TurnOn");
 
         Physics2D.IgnoreLayerCollision(stoneLayer, enemyLayer, true);
-        Physics2D.IgnoreLayerCollision(stoneLayer, playerLayer, true);
         Physics2D.IgnoreLayerCollision(stoneLayer, turnOnLayer, true);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                playerMovement.TakeDamage(damage, 1f, 1.25f, 0.3f);
+                Destroy(gameObject);
+            }
+        }
     }
 }

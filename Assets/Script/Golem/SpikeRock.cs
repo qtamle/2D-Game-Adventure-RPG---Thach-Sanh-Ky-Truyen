@@ -11,8 +11,11 @@ public class SpikeRock : MonoBehaviour
     public float extraFallDistance = 1f; 
     public float destroyDelay = 3f;
 
+    private PlayerMovement playerMovement;
     public LayerMask groundMask;
     private Vector2 groundPosition;
+
+    private bool isDamaged = false;
 
     private void Start()
     {
@@ -63,6 +66,19 @@ public class SpikeRock : MonoBehaviour
             yield return null;
         }
         transform.position = to;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player") && !isDamaged)
+        {
+            playerMovement = collision.GetComponent<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                playerMovement.TakeDamage(10f, 0.5f, 0.65f, 0.1f);
+                isDamaged = true;
+            }
+        }
     }
 
     private void OnDrawGizmos()

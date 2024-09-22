@@ -9,7 +9,8 @@ public class GolemSkill : MonoBehaviour
     public float dashDuration;
     private bool isDashing = false;
     private bool facingRight = true;
-    private float dashTimeCounter; // thời gian giảm dần khi dash
+    private float dashTimeCounter;
+    public float dashDurationCombo;
 
     [Header("Throw Stone")]
     public GameObject rockPrefab;
@@ -43,40 +44,55 @@ public class GolemSkill : MonoBehaviour
     private Transform player;
     private Vector2 lastPlayerPosition;
     private bool isPerformingSkill = false;
-
+    private bool isSkillActived = false;
+    private bool isStandingStill = false;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
+
+        StartCoroutine(RandomSkillRoutine());
     }
-
-    private void Update()
+    IEnumerator RandomSkillRoutine()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            StartDash();
-        }
+        yield return new WaitForSeconds(3f);
 
-        if (isDashing)
+        while (true)
         {
-            rb.velocity = new Vector2((facingRight ? 1 : -1) * dashSpeed, rb.velocity.y);
-
-            dashTimeCounter -= Time.deltaTime;
-            if (dashTimeCounter <= 0)
+            if (!isSkillActived && !isStandingStill)
             {
-                StopDash();
+                int randomSkill = Random.Range(0, 100); 
+
+                if (randomSkill < 35) // 35% cho DashCoroutine
+                {
+                    Debug.Log("tong bth");
+                    yield return StartCoroutine(DashCoroutine());
+                }
+                else if (randomSkill < 60) // 25% cho GolemCombo (35% + 25%)
+                {
+                    Debug.Log("combo");
+                    yield return StartCoroutine(GolemCombo());
+                }
+                else if (randomSkill < 80) // 20% cho SpawnSpikes (60% + 20%)
+                {
+                    Debug.Log("spike");
+                    yield return StartCoroutine(SpawnSpikes());
+                }
+                else if (randomSkill < 90) // 10% cho JumpAndStomp (80% + 10%)
+                {
+                    Debug.Log("nhay dam");
+                    yield return StartCoroutine(JumpAndStomp());
+                }
+                else // 10% cho ThrowRollingStone (90% + 10%)
+                {
+                    Debug.Log("nem da lan");
+                    yield return StartCoroutine(ThrowRollingStone());
+                }
+
+                yield return new WaitForSeconds(3f);
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            StartCoroutine(SpawnSpikes());
-        }
-
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            StartCoroutine(GolemCombo());
+            yield return null;
         }
     }
 
@@ -91,9 +107,25 @@ public class GolemSkill : MonoBehaviour
     // tông về phía trước
     void StartDash()
     {
+        StartCoroutine(DashCoroutine());
+    }
+
+    IEnumerator DashCoroutine()
+    {
+        isSkillActived = true;
         isDashing = true;
         dashTimeCounter = dashDuration;
         isPerformingSkill = true;
+
+        while (dashTimeCounter > 0)
+        {
+            rb.velocity = new Vector2((facingRight ? 1 : -1) * dashSpeed, rb.velocity.y);
+            dashTimeCounter -= Time.deltaTime;
+            yield return null;
+        }
+
+        StopDash();
+        isSkillActived = false; 
     }
 
     void StopDash()
@@ -101,6 +133,7 @@ public class GolemSkill : MonoBehaviour
         isDashing = false;
         rb.velocity = Vector2.zero;
         isPerformingSkill = false;
+        isSkillActived = true;
     }
 
     /*
@@ -137,6 +170,13 @@ public class GolemSkill : MonoBehaviour
     // gai đá
     IEnumerator SpawnSpikes()
     {
+        isSkillActived = true;
+
+        if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
+        {
+            Flip();
+        }
+
         yield return new WaitForSeconds(1f);
 
         if (spikeStartPoint == null)
@@ -171,14 +211,20 @@ public class GolemSkill : MonoBehaviour
 
             yield return new WaitForSeconds(spikeDelay);
         }
+
+        if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
+        {
+            Flip();
+        }
+        isSkillActived = false;
     }
 
     //combo
     IEnumerator DashForwad()
     {
+        isSkillActived = true;
         isDashing = true;
-        dashTimeCounter = dashDuration;
-        isPerformingSkill = true;
+        dashTimeCounter = dashDurationCombo;
 
         while (dashTimeCounter > 0)
         {
@@ -188,10 +234,18 @@ public class GolemSkill : MonoBehaviour
         }
 
         StopDash();
+        isSkillActived = false;
     }
 
     IEnumerator JumpAndStomp()
     {
+        isSkillActived = true;
+
+        if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
+        {
+            Flip();
+        }
+
         yield return new WaitForSeconds(stompDelay);
 
         lastPlayerPosition = player.position;
@@ -203,10 +257,16 @@ public class GolemSkill : MonoBehaviour
         yield return new WaitUntil(() => rb.velocity.y == 0);
 
         rb.velocity = Vector2.zero;
+        isSkillActived = false;
     }
 
     IEnumerator ThrowRollingStone()
     {
+        isSkillActived = true;
+        if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
+        {
+            Flip();
+        }
         yield return new WaitForSeconds(1f);
 
         GameObject stone = Instantiate(rollingStone, throwStoneRoll.position, Quaternion.identity);
@@ -233,11 +293,13 @@ public class GolemSkill : MonoBehaviour
             stoneCollider.sharedMaterial = rollingMaterial;
         }
 
-        Destroy(stone, 5f);
+        Destroy(stone, 3f);
+        isSkillActived = false;
     }
 
     IEnumerator GolemCombo()
     {
+        isSkillActived = true;
         yield return DashForwad();
 
         yield return new WaitForSeconds(1f);
@@ -257,6 +319,9 @@ public class GolemSkill : MonoBehaviour
         }
 
         yield return ThrowRollingStone();
+
+        isSkillActived = false;
+
     }
 
     // rơi đá
@@ -294,16 +359,13 @@ public class GolemSkill : MonoBehaviour
 
     IEnumerator StandStillAndResumeSkill()
     {
-        yield return new WaitForSeconds(5f);
+        isStandingStill = true;
+        yield return new WaitForSeconds(8f);
+        isStandingStill = false;
 
         if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
         {
             Flip();
-        }
-
-        if (isDashing)
-        {
-            StartDash(); 
         }
     }
 }
