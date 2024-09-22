@@ -28,6 +28,10 @@ public class GolemSkill : MonoBehaviour
     public float stompDelay;
     public float stomDuration;
 
+    [Header("Falling Stone")]
+    public Transform[] fallingStone;
+    public GameObject fallStone;
+
     [Header("Other")]
     public LayerMask golemLayer;
     public LayerMask playerLayer;
@@ -64,11 +68,6 @@ public class GolemSkill : MonoBehaviour
                 StopDash();
             }
         }
-
-        /*if (Input.GetKeyDown(KeyCode.O))
-        {
-            StartCoroutine(ThrowStone());
-        }*/
 
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -260,11 +259,29 @@ public class GolemSkill : MonoBehaviour
         yield return ThrowRollingStone();
     }
 
+    // rơi đá
+    private void SpawnFallingStones()
+    {
+        for (int i = 0; i < fallingStone.Length; i++)
+        {
+            Vector2 stoneSpawnPosition = fallingStone[i].position;
+
+            GameObject rock = Instantiate(fallStone, stoneSpawnPosition, Quaternion.identity);
+
+            Rigidbody2D rockRb = rock.GetComponent<Rigidbody2D>();
+            rockRb.gravityScale = 1;
+
+            Destroy(rock, 5f);
+        }
+    }
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("TurnOn") && isPerformingSkill)
         {
             StopDash();
+            SpawnFallingStones();
             rb.velocity = Vector2.zero;
             StartCoroutine(StandStillAndResumeSkill());
         }
