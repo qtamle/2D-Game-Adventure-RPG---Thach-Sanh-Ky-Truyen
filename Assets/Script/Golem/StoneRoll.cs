@@ -6,7 +6,7 @@ public class StoneRoll : MonoBehaviour
 {
     public float damage = 10f;
     private PlayerMovement playerMovement;
-
+    private StatusEffects statusEffects;
     private void Start()
     {
         int stoneLayer = LayerMask.NameToLayer("StoneRoll");
@@ -22,9 +22,11 @@ public class StoneRoll : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
+            statusEffects = collision.gameObject.GetComponentInChildren<StatusEffects>();
             if (playerMovement != null)
             {
                 playerMovement.TakeDamage(damage, 1f, 1.25f, 0.3f);
+                statusEffects.ApplyStun();
                 Destroy(gameObject);
             }
         }

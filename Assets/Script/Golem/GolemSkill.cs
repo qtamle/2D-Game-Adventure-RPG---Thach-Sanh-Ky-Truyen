@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GolemSkill : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class GolemSkill : MonoBehaviour
     private bool facingRight = true;
     private float dashTimeCounter;
     public float dashDurationCombo;
+    public Transform radiusAttackTransform;
+    public float detectionRadius;
+    private bool isDamaged = false;
 
     [Header("Throw Stone")]
     public GameObject rockPrefab;
@@ -28,6 +32,10 @@ public class GolemSkill : MonoBehaviour
     public float jumpForce;
     public float stompDelay;
     public float stomDuration;
+    public float jumpUpDuration;
+    public float radiusJumpAttack;
+    public Transform JumpAttack;
+    private bool isDamagedJumped = false;
 
     [Header("Falling Stone")]
     public Transform[] fallingStone;
@@ -91,6 +99,7 @@ public class GolemSkill : MonoBehaviour
                 }
 
                 yield return new WaitForSeconds(3f);
+
             }
             yield return null;
         }
@@ -113,19 +122,40 @@ public class GolemSkill : MonoBehaviour
     IEnumerator DashCoroutine()
     {
         isSkillActived = true;
+
+        if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
+        {
+            Flip();
+        }
+
         isDashing = true;
         dashTimeCounter = dashDuration;
         isPerformingSkill = true;
+
+        yield return new WaitForSeconds(1.5f);
 
         while (dashTimeCounter > 0)
         {
             rb.velocity = new Vector2((facingRight ? 1 : -1) * dashSpeed, rb.velocity.y);
             dashTimeCounter -= Time.deltaTime;
+
+            Collider2D playerCollider = Physics2D.OverlapCircle(radiusAttackTransform.position, detectionRadius, LayerMask.GetMask("Player"));
+            if (playerCollider != null)
+            {
+                PlayerMovement playerMovement = playerCollider.GetComponent<PlayerMovement>();
+                if (playerMovement != null && !isDamaged)
+                {
+                    playerMovement.TakeDamage(10f, 1f, 1.25f, 0.3f);
+                    isDamaged = true;
+                }
+            }
+
             yield return null;
         }
 
         StopDash();
         isSkillActived = false; 
+        isDamaged = false;
     }
 
     void StopDash()
@@ -230,13 +260,24 @@ public class GolemSkill : MonoBehaviour
         {
             rb.velocity = new Vector2((facingRight ? 1 : -1) * dashSpeed, rb.velocity.y);
             dashTimeCounter -= Time.deltaTime;
+
+            Collider2D playerCollider = Physics2D.OverlapCircle(radiusAttackTransform.position, detectionRadius, LayerMask.GetMask("Player"));
+            if (playerCollider != null)
+            {
+                PlayerMovement playerMovement = playerCollider.GetComponent<PlayerMovement>();
+                if (playerMovement != null && !isDamaged)
+                {
+                    playerMovement.TakeDamage(10f, 1f, 1.25f, 0.3f);
+                    isDamaged = true;
+                }
+            }
             yield return null;
         }
 
         StopDash();
         isSkillActived = false;
+        isDamaged = false;
     }
-
     IEnumerator JumpAndStomp()
     {
         isSkillActived = true;
@@ -249,16 +290,32 @@ public class GolemSkill : MonoBehaviour
         yield return new WaitForSeconds(stompDelay);
 
         lastPlayerPosition = player.position;
+
         Vector2 directionToPlayer = (lastPlayerPosition - (Vector2)transform.position).normalized;
         rb.velocity = new Vector2(directionToPlayer.x * Mathf.Abs(jumpForce), jumpForce);
 
-        yield return new WaitUntil(() => Mathf.Abs(transform.position.x - lastPlayerPosition.x) < 0.5f);
+        yield return new WaitForSeconds(jumpUpDuration);
+
         rb.velocity = new Vector2(0, -Mathf.Abs(jumpForce * 5f));
-        yield return new WaitUntil(() => rb.velocity.y == 0);
+
+        yield return new WaitUntil(() => Mathf.Abs(rb.velocity.y) < 0.1f);
+
+        // Kiểm tra xem có trúng player không
+        Collider2D playerCollider = Physics2D.OverlapCircle(JumpAttack.position, radiusJumpAttack, LayerMask.GetMask("Player"));
+        if (playerCollider != null)
+        {
+            Debug.Log("Đã trúng player");
+            PlayerMovement playerMovement = playerCollider.GetComponent<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                playerMovement.TakeDamage(10f, 1f, 1.25f, 0.3f);
+            }
+        }
 
         rb.velocity = Vector2.zero;
         isSkillActived = false;
     }
+
 
     IEnumerator ThrowRollingStone()
     {
@@ -368,4 +425,14 @@ public class GolemSkill : MonoBehaviour
             Flip();
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red; 
+        Gizmos.DrawWireSphere(radiusAttackTransform.position, detectionRadius);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(JumpAttack.position, radiusJumpAttack);
+    }
+
 }
