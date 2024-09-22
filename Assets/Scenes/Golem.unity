@@ -598,7 +598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5627404196120211271, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: speed
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5627404196120211271, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: bowScript
@@ -1881,7 +1881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5420f56bc73e05548944c1502f503985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashSpeed: 45
+  dashSpeed: 50
   dashDuration: 1
   rockPrefab: {fileID: 1870343487231250793, guid: 779c7fc5ecc29ba44be8a3fd32313d6f, type: 3}
   throwForce: 25
@@ -1893,7 +1893,7 @@ MonoBehaviour:
   spikeStartPoint: {fileID: 1578085347}
   jumpForce: 15
   stompDelay: 1
-  stomDuration: 1
+  stomDuration: 2
   golemLayer:
     serializedVersion: 2
     m_Bits: 2048

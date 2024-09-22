@@ -51,6 +51,11 @@ public class BossSkill : MonoBehaviour
     private List<GameObject> warningMarks = new List<GameObject>();
     private List<GameObject> spikes = new List<GameObject>();
 
+    [Header("Blow Fire")]
+    public GameObject fireStreamPrefab;
+    public Transform fireStreamSpawnPosition;
+    private bool isShootingInProgress = false;
+
     [Header("Skill Poison")]
     public GameObject bulletPoison;
     public GameObject poisonPrefabs;
@@ -93,7 +98,6 @@ public class BossSkill : MonoBehaviour
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
     }
 
-
     private IEnumerator StartSkillsWithDelay()
     {
         yield return new WaitForSeconds(2f);
@@ -105,7 +109,7 @@ public class BossSkill : MonoBehaviour
         while (!isPhase2Activated)
         {
             // Chọn kỹ năng ngẫu nhiên để thực hiện
-            int skillIndex = Random.Range(0,3); 
+            int skillIndex = Random.Range(0,4); 
 
             switch (skillIndex)
             {
@@ -118,10 +122,12 @@ public class BossSkill : MonoBehaviour
                 case 2:
                     yield return StartCoroutine(SpikeSkill());
                     break;
+                case 3:
+                    yield return StartCoroutine(BlowFireStream(isFacingRight));
+                    break;
             }
 
-            // Đợi 4 giây trước khi thực hiện kỹ năng tiếp theo
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(6f);
         }
     }
 
@@ -129,7 +135,7 @@ public class BossSkill : MonoBehaviour
     {
         if (isPhase2Activated) yield break;
 
-        int dashCount = Random.Range(2, 5);
+        int dashCount = Random.Range(1, 1);
 
         for (int i = 0; i < dashCount; i++)
         {
@@ -228,17 +234,17 @@ public class BossSkill : MonoBehaviour
             {
                 Vector3 playerPosition = player.transform.position; // Lưu vị trí hiện tại của Player
                 FireProjectile(playerPosition);
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(2.5f);
             }
 
             // Bắn thêm một viên đạn lên vị trí chỉ định
             Vector3 finalPlayerPosition = player.transform.position; // Lưu vị trí cuối cùng của Player
-            Vector3 designatedPosition = new Vector3(finalPlayerPosition.x, finalPlayerPosition.y + 10f, finalPlayerPosition.z);
+            Vector3 designatedPosition = new Vector3(finalPlayerPosition.x, finalPlayerPosition.y + 50f, finalPlayerPosition.z);
             FireProjectile(designatedPosition);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
 
             // Thả 20 viên đạn nhỏ từ trên cao
-            numberSmallBullet = 20;
+            numberSmallBullet = 15;
             StartCoroutine(SmallBulletDrop());
         }
         else
@@ -421,6 +427,36 @@ public class BossSkill : MonoBehaviour
 
         Destroy(spikeTransform.gameObject);
     }
+    private IEnumerator BlowFireStream(bool facingRight)
+    {
+        isShootingInProgress = true;
+
+        float rotationY = facingRight ? 90f : -90f;
+
+        GameObject fireStream = Instantiate(fireStreamPrefab, fireStreamSpawnPosition.position, Quaternion.Euler(57.482f, rotationY, 0));
+        Transform fireStreamTransform = fireStream.transform;
+
+        Quaternion startRotation = Quaternion.Euler(57.482f, rotationY, 0);
+        Quaternion endRotation = Quaternion.Euler(15f, rotationY, 0);
+
+        float duration = 2.5f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            float t = elapsedTime / duration;
+
+            fireStreamTransform.rotation = Quaternion.Slerp(startRotation, endRotation, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(fireStream);
+        isShootingInProgress = false;
+    }
+
+
     /*private IEnumerator StartPoisonSkill()
     {
         // Tìm đối tượng có tag là "Player"

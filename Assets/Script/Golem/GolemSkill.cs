@@ -65,10 +65,10 @@ public class GolemSkill : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.O))
+        /*if (Input.GetKeyDown(KeyCode.O))
         {
             StartCoroutine(ThrowStone());
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -104,7 +104,7 @@ public class GolemSkill : MonoBehaviour
         isPerformingSkill = false;
     }
 
-    // ném đá
+    /*
     IEnumerator ThrowStone()
     {
         int numThrows = Random.Range(3, 6);
@@ -129,8 +129,11 @@ public class GolemSkill : MonoBehaviour
             rockRb.velocity = new Vector2(throwDirection.x * throwForce, 0);
 
             yield return new WaitForSeconds(throwDelay);
+
+            Destroy(rock, 5f);
         }
-    }
+
+    }*/
 
     // gai đá
     IEnumerator SpawnSpikes()
@@ -230,6 +233,8 @@ public class GolemSkill : MonoBehaviour
             };
             stoneCollider.sharedMaterial = rollingMaterial;
         }
+
+        Destroy(stone, 5f);
     }
 
     IEnumerator GolemCombo()
@@ -245,7 +250,7 @@ public class GolemSkill : MonoBehaviour
 
         yield return JumpAndStomp();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
         {
@@ -272,7 +277,7 @@ public class GolemSkill : MonoBehaviour
 
     IEnumerator StandStillAndResumeSkill()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
 
         if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
         {

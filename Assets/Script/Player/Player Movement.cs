@@ -67,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Bow")]
     [SerializeField] private Bow bowScript;
+
     private void Start()
     {
         if (bowScript == null)
