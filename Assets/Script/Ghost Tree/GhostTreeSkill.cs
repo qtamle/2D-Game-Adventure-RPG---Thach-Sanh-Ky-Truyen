@@ -34,42 +34,54 @@ public class GhostTreeSkill : MonoBehaviour
     [Header("Spike")]
     public GameObject largeSpikePrefab;
     public float spikeSpeed = 10f;
-    public Transform[] spawnPoints;
+    public Transform spawnPoint;
 
     [HideInInspector]
     private Transform playerTransform;
+    private bool isUsingSkill = false;
     private void Start()
     {
-        numberOfSpawns = Random.Range(5, 8);
+        numberOfSpawns = Random.Range(3, 5);
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         StartCoroutine(ManageSkills());
     }
-
     private IEnumerator ManageSkills()
     {
         while (true)
         {
-            yield return new WaitForSeconds(2f);
-
-            int skillIndex = Random.Range(0, 4);
-            switch (skillIndex)
+            if (!isUsingSkill) 
             {
-                case 0:
-                    yield return StartCoroutine(SpawnVine());
-                    break;
-                case 1:
-                    yield return StartCoroutine(MoveHands());
-                    break;
-                case 2:
-                    StartCoroutine(SpawnMiniMonsters()); 
-                    break;
-                case 3:
-                    yield return StartCoroutine(ShootSpikes());
-                    break;
-            }
+                Debug.Log("Waiting before executing a new skill...");
+                yield return new WaitForSeconds(2f);
 
-            float waitTime = Random.Range(1f, 2.5f);
-            yield return new WaitForSeconds(waitTime);
+                int skillIndex = Random.Range(0, 4);
+                Debug.Log($"Executing skill {skillIndex}");
+
+                isUsingSkill = true;
+
+                switch (skillIndex)
+                {
+                    case 0:
+                        yield return StartCoroutine(SpawnVine());
+                        break;
+                    case 1:
+                        yield return StartCoroutine(MoveHands());
+                        break;
+                    case 2:
+                        StartCoroutine(SpawnMiniMonsters());
+                        break;
+                    case 3:
+                        yield return StartCoroutine(ShootSpikes());
+                        break;
+                }
+
+                isUsingSkill = false;
+
+                float waitTime = Random.Range(1f, 2.5f);
+                Debug.Log($"Waiting {waitTime} seconds before the next skill.");
+                yield return new WaitForSeconds(waitTime);
+            }
+            yield return null;
         }
     }
     private IEnumerator SpawnVine()
@@ -87,7 +99,7 @@ public class GhostTreeSkill : MonoBehaviour
             yield break;
         }
 
-        int vineSpawnCount = Random.Range(1, 4);
+        int vineSpawnCount = Random.Range(1, 1);
 
         for (int i = 0; i < vineSpawnCount; i++)
         {
@@ -125,8 +137,6 @@ public class GhostTreeSkill : MonoBehaviour
         yield return new WaitForSeconds(delay);
         isVineSpawned = false;
     }
-
-
     private IEnumerator MoveHands()
     {
         leftHand = Instantiate(leftHandPrefab, leftHandStartPosition.position, Quaternion.identity);
@@ -153,14 +163,18 @@ public class GhostTreeSkill : MonoBehaviour
         if (leftHand != null)
         {
             leftHand.transform.position = smashPoint;
+            Destroy(leftHand, 3f);
         }
 
         if (rightHand != null)
         {
             rightHand.transform.position = smashPoint;
+            Destroy(rightHand, 3f);
         }
-    }
 
+        yield return new WaitForSeconds(2f);
+
+    }
 
     private IEnumerator SpawnMiniMonsters()
     {
@@ -181,16 +195,16 @@ public class GhostTreeSkill : MonoBehaviour
     {
         Debug.Log("Starting spike shooting coroutine...");
 
-        int spikeCount = Random.Range(1, 5);
+        int spikeCount = Random.Range(1, 6);
 
         for (int i = 0; i < spikeCount; i++)
         {
             Debug.Log("Shooting spike...");
 
-            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
             Vector3 spawnPosition = spawnPoint.position;
 
-            // Kiểm tra vị trí của người chơi và điểm spawn
+            spawnPosition.z = 10f;
+
             Debug.Log($"Player Position: {playerTransform.position}");
             Debug.Log($"Spawn Position: {spawnPosition}");
 
@@ -202,7 +216,6 @@ public class GhostTreeSkill : MonoBehaviour
                 Vector3 direction = (playerTransform.position - spawnPosition).normalized;
                 rb.velocity = new Vector2(direction.x, direction.y) * spikeSpeed;
 
-                // Kiểm tra vận tốc
                 Debug.Log($"Spike Velocity: {rb.velocity}");
             }
             else
@@ -210,13 +223,11 @@ public class GhostTreeSkill : MonoBehaviour
                 Debug.LogError("No Rigidbody2D found on the large spike prefab!");
             }
 
-            // Thời gian chờ giữa các lần bắn spike nếu có nhiều spike.
             yield return new WaitForSeconds(3f);
         }
 
         Debug.Log("Finished shooting spikes.");
     }
-
 
     private void OnDrawGizmosSelected()
     {

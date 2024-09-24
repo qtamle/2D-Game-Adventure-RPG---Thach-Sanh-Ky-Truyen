@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1149552827951282721}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.495, y: 0, z: 0}
+  m_LocalPosition: {x: 2.495, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 5307513625077371518}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.8977, y: -6.7975, z: -11.250231}
+  m_LocalPosition: {x: 23.8977, y: -6.7975, z: 10}
   m_LocalScale: {x: 32.068077, y: 1.4376013, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -109,7 +109,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 16
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0.99371064, b: 0.061114226, a: 1}
   m_FlipX: 0
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handRetract: {fileID: 3340002019844027459}
-  speedRetract: 25
+  speedRetract: 35
   collisionParticlePrefab: {fileID: 6396275811351691238, guid: 15c83eecc4946c84c85081f7f5ea3b1d, type: 3}
   particleSpawnPoint: {fileID: 3834372399759480712}
   damage: 7.5
@@ -285,7 +285,7 @@ Transform:
   m_GameObject: {fileID: 6655593590121835911}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.502, y: 0, z: 0}
+  m_LocalPosition: {x: -0.502, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

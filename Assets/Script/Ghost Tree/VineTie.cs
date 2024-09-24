@@ -40,7 +40,17 @@ public class VineTie : MonoBehaviour
 
             if (playerMovement != null)
             {
+                Rigidbody2D player = collision.GetComponent<Rigidbody2D>();
+
+                if (player != null)
+                {
+                    player.velocity = Vector2.zero;
+                }
+
                 playerMovement.enabled = false;
+
+                StartCoroutine(ShowKeyPromptsWithDelay(1.5f));
+
                 if (quickTimeEvents != null)
                 {
                     quickTimeEvents.ShowKeyPrompts();
@@ -50,6 +60,15 @@ public class VineTie : MonoBehaviour
                 StartCoroutine(ReleasePlayer());
                 StartCoroutine(DealDamageOverTime());
             }
+        }
+    }
+    private IEnumerator ShowKeyPromptsWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); 
+        if (quickTimeEvents != null)
+        {
+            quickTimeEvents.ShowKeyPrompts();
+            quickTimeEvents.OnAllKeysPressed += OnAllKeysPressed;
         }
     }
 

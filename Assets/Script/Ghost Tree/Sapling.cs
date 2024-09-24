@@ -12,6 +12,7 @@ public class Sapling : MonoBehaviour
     private bool isPrepare = false;
     private bool isExploded = false;
     private bool isInExplosionRange = false;
+    private bool isOnGround = false;
     private Transform playerTransform;
     public Collider2D playerCollider;
 
@@ -50,44 +51,45 @@ public class Sapling : MonoBehaviour
             Debug.LogWarning("Player with tag 'Player' not found.");
         }
     }
-
     private void Update()
     {
-        isChasing = Physics2D.OverlapCircle(transform.position, radius, playerMask);
-
-        isInExplosionRange = Physics2D.OverlapCircle(transform.position, radiusExplode, playerMask);
-
-        if (isChasing && !isInExplosionRange && playerTransform != null && !isPrepare)
+        if (isOnGround)
         {
-            Vector2 direction = (playerTransform.position - transform.position).normalized;
-            Vector2 moveDirection = new Vector2(direction.x, 0).normalized;
-            transform.Translate(moveDirection * speed * Time.deltaTime);
+            isChasing = Physics2D.OverlapCircle(transform.position, radius, playerMask);
+            isInExplosionRange = Physics2D.OverlapCircle(transform.position, radiusExplode, playerMask);
 
-            if (direction.x > 0)
+            if (isChasing && !isInExplosionRange && playerTransform != null && !isPrepare)
             {
-                transform.localScale = new Vector2(-1, 1);
+                Vector2 direction = (playerTransform.position - transform.position).normalized;
+                Vector2 moveDirection = new Vector2(direction.x, 0).normalized;
+                transform.Translate(moveDirection * speed * Time.deltaTime);
+
+                if (direction.x > 0)
+                {
+                    transform.localScale = new Vector2(-1, 1);
+                }
+                else
+                {
+                    transform.localScale = new Vector2(1, 1);
+                }
             }
-            else
+            else if (isInExplosionRange && !isExploded)
             {
-                transform.localScale = new Vector2(1, 1);
+                isPrepare = true;
+                StartCoroutine(Explode());
             }
-        }
-        else if (isInExplosionRange && !isExploded)
-        {
-            isPrepare = true;
-            StartCoroutine(Explode());
-        }
-        else if (!isPrepare && !isInExplosionRange)
-        {
-            if (moveRight)
+            else if (!isPrepare && !isInExplosionRange)
             {
-                transform.Translate(Vector2.right * speed * Time.deltaTime);
-                transform.localScale = new Vector2(-1, 1);
-            }
-            else
-            {
-                transform.Translate(Vector2.left * speed * Time.deltaTime);
-                transform.localScale = new Vector2(1, 1);
+                if (moveRight)
+                {
+                    transform.Translate(Vector2.right * speed * Time.deltaTime);
+                    transform.localScale = new Vector2(-1, 1);
+                }
+                else
+                {
+                    transform.Translate(Vector2.left * speed * Time.deltaTime);
+                    transform.localScale = new Vector2(1, 1);
+                }
             }
         }
     }
@@ -108,6 +110,14 @@ public class Sapling : MonoBehaviour
 
         isExploded = true;
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            isOnGround = true;
+        }
     }
 
     private void OnDrawGizmosSelected()

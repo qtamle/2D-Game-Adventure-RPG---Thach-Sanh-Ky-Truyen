@@ -42,14 +42,51 @@ public class GhostSpike : MonoBehaviour
     {
         yield return new WaitForSeconds(explosionDelay);
 
-        foreach (Transform spawnPoint in smallSpikeSpawnPoints)
+        if (smallSpikeSpawnPoints.Length > 0)
         {
-            GameObject smallSpike = Instantiate(smallSpikePrefab, spawnPoint.position, Quaternion.identity);
-            Rigidbody2D rb = smallSpike.GetComponent<Rigidbody2D>();
-            if (rb != null)
+            // Spike bắn sang phải
+            GameObject smallSpikeRight = Instantiate(smallSpikePrefab, smallSpikeSpawnPoints[0].position, Quaternion.identity);
+            Rigidbody2D rbRight = smallSpikeRight.GetComponent<Rigidbody2D>();
+            if (rbRight != null)
             {
-                Vector2 direction = (spawnPoint.position - (Vector3)transform.position).normalized;
-                rb.velocity = direction * 20f;
+                Vector2 directionRight = Vector2.right;
+                rbRight.velocity = directionRight * 25f;
+            }
+        }
+
+        if (smallSpikeSpawnPoints.Length > 1)
+        {
+            // Spike bắn sang trái
+            GameObject smallSpikeLeft = Instantiate(smallSpikePrefab, smallSpikeSpawnPoints[1].position, Quaternion.identity);
+            Rigidbody2D rbLeft = smallSpikeLeft.GetComponent<Rigidbody2D>();
+            if (rbLeft != null)
+            {
+                Vector2 directionLeft = Vector2.left;
+                rbLeft.velocity = directionLeft * 25f;
+            }
+        }
+
+        if (smallSpikeSpawnPoints.Length > 2)
+        {
+            // Spike bắn chéo lên trên bên phải
+            GameObject smallSpikeDiagonalRight = Instantiate(smallSpikePrefab, smallSpikeSpawnPoints[2].position, Quaternion.identity);
+            Rigidbody2D rbDiagonalRight = smallSpikeDiagonalRight.GetComponent<Rigidbody2D>();
+            if (rbDiagonalRight != null)
+            {
+                Vector2 directionDiagonalRight = new Vector2(1, 1).normalized; // Hướng chéo lên bên phải
+                rbDiagonalRight.velocity = directionDiagonalRight * 25f;
+            }
+        }
+
+        if (smallSpikeSpawnPoints.Length > 3)
+        {
+            // Spike bắn chéo lên trên bên trái
+            GameObject smallSpikeDiagonalLeft = Instantiate(smallSpikePrefab, smallSpikeSpawnPoints[3].position, Quaternion.identity);
+            Rigidbody2D rbDiagonalLeft = smallSpikeDiagonalLeft.GetComponent<Rigidbody2D>();
+            if (rbDiagonalLeft != null)
+            {
+                Vector2 directionDiagonalLeft = new Vector2(-1, 1).normalized; // Hướng chéo lên bên trái
+                rbDiagonalLeft.velocity = directionDiagonalLeft * 25f;
             }
         }
 

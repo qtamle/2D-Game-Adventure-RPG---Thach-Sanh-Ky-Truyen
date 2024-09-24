@@ -72,7 +72,7 @@ public class Attack : MonoBehaviour
     {
         playerMovement.speed = reducedSpeed;
         PlayerAttack();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         playerMovement.speed = originalSpeed;
     }
     private void PlayerAttack()
@@ -112,6 +112,10 @@ public class Attack : MonoBehaviour
                 {
                     Debug.Log("Ghost Tree detected and attacked");
                     ghostTreeHealth.TakeDamage(damageBoss);
+                }
+                if (ghostTreeHealth == null)
+                {
+                    Debug.Log("GhostTreeHealth not found on " + enemy.name);
                 }
 
                 EagleHealthbar eagleBoss = enemy.GetComponent<EagleHealthbar>();

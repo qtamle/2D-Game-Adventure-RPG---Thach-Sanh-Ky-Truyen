@@ -18,6 +18,10 @@ public class HandCollision : MonoBehaviour
     public LayerMask playerLayer;
     private void Start()
     {
+        Vector3 startPosition = transform.position;
+        startPosition.z = 10f;
+        transform.position = startPosition;
+
         cameraShake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
@@ -32,6 +36,10 @@ public class HandCollision : MonoBehaviour
             cameraShake.CamShakeGhostTree();
             Debug.Log($"{gameObject.name} đã va chạm với {other.gameObject.name}.");
             isRetracting = true;
+
+            Vector3 particlePosition = particleSpawnPoint.position;
+            particlePosition.z = 10f;
+
             GameObject shock = Instantiate(collisionParticlePrefab, particleSpawnPoint.position, Quaternion.identity);
             Destroy(shock, 2f);
         }
@@ -47,17 +55,23 @@ public class HandCollision : MonoBehaviour
                 }
             }
         }
-    }
 
+        Destroy(gameObject, 2f);
+    }
     private void Update()
     {
         if (isRetracting)
         {
-            transform.position = Vector3.MoveTowards(transform.position, handRetract.position, speedRetract * Time.deltaTime);
+            Vector3 targetPosition = handRetract.position;
+            targetPosition.z = 10f;
 
-            if (Vector3.Distance(transform.position, handRetract.position) <= 0.1f || isRetracting)
+            Vector3 currentPosition = transform.position;
+            currentPosition.z = 10f; 
+            transform.position = Vector3.MoveTowards(currentPosition, targetPosition, speedRetract * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, targetPosition) <= 0.1f)
             {
-                Destroy(gameObject, 3f);
+                Destroy(gameObject, 2f);
             }
         }
     }

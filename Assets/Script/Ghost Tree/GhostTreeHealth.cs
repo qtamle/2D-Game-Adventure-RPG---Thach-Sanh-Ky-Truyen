@@ -49,7 +49,6 @@ public class GhostTreeHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         targetHealth -= damage;
-        Attacked();
         dameflash.CallDamageFlash();
         if (targetHealth < 0) targetHealth = 0;
 
@@ -131,8 +130,4 @@ public class GhostTreeHealth : MonoBehaviour
         }
     }
 
-    public void Attacked()
-    {
-        anim.SetTrigger("attacked");
-    }
 }
