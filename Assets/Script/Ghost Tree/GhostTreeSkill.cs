@@ -30,6 +30,8 @@ public class GhostTreeSkill : MonoBehaviour
     public float spawnY;
     public float spawnZ = 0f;
     private int numberOfSpawns;
+    public ParticleSystem leaf;
+    public Transform leafSpawn;
 
     [Header("Spike")]
     public GameObject largeSpikePrefab;
@@ -44,6 +46,8 @@ public class GhostTreeSkill : MonoBehaviour
         numberOfSpawns = Random.Range(3, 5);
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         StartCoroutine(ManageSkills());
+
+        ParticleSystem leafPrefab = Instantiate(leaf, leafSpawn.position, Quaternion.identity);
     }
     private IEnumerator ManageSkills()
     {

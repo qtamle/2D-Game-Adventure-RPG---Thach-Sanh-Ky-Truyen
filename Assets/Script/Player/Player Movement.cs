@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask ledgeLayer;
+    [SerializeField] private ParticleSystem dustPrefab;
 
     [Header("Health")]
     public HealthBar healthBar;
@@ -114,8 +115,14 @@ public class PlayerMovement : MonoBehaviour
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
+        if (horizontal != 0 && IsGrounded() && !isWallSliding && !isDashing)
+        {
+            dustPrefab.Play(); 
+        }
+
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && stamina.CurrentStamina > staminaJump)
         {
+            dustPrefab.Play();
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpPower);
             stamina.DecreaseStamina(staminaJump);
         }
@@ -127,6 +134,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L) && canDash && !isWallSliding && IsGrounded())
         {
+            dustPrefab.Play();
             StartCoroutine(Dash());
         }
 
