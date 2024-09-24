@@ -39,4 +39,19 @@ public class CameraShake : MonoBehaviour
     {
         animator.SetTrigger("fall");
     }
+
+    public void GolemShakeDash()
+    {
+        animator.SetTrigger("dash");
+    }
+
+    public void GolemStompShake()
+    {
+        animator.SetTrigger("stomp");
+    }
+
+    public void GolemSmashShake()
+    {
+        animator.SetTrigger("smash");
+    }
 }

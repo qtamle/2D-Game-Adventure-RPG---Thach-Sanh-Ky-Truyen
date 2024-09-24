@@ -143,11 +143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dfa7dc1b310bc14fb815310ec3c8269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  riseSpeed: 6
+  riseSpeed: 3
   riseDistance: 3.5
-  fallSpeed: 8
+  fallSpeed: 5
   extraFallDistance: 4
   destroyDelay: 3
+  shakeMagnitude: 0.05
   groundMask:
     serializedVersion: 2
     m_Bits: 128

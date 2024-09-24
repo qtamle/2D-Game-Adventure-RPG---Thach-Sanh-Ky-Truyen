@@ -54,11 +54,14 @@ public class GolemSkill : MonoBehaviour
     private bool isPerformingSkill = false;
     private bool isSkillActived = false;
     private bool isStandingStill = false;
+
+    private CameraShake cam;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
+        cam = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
 
         StartCoroutine(RandomSkillRoutine());
     }
@@ -207,6 +210,7 @@ public class GolemSkill : MonoBehaviour
             Flip();
         }
 
+        cam.GolemSmashShake();
         yield return new WaitForSeconds(1f);
 
         if (spikeStartPoint == null)
@@ -312,6 +316,7 @@ public class GolemSkill : MonoBehaviour
             }
         }
 
+        cam.GolemStompShake();
         rb.velocity = Vector2.zero;
         isSkillActived = false;
     }
@@ -359,7 +364,7 @@ public class GolemSkill : MonoBehaviour
         isSkillActived = true;
         yield return DashForwad();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
         {
@@ -402,6 +407,7 @@ public class GolemSkill : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("TurnOn") && isPerformingSkill)
         {
+            cam.GolemShakeDash();
             StopDash();
             SpawnFallingStones();
             rb.velocity = Vector2.zero;
