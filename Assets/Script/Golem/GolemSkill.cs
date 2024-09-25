@@ -286,6 +286,7 @@ public class GolemSkill : MonoBehaviour
     //combo
     IEnumerator DashForwad()
     {
+        dashNormal = true;
         isSkillActived = true;
         isDashing = true;
         dashTimeCounter = dashDurationCombo;
@@ -299,18 +300,21 @@ public class GolemSkill : MonoBehaviour
             if (playerCollider != null)
             {
                 PlayerMovement playerMovement = playerCollider.GetComponent<PlayerMovement>();
-                if (playerMovement != null && !isDamaged)
+                if (playerMovement != null && !isDamaged && !hasSlid)
                 {
                     playerMovement.TakeDamage(10f, 1f, 1.25f, 0.3f);
                     isDamaged = true;
                 }
             }
+            CheckInRadius();
             yield return null;
         }
 
         StopDash();
         isSkillActived = false;
         isDamaged = false;
+        hasSlid = false;
+        hasPressedZ = false;
     }
     IEnumerator JumpAndStomp()
     {
