@@ -552,7 +552,17 @@ public class GolemSkill : MonoBehaviour
                 Time.fixedDeltaTime = 0.02f;
                 Debug.Log("Nút Z đã được nhấn, trở về tốc độ game bình thường.");
 
+                // Đổi màu nút thành xanh
+                ChangeButtonColor(activeButton, Color.green);
                 CreateAfterImage(playerTransform.position);
+
+                // Gọi hàm lướt người chơi
+                Vector2 direction = playerMovement.GetFacingDirection();
+                StartCoroutine(SlidePlayer(playerTransform, direction));
+
+                hasSlid = true;
+                // Đợi 1.5 giây trước khi ẩn nút
+                yield return new WaitForSeconds(1.5f);
 
                 // Ẩn nút
                 if (isButtonActive && activeButton != null)
@@ -561,12 +571,6 @@ public class GolemSkill : MonoBehaviour
                     isButtonActive = false;
                     Debug.Log("Nút đã bị ẩn.");
                 }
-
-                // Lướt người chơi về phía trước
-                Vector2 direction = playerMovement.GetFacingDirection();
-                StartCoroutine(SlidePlayer(playerTransform, direction));
-
-                hasSlid = true;
 
                 yield break;
             }
@@ -587,9 +591,10 @@ public class GolemSkill : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
     }
+
     private IEnumerator SlidePlayer(Transform playerTransform, Vector2 direction, bool preventDamage = false)
     {
-        float slideSpeed = 5f;
+        float slideSpeed = 8f;
         float slideDuration = 1f;
         float elapsedTime = 0f;
 
@@ -636,7 +641,14 @@ public class GolemSkill : MonoBehaviour
 
         Destroy(afterImage, 2f);
     }
-
+    private void ChangeButtonColor(GameObject button, Color color)
+    {
+        SpriteRenderer buttonSprite = button.GetComponent<SpriteRenderer>();
+        if (buttonSprite != null)
+        {
+            buttonSprite.color = color;
+        }
+    }
 
     private void OnDrawGizmos()
     {
