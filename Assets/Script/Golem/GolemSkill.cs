@@ -15,6 +15,7 @@ public class GolemSkill : MonoBehaviour
     public Transform radiusAttackTransform;
     public float detectionRadius;
     private bool isDamaged = false;
+    private bool dashNormal;
 
     [Header("Throw Stone")]
     public GameObject rockPrefab;
@@ -47,6 +48,10 @@ public class GolemSkill : MonoBehaviour
     public GameObject rollingStone;
     public float throwForceStone;
     public Transform throwStoneRoll;
+    public Transform radiusCheckforPlayer;
+    public float playerRadius;
+    public Transform radiusCheckBehindTransform; 
+    public float radiusCheckBehind;
 
     private Rigidbody2D rb;
     private Transform player;
@@ -54,10 +59,31 @@ public class GolemSkill : MonoBehaviour
     private bool isPerformingSkill = false;
     private bool isSkillActived = false;
     private bool isStandingStill = false;
+    private PlayerMovement playerMovement;
+
+    [Header("Check Dash for Player")]
+    public Transform radiusCheckTransform;
+    public float radiusCheck;
+    public LayerMask playerMask;
+    public GameObject buttonPrefab; 
+    private GameObject activeButton;
+    public Transform buttonSpawnTransform;
+    private bool isButtonActive = false;
+    private bool hasSlid = false;
+    private bool hasPressedZ = false;
+    public GameObject afterImagePrefab;
 
     private CameraShake cam;
     private void Start()
     {
+        buttonPrefab.SetActive(false);
+
+        playerMovement = GetComponent<PlayerMovement>();
+        if (playerMovement == null)
+        {
+            playerMovement = FindObjectOfType<PlayerMovement>();
+        }
+
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
@@ -124,6 +150,7 @@ public class GolemSkill : MonoBehaviour
 
     IEnumerator DashCoroutine()
     {
+        dashNormal = true;
         isSkillActived = true;
 
         if ((facingRight && player.position.x < transform.position.x) || (!facingRight && player.position.x > transform.position.x))
@@ -146,24 +173,27 @@ public class GolemSkill : MonoBehaviour
             if (playerCollider != null)
             {
                 PlayerMovement playerMovement = playerCollider.GetComponent<PlayerMovement>();
-                if (playerMovement != null && !isDamaged)
+                if (playerMovement != null && !isDamaged && !hasSlid) 
                 {
                     playerMovement.TakeDamage(10f, 1f, 1.25f, 0.3f);
                     isDamaged = true;
                 }
             }
-
+            CheckInRadius();
             yield return null;
         }
 
         StopDash();
         isSkillActived = false; 
         isDamaged = false;
+        hasSlid = false;
+        hasPressedZ = false;
     }
 
     void StopDash()
     {
         isDashing = false;
+        dashNormal = false;
         rb.velocity = Vector2.zero;
         isPerformingSkill = false;
         isSkillActived = true;
@@ -431,6 +461,178 @@ public class GolemSkill : MonoBehaviour
             Flip();
         }
     }
+    public bool CheckInRadius()
+    {
+        // Kiểm tra nếu đã nhấn nút Z, nếu có thì không xử lý va chạm
+        if (hasPressedZ)
+        {
+            Debug.Log("Người chơi đã nhấn Z, không kiểm tra va chạm.");
+            return false; 
+        }
+
+        // Kiểm tra va chạm trong bán kính phía trước bằng hình hộp
+        Vector2 boxSize = new Vector2(radiusCheck * 2, radiusCheck * 2);
+        Collider2D[] hitColliders = Physics2D.OverlapBoxAll(radiusCheckTransform.position, boxSize, 0f, playerMask);
+        Debug.Log("Số collider phát hiện: " + hitColliders.Length);
+
+        Vector2 playerBoxSize = new Vector2(playerRadius * 2, playerRadius * 5);
+        Collider2D playerCollider = Physics2D.OverlapBox(radiusCheckforPlayer.position, playerBoxSize, 0f, LayerMask.GetMask("Player"));
+
+        // Nếu có collider phát hiện và playerCollider không null
+        if (hitColliders.Length > 0 && playerCollider != null)
+        {
+            // Kiểm tra va chạm giữa box hình hộp và box player
+            foreach (Collider2D hitCollider in hitColliders)
+            {
+                float distance = Vector2.Distance(hitCollider.transform.position, playerCollider.transform.position);
+                if (distance <= (radiusCheck + playerRadius))
+                {
+                    Debug.Log("Có va chạm giữa box hình hộp và box player.");
+                    Debug.Log("Đã phát hiện: " + hitCollider.name);
+
+                    // Kiểm tra các điều kiện để hiện nút
+                    if (!isDamaged && hitCollider.CompareTag("Player") && dashNormal)
+                    {
+                        Debug.Log("Player đã được phát hiện và điều kiện hiển thị nút được thỏa mãn.");
+
+                        if (!isButtonActive)
+                        {
+                            activeButton = Instantiate(buttonPrefab, buttonSpawnTransform.position, Quaternion.identity);
+                            activeButton.SetActive(true);
+                            isButtonActive = true;
+                            Debug.Log("Nút đã được hiển thị tại vị trí: " + buttonSpawnTransform.position);
+
+                            StartCoroutine(SlowMotionAndMoveButton(hitCollider.transform));
+                        }
+
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.Log("Điều kiện hiển thị nút không thỏa mãn: isDamaged=" + isDamaged + ", dashNormal=" + dashNormal);
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        return false;
+    }
+    private IEnumerator SlowMotionAndMoveButton(Transform playerTransform)
+    {
+        // Thiết lập slow motion
+        float slowMotionScale = 0.01f;
+        Time.timeScale = slowMotionScale;
+        Time.fixedDeltaTime = 0.02f * slowMotionScale;
+        float slowMotionDuration = 2f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < slowMotionDuration)
+        {
+            if (isDamaged)
+            {
+                Time.timeScale = 1f;
+                Time.fixedDeltaTime = 0.02f;
+                Debug.Log("Tốc độ game đã trở về bình thường do isDamaged.");
+                break;
+            }
+
+            activeButton.transform.position = buttonSpawnTransform.position;
+
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                // Đánh dấu là đã nhấn Z
+                hasPressedZ = true;
+                Time.timeScale = 1f;
+                Time.fixedDeltaTime = 0.02f;
+                Debug.Log("Nút Z đã được nhấn, trở về tốc độ game bình thường.");
+
+                CreateAfterImage(playerTransform.position);
+
+                // Ẩn nút
+                if (isButtonActive && activeButton != null)
+                {
+                    Destroy(activeButton);
+                    isButtonActive = false;
+                    Debug.Log("Nút đã bị ẩn.");
+                }
+
+                // Lướt người chơi về phía trước
+                Vector2 direction = playerMovement.GetFacingDirection();
+                StartCoroutine(SlidePlayer(playerTransform, direction));
+
+                hasSlid = true;
+
+                yield break;
+            }
+
+            elapsedTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        // Hủy nút sau khi slow motion
+        if (isButtonActive && activeButton != null)
+        {
+            Destroy(activeButton);
+            isButtonActive = false;
+            Debug.Log("Nút đã bị ẩn sau " + slowMotionDuration + " giây.");
+        }
+
+        // Đặt tốc độ game về bình thường
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+    }
+    private IEnumerator SlidePlayer(Transform playerTransform, Vector2 direction, bool preventDamage = false)
+    {
+        float slideSpeed = 5f;
+        float slideDuration = 1f;
+        float elapsedTime = 0f;
+
+        Vector2 startPosition = playerTransform.position;
+        Vector2 slideDistance = direction.normalized * slideSpeed;
+
+        while (elapsedTime < slideDuration)
+        {
+            float t = elapsedTime / slideDuration;
+            float smoothStep = t * t * (3f - 2f * t);
+
+            // Cập nhật vị trí người chơi
+            playerTransform.position = Vector2.Lerp(startPosition, startPosition + slideDistance, smoothStep);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        playerTransform.position = startPosition + slideDistance;
+
+        if (preventDamage)
+        {
+            Debug.Log("Không nhận sát thương trong chế độ slow motion.");
+        }
+    }
+    private void CreateAfterImage(Vector2 position)
+    {
+        GameObject afterImage = Instantiate(afterImagePrefab, position, Quaternion.identity);
+
+        Vector2 facingDirection = playerMovement.GetFacingDirection();
+        float angle = Mathf.Atan2(facingDirection.y, facingDirection.x) * Mathf.Rad2Deg;
+
+        if (angle > 0)
+        {
+            angle = 360f;
+            afterImage.transform.localScale = new Vector3(Mathf.Abs(afterImage.transform.localScale.x), afterImage.transform.localScale.y, afterImage.transform.localScale.z);
+        }
+        else
+        {
+            afterImage.transform.localScale = new Vector3(afterImage.transform.localScale.x, afterImage.transform.localScale.y, afterImage.transform.localScale.z);
+        }
+
+        afterImage.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        Destroy(afterImage, 2f);
+    }
+
 
     private void OnDrawGizmos()
     {
@@ -439,6 +641,20 @@ public class GolemSkill : MonoBehaviour
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(JumpAttack.position, radiusJumpAttack);
+
+        if (radiusCheckTransform != null)
+        {
+            Gizmos.color = Color.yellow;
+            Vector2 boxSize = new Vector2(radiusCheck * 2, radiusCheck * 2);
+            Gizmos.DrawWireCube(radiusCheckTransform.position, boxSize);
+        }
+
+        if (radiusCheckforPlayer != null)
+        {
+            Gizmos.color = Color.blue; 
+            Vector2 playerBoxSize = new Vector2(playerRadius * 2, playerRadius * 5);
+            Gizmos.DrawWireCube(radiusCheckforPlayer.position, playerBoxSize);
+        }
     }
 
 }

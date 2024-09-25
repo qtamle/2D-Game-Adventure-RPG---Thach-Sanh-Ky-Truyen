@@ -447,5 +447,9 @@ public class PlayerMovement : MonoBehaviour
             rb2d.velocity = Vector2.zero;
         }
     }
+    public Vector2 GetFacingDirection()
+    {
+        return isFacingRight ? Vector2.right : Vector2.left; 
+    }
 
 }
