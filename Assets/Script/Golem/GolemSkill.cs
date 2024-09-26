@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -74,6 +75,7 @@ public class GolemSkill : MonoBehaviour
     public GameObject afterImagePrefab;
 
     private CameraShake cam;
+
     private void Start()
     {
         buttonPrefab.SetActive(false);
@@ -529,7 +531,7 @@ public class GolemSkill : MonoBehaviour
         float slowMotionScale = 0.01f;
         Time.timeScale = slowMotionScale;
         Time.fixedDeltaTime = 0.02f * slowMotionScale;
-        float slowMotionDuration = 2f;
+        float slowMotionDuration = 1f;
         float elapsedTime = 0f;
 
         while (elapsedTime < slowMotionDuration)
@@ -648,6 +650,11 @@ public class GolemSkill : MonoBehaviour
         {
             buttonSprite.color = color;
         }
+    }
+
+    public bool GetStatus()
+    {
+        return isStandingStill;
     }
 
     private void OnDrawGizmos()

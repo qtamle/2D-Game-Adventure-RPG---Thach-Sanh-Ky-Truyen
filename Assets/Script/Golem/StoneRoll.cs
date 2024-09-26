@@ -5,6 +5,7 @@ using UnityEngine;
 public class StoneRoll : MonoBehaviour
 {
     public float damage = 10f;
+    public float rotationSpeed;
     private PlayerMovement playerMovement;
     private StatusEffects statusEffects;
     private void Start()
@@ -15,6 +16,11 @@ public class StoneRoll : MonoBehaviour
 
         Physics2D.IgnoreLayerCollision(stoneLayer, enemyLayer, true);
         Physics2D.IgnoreLayerCollision(stoneLayer, turnOnLayer, true);
+    }
+
+    private void Update()
+    {
+        transform.Rotate(0,0,rotationSpeed * Time.deltaTime);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

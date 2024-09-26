@@ -61,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
     private LedgeClimb ledgeClimb;
     private Stamina stamina;
     private StatusEffects statusEffects;
+    private GolemSkill golemSkill;
 
     [Header("KnockBack")]
     public Vector3 knockbackDirection = Vector3.left;
@@ -83,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
         {
             healthBar.health = healthBar.maxHealth; 
         }
+
         // Get Component
         ladderMovement = GetComponent<LadderMovement>();
         grappler = GetComponent<Grappler>();
@@ -90,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
         stamina = GetComponent<Stamina>();
         statusEffects = GetComponent<StatusEffects>();
         bowScript = GetComponent<Bow>();
+        golemSkill = GetComponent<GolemSkill>();
     }
     private void Update()
     {
@@ -132,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
             rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y * 0.5f);
         }
 
-        if (Input.GetKeyDown(KeyCode.L) && canDash && !isWallSliding && IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Z) && canDash && !isWallSliding && IsGrounded())
         {
             dustPrefab.Play();
             StartCoroutine(Dash());

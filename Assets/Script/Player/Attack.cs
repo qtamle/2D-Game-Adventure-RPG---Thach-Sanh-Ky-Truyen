@@ -30,13 +30,13 @@ public class Attack : MonoBehaviour
         ladder = GetComponent<LadderMovement>();
         playerMovement = GetComponent<PlayerMovement>();
         stamina = GetComponent<Stamina>();
-
         originalSpeed = playerMovement.speed;
+
     }
     private void Update()
     {
         // Kiểm tra các điều kiện để thực hiện tấn công
-        if (Input.GetKeyDown(KeyCode.J) && !ladder.isClimbing && !playerMovement.isSwinging && playerMovement.CanAttack())
+        if (Input.GetMouseButtonDown(0) && !ladder.isClimbing && !playerMovement.isSwinging && playerMovement.CanAttack())
         {
             // Kiểm tra xem stamina có đủ để thực hiện tấn công không
             if (!isCooldown && stamina.CurrentStamina > staminaCostPerAttack)
@@ -129,6 +129,16 @@ public class Attack : MonoBehaviour
                 if (toadhealth != null)
                 {
                     toadhealth.TakeDamage(damageBoss);
+                }
+
+                GolemHealthbar golemHealth = enemy.GetComponent<GolemHealthbar>();
+                if (golemHealth != null)
+                {
+                    golemHealth.TakeDamage(10,15);
+                }
+                else
+                {
+                    Debug.Log("khong the tan cong");
                 }
             }
         }
