@@ -626,7 +626,7 @@ public class EagleSkill : MonoBehaviour
 
     private IEnumerator SmoothPushPlayer(Vector2 direction)
     {
-        float pushDuration = 5f;
+        float pushDuration = 2.5f;
         float elapsedTime = 0f;
         Vector2 initialPosition = player.position;
 

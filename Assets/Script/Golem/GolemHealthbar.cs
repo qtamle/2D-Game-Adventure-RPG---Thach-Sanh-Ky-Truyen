@@ -38,8 +38,7 @@ public class GolemHealthbar : MonoBehaviour
     public Transform glassSpawn;
     [SerializeField] private ParticleSystem shieldDepletedEffect;
 
-    private bool isStunned = false;
-    private float stunDuration = 3f;
+    private bool canAttack;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -96,12 +95,12 @@ public class GolemHealthbar : MonoBehaviour
 
         if (damageShield <= 0 && damageHealth <= 0) return;
 
-        if (shield > 0 && damageShield > 0)
+        if (shield > 0 && damageShield > 0 && !canAttack)
         {
             ApplyShieldDamage(damageShield);
         }
 
-        if (shield <= 0 && damageHealth > 0)
+        if ((shield <= 0 || canAttack) && damageHealth > 0)
         {
             ApplyHealthDamage(damageHealth);
         }
@@ -109,10 +108,9 @@ public class GolemHealthbar : MonoBehaviour
 
     private void ApplyShieldDamage(float damage)
     {
-
-        float damageToShield = Mathf.Min(damage, shield);
-        shield -= damageToShield;
-        damage -= damageToShield;
+            float damageToShield = Mathf.Min(damage, shield);
+            shield -= damageToShield;
+            damage -= damageToShield;
 
         if (shield <= 0)
         {
@@ -133,13 +131,13 @@ public class GolemHealthbar : MonoBehaviour
 
     private void ApplyHealthDamage(float damage)
     {
-        targetHealth -= damage;
-        dameflash.CallDamageFlash();
-        if (targetHealth < 0) targetHealth = 0;
+            targetHealth -= damage;
+            dameflash.CallDamageFlash();
+            if (targetHealth < 0) targetHealth = 0;
 
-        health = targetHealth;
-        StartCoroutine(UpdateHealthBar());
-        StartCoroutine(UpdateLostHealthBar());
+            health = targetHealth;
+            StartCoroutine(UpdateHealthBar());
+            StartCoroutine(UpdateLostHealthBar());
     }
 
     private IEnumerator UpdateHealthBar()
@@ -227,6 +225,8 @@ public class GolemHealthbar : MonoBehaviour
 
     private IEnumerator RegenerateShield()
     {
+        canAttack = true;
+
         yield return new WaitForSeconds(5f);
 
         while (shield < maxShield)
@@ -239,6 +239,8 @@ public class GolemHealthbar : MonoBehaviour
             StartCoroutine(UpdateShieldBar());
             yield return null;
         }
+
+        canAttack = false;
 
         if (shieldSlider != null)
         {

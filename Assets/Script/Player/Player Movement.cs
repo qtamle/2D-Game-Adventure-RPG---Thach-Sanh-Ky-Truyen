@@ -118,10 +118,6 @@ public class PlayerMovement : MonoBehaviour
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (horizontal != 0 && IsGrounded() && !isWallSliding && !isDashing)
-        {
-            dustPrefab.Play(); 
-        }
 
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && stamina.CurrentStamina > staminaJump)
         {
@@ -165,6 +161,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isWallJumping && !isDashing && !isSwinging)
         {
+            dustPrefab.Play();
             rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
         }
         else if (isSwinging)
