@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3336820536801795443}
   - component: {fileID: 2365847313750164281}
   - component: {fileID: 8389520817084305616}
+  - component: {fileID: -2500351764293643391}
   m_Layer: 14
   m_Name: spike
   m_TagString: Untagged
@@ -187,6 +188,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &-2500351764293643391
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5517959712022769364}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 57489ebd7c49d6549b2cb164843b30e5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5715976459308869227
 GameObject:
   m_ObjectHideFlags: 0
