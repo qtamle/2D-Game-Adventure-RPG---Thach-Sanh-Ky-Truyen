@@ -56,7 +56,7 @@ public class Bow : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1) && stamina.CurrentStamina > staminaBow)
+        if (Input.GetMouseButtonDown(1) && stamina.CurrentStamina > staminaBow && playerMovement.GetGroundCheck())
         {
             if (!isDrawing)
             {

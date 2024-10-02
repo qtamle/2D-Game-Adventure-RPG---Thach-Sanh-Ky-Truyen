@@ -452,4 +452,8 @@ public class PlayerMovement : MonoBehaviour
         return isFacingRight ? Vector2.right : Vector2.left; 
     }
 
+    public bool GetGroundCheck()
+    {
+        return IsGrounded();
+    }
 }
