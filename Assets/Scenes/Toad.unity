@@ -831,27 +831,27 @@ PrefabInstance:
       objectReference: {fileID: 902021327}
     - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_Size.x
-      value: 1.392525
+      value: 9.992143
       objectReference: {fileID: 0}
     - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_Size.y
-      value: 2.1698766
+      value: 20.526718
       objectReference: {fileID: 0}
     - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_Offset.x
-      value: -0.34297058
+      value: -2.8236232
       objectReference: {fileID: 0}
     - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_Offset.y
-      value: -0.45647025
+      value: -1.0352917
       objectReference: {fileID: 0}
     - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 3.125
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1890904308222208758, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 3.125
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2083324538028742533, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: staminaSlider
@@ -875,7 +875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: radiusAttack
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: attackSegments
@@ -915,15 +915,15 @@ PrefabInstance:
       objectReference: {fileID: 2282438384830233658, guid: 7697a49ea05824642b45a2fab61c81c4, type: 3}
     - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalScale.x
-      value: -1.2893
+      value: -0.2098168
       objectReference: {fileID: 0}
     - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2893
+      value: 0.2098168
       objectReference: {fileID: 0}
     - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.2893
+      value: 0.2098168
       objectReference: {fileID: 0}
     - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1725,6 +1725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 360230173}
+  spikeShake: {fileID: 0}
 --- !u!4 &1064159509
 Transform:
   m_ObjectHideFlags: 0
