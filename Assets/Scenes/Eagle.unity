@@ -1258,6 +1258,7 @@ GameObject:
   - component: {fileID: 360230169}
   - component: {fileID: 360230172}
   - component: {fileID: 360230173}
+  - component: {fileID: 360230174}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1308,7 +1309,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 11.58
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1391,7 +1392,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360230168}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 27934fbba86ccdc448578e220e9864d2, type: 2}
   m_CullingMode: 0
@@ -1404,6 +1405,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &360230174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360230168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab8353b5ebd32545867da143199a814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shakeTechnique: 0
+  _makeDefaultOnEnable: 1
+  _limitMagnitude: 0
+  _positionalMagnitudeLimit: 10
+  _rotationalMagnitudeLimit: 3
 --- !u!1001 &367183366
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1978,8 +1996,8 @@ Transform:
   m_GameObject: {fileID: 659025584}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.3621, y: -11.5661, z: 0}
-  m_LocalScale: {x: 30.10892, y: 5.769066, z: 1}
+  m_LocalPosition: {x: 1.3621, y: -13.5709, z: 0}
+  m_LocalScale: {x: 30.10892, y: 8.483989, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2479,7 +2497,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66a2df61c2477047a71739deb0b0183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 360230173}
+  animator: {fileID: 0}
+  spikeShake: {fileID: 11400000, guid: bfcabe569381974429f8a4b5deb71213, type: 2}
 --- !u!4 &1064159509
 Transform:
   m_ObjectHideFlags: 0
@@ -2716,7 +2735,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1236785837
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2758,7 +2777,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 86988877b04c56f44b3ce6dd9c8ab048, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0e8fadd735db0554fa90d1d930887ee0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2778,8 +2797,8 @@ Transform:
   m_GameObject: {fileID: 1236785836}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.62, y: -12.22, z: 4.4}
-  m_LocalScale: {x: 2.1312358, y: 2.1671934, z: 1.3386}
+  m_LocalPosition: {x: 2.01, y: -2.7287, z: 4.4}
+  m_LocalScale: {x: 2.501973, y: 2.798095, z: 1.5714549}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2801,7 +2820,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!199 &1306778771
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -8304,8 +8323,8 @@ Transform:
   m_GameObject: {fileID: 1903449840}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.91, y: 7.82, z: 0}
-  m_LocalScale: {x: 2.1221826, y: 2.1221826, z: 2.1221826}
+  m_LocalPosition: {x: 4.5145, y: 8.1, z: 0}
+  m_LocalScale: {x: 2.3740466, y: 2.3740466, z: 2.3740466}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1229909845}
@@ -8425,7 +8444,7 @@ MonoBehaviour:
   featherCount: 5
   spreadAngle: 65
   cornerOffset: 2
-  horizontalFlySpeed: 8
+  horizontalFlySpeed: 10
   flyExit: 25
   stompSpeed: 25
   detectionDistance: 15.5
@@ -8440,6 +8459,7 @@ MonoBehaviour:
     m_Bits: 128
   stompRadius: 1.5
   positionStompAttack: {fileID: 2035097801}
+  stompSpeedBack: 30
   windGustPrefab: {fileID: 6449717893403484343, guid: 1a01cc24f34dd214b928c4b2685422fc, type: 3}
   windGustDuration: 2.5
   windGustForce: 10
@@ -8448,6 +8468,8 @@ MonoBehaviour:
   smokeSpawn: {fileID: 1229909845}
   fallSpeed: 2
   isSkillActive: 0
+  stompShake: {fileID: 11400000, guid: 386217d6bc5e72440be28ab6d140a888, type: 2}
+  fallShake: {fileID: 11400000, guid: bfcabe569381974429f8a4b5deb71213, type: 2}
 --- !u!61 &1903449845
 BoxCollider2D:
   m_ObjectHideFlags: 0

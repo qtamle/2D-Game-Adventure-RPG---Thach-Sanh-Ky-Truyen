@@ -497,6 +497,7 @@ GameObject:
   - component: {fileID: 360230169}
   - component: {fileID: 360230172}
   - component: {fileID: 360230173}
+  - component: {fileID: 360230174}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -630,7 +631,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360230168}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 076598a45d699e74fbc1c14c14662bbd, type: 2}
   m_CullingMode: 0
@@ -643,6 +644,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &360230174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360230168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab8353b5ebd32545867da143199a814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shakeTechnique: 0
+  _makeDefaultOnEnable: 1
+  _limitMagnitude: 0
+  _positionalMagnitudeLimit: 10
+  _rotationalMagnitudeLimit: 3
 --- !u!1001 &367183366
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1909,7 +1927,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66a2df61c2477047a71739deb0b0183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 360230173}
+  animator: {fileID: 0}
+  spikeShake: {fileID: 11400000, guid: d1beb7f4623c72440939f7c291ab811b, type: 2}
 --- !u!4 &1064159509
 Transform:
   m_ObjectHideFlags: 0
@@ -3072,6 +3091,9 @@ MonoBehaviour:
   buttonPrefab: {fileID: 6456894087547757935, guid: 58019721a0a50734abeedb97de51f89d, type: 3}
   buttonSpawnTransform: {fileID: 1614702935}
   afterImagePrefab: {fileID: 1044671649471655185, guid: 4ddc3e9271555ff4f9909f1cd9baa7ea, type: 3}
+  dashShake: {fileID: 11400000, guid: 4e43253785440194d84eb01e9cb93628, type: 2}
+  jumpShake: {fileID: 11400000, guid: eef1a3d284dd6e44a8e54aaeb5daa268, type: 2}
+  spikeShake: {fileID: 11400000, guid: d1beb7f4623c72440939f7c291ab811b, type: 2}
 --- !u!114 &1616603721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3091,7 +3113,7 @@ MonoBehaviour:
   lostShieldSlider: {fileID: 1369016218}
   golemSkill: {fileID: 1616603720}
   health: 0
-  maxHealth: 1000
+  maxHealth: 1200
   shield: 0
   maxShield: 100
   smoothTime: 0.2

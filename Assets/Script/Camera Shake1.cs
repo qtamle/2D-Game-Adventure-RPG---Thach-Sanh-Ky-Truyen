@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using FirstGearGames.SmoothCameraShaker;
 public class CameraShake : MonoBehaviour
 {
     public Animator animator;
+    public ShakeData spikeShake;
 
     public void CamShake()
     {
@@ -53,5 +54,13 @@ public class CameraShake : MonoBehaviour
     public void GolemSmashShake()
     {
         animator.SetTrigger("smash");
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            CameraShakerHandler.Shake(spikeShake);
+        }
     }
 }

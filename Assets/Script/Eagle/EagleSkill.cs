@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FirstGearGames.SmoothCameraShaker;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
@@ -56,6 +57,7 @@ public class EagleSkill : MonoBehaviour
     public LayerMask groundLayer;
     public float stompRadius = 1f;
     public Transform positionStompAttack;
+    public float stompSpeedBack;
 
     [Header("Gust of Wind")]
     public GameObject windGustPrefab;
@@ -78,9 +80,13 @@ public class EagleSkill : MonoBehaviour
     private CameraShake cam;
     private BoxCollider2D boxCollider;
     private Rigidbody2D rb;
+
+    [Header("Camera Shake")]
+    public ShakeData stompShake;
+    public ShakeData fallShake;
     private void Start()
     {
-        cam = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
+        //cam = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         boxCollider = GetComponent<BoxCollider2D>();
@@ -506,7 +512,7 @@ public class EagleSkill : MonoBehaviour
                 ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                 StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
 
-                cam.EagleShake();
+                CameraShakerHandler.Shake(stompShake);
                 yield return new WaitForSeconds(1f);
                 break;
             }
@@ -515,7 +521,7 @@ public class EagleSkill : MonoBehaviour
 
         while (Vector2.Distance(transform.position, initialPosition) > 0.1f)
         {
-            transform.position = Vector2.MoveTowards(transform.position, initialPosition, stompSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, initialPosition, stompSpeedBack * Time.deltaTime);
             yield return null;
         }
     }
@@ -669,7 +675,7 @@ public class EagleSkill : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && rb.bodyType == RigidbodyType2D.Dynamic)
         {
-            cam.EagleShakeFall();
+            CameraShakerHandler.Shake(fallShake);
             ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
             StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
 

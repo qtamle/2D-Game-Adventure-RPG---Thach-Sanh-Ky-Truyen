@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+using FirstGearGames.SmoothCameraShaker;
 public class GolemSkill : MonoBehaviour
 {
     [Header("Dash")]
@@ -76,6 +76,10 @@ public class GolemSkill : MonoBehaviour
 
     private CameraShake cam;
 
+    [Header("Shake Camera")]
+    public ShakeData dashShake;
+    public ShakeData jumpShake;
+    public ShakeData spikeShake;
     private void Start()
     {
         buttonPrefab.SetActive(false);
@@ -89,7 +93,7 @@ public class GolemSkill : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Player"), true);
-        cam = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
+        //cam = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
 
         StartCoroutine(RandomSkillRoutine());
     }
@@ -242,8 +246,8 @@ public class GolemSkill : MonoBehaviour
             Flip();
         }
 
-        cam.GolemSmashShake();
-        yield return new WaitForSeconds(1f);
+        CameraShakerHandler.Shake(spikeShake);
+        yield return new WaitForSeconds(2f);
 
         if (spikeStartPoint == null)
         {
@@ -352,7 +356,7 @@ public class GolemSkill : MonoBehaviour
             }
         }
 
-        cam.GolemStompShake();
+        CameraShakerHandler.Shake(jumpShake);
         rb.velocity = Vector2.zero;
         isSkillActived = false;
     }
@@ -441,9 +445,9 @@ public class GolemSkill : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("TurnOn") && isPerformingSkill)
+        if (collision.gameObject.CompareTag("TurnOn") && isPerformingSkill && dashNormal)
         {
-            cam.GolemShakeDash();
+            CameraShakerHandler.Shake(dashShake);
             StopDash();
             SpawnFallingStones();
             rb.velocity = Vector2.zero;
@@ -602,11 +606,25 @@ public class GolemSkill : MonoBehaviour
 
         Vector2 startPosition = playerTransform.position;
         Vector2 slideDistance = direction.normalized * slideSpeed;
+        Vector2 slideDirection = direction.normalized;
+
+        BoxCollider2D playerCollider = playerTransform.GetComponent<BoxCollider2D>();
 
         while (elapsedTime < slideDuration)
         {
             float t = elapsedTime / slideDuration;
             float smoothStep = t * t * (3f - 2f * t);
+
+            Vector2 newPosition = Vector2.Lerp(startPosition, startPosition + slideDistance, smoothStep);
+
+            // Kiểm tra va chạm với BoxCollider
+            RaycastHit2D hit = Physics2D.BoxCast(playerCollider.bounds.center, playerCollider.bounds.size, 0f, slideDirection, slideSpeed * Time.deltaTime, LayerMask.GetMask("TurnOn"));
+
+            if (hit.collider != null)
+            {
+                Debug.Log("Va chạm với vật cản, dừng trượt.");
+                break; 
+            }
 
             // Cập nhật vị trí người chơi
             playerTransform.position = Vector2.Lerp(startPosition, startPosition + slideDistance, smoothStep);
@@ -615,7 +633,10 @@ public class GolemSkill : MonoBehaviour
             yield return null;
         }
 
-        playerTransform.position = startPosition + slideDistance;
+        if (elapsedTime >= slideDuration)
+        {
+            playerTransform.position = startPosition + slideDistance;
+        }
 
         if (preventDamage)
         {
