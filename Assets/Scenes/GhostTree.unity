@@ -3528,6 +3528,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1286907483}
   m_CullTransparentMesh: 1
+--- !u!95 &1351722023 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3378110482601655206, guid: 90e1651f1091a92429b9dbbc98b736cb, type: 3}
+  m_PrefabInstance: {fileID: 1626999235150105194}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1356713317 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6581148821231981523, guid: e1a6cd06322fd874da70d52ec32e89d2, type: 3}
@@ -6334,6 +6339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d4420298a9a624ba5c39e116c1229f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
   vineObject: {fileID: 9166934086284275621, guid: 640310c65c8813a48bd4c5cf18803f2f, type: 3}
   warningPrefab: {fileID: 6215205456343541741, guid: b1e21b1772d99184aa414dceea0f8745, type: 3}
   timeAppears: 0.5
@@ -6681,6 +6687,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "Avatar_M\u1ED9cTinh"
       objectReference: {fileID: 0}
+    - target: {fileID: 5565339360182239731, guid: 90e1651f1091a92429b9dbbc98b736cb, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 1351722023}
     - target: {fileID: 5565339360182239731, guid: 90e1651f1091a92429b9dbbc98b736cb, type: 3}
       propertyPath: leafSpawn
       value: 

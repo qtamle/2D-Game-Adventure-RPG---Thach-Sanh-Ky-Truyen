@@ -4,6 +4,7 @@ using UnityEngine.Rendering.Universal;
 
 public class GhostTreeSkill : MonoBehaviour
 {
+    [SerializeField] public Animator anim;
     [Header("Vine")]
     public GameObject vineObject;
     public GameObject warningPrefab;
@@ -90,6 +91,7 @@ public class GhostTreeSkill : MonoBehaviour
     }
     private IEnumerator SpawnVine()
     {
+        anim.SetTrigger("Vine");
         if (VineTie.isVineActive)
         {
             Debug.Log("Vine hiện tại vẫn tồn tại, không thể spawn Vine mới.");
@@ -143,6 +145,7 @@ public class GhostTreeSkill : MonoBehaviour
     }
     private IEnumerator MoveHands()
     {
+        anim.SetTrigger("Hands");
         leftHand = Instantiate(leftHandPrefab, leftHandStartPosition.position, Quaternion.identity);
         rightHand = Instantiate(rightHandPrefab, rightHandStartPosition.position, Quaternion.identity);
 
@@ -187,6 +190,7 @@ public class GhostTreeSkill : MonoBehaviour
 
         for (int i = 0; i < numberOfSpawns; i++)
         {
+            anim.SetTrigger("Spam");
             float randomX = Random.Range(minSpawnX, maxSpawnX);
             Vector3 spawnPosition = new Vector3(randomX, spawnY, spawnZ);
 
@@ -197,12 +201,14 @@ public class GhostTreeSkill : MonoBehaviour
     }
     private IEnumerator ShootSpikes()
     {
+        
         Debug.Log("Starting spike shooting coroutine...");
 
         int spikeCount = Random.Range(1, 6);
 
         for (int i = 0; i < spikeCount; i++)
         {
+            anim.SetTrigger("Spike");
             Debug.Log("Shooting spike...");
 
             Vector3 spawnPosition = spawnPoint.position;
