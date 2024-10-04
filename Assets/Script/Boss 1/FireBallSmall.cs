@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBullet : MonoBehaviour
+public class FireBallSmall : MonoBehaviour
 {
     public float damage = 10f;
     public GameObject explosionPrefab;
     public LayerMask groundLayer;
     public float yOffset = 3f;
-    public float rotationSpeed;
+    private CircleCollider2D circleCollider;  
 
-    private void Update()
+    private void Start()
     {
-        transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+        circleCollider = gameObject.AddComponent<CircleCollider2D>();
+
+        circleCollider.radius = 1f;
+        circleCollider.isTrigger = true;
+
+        transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -31,10 +36,21 @@ public class FireBullet : MonoBehaviour
         {
             Vector3 hitPosition = collision.ClosestPoint(transform.position);
             hitPosition.y += yOffset;
+
             GameObject explosion = Instantiate(explosionPrefab, hitPosition, Quaternion.identity);
+
             Destroy(explosion, 1f);
             Destroy(gameObject);
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        if (circleCollider != null)
+        {
+            Gizmos.color = Color.cyan;
+
+            Gizmos.DrawWireSphere(transform.position, circleCollider.radius);
+        }
+    }
 }

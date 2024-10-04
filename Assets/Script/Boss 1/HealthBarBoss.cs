@@ -18,6 +18,7 @@ public class HealthBarBoss : MonoBehaviour
     private float delayedHealth;
     private Image fillImage;
     private Image lostFillImage;
+    private Rigidbody2D rb;
 
     public ParticleSystem bloodEffect;
     public SnakePhase2 snakePhase2;
@@ -29,6 +30,7 @@ public class HealthBarBoss : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
 
         health = maxHealth;
         targetHealth = health;
@@ -79,13 +81,16 @@ public class HealthBarBoss : MonoBehaviour
             ActivatePhase2();
         }
     }
-
     private void ActivatePhase2()
     {
         if (snakePhase2 != null)
         {
+            // Bật SnakePhase2
             snakePhase2.enabled = true;
+
             snakePhase2.treePosition = treePosition;
+
+            snakePhase2.Jump();
         }
 
         if (bossSkill != null)
@@ -101,6 +106,8 @@ public class HealthBarBoss : MonoBehaviour
             objectManager.RemoveAllObjects();
         }
     }
+
+
 
     private IEnumerator UpdateHealthBar()
     {

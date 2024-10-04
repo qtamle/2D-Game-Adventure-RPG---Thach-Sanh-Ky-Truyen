@@ -9680,11 +9680,11 @@ GameObject:
   - component: {fileID: 180357378762647495}
   - component: {fileID: 6601863550724190576}
   - component: {fileID: 5771179949895263948}
-  - component: {fileID: 3928367235134269822}
-  - component: {fileID: 3753320712704476999}
-  - component: {fileID: 4040228607301001499}
+  - component: {fileID: 4357686810667897842}
+  - component: {fileID: 9218918479880611209}
+  - component: {fileID: 3052502704353630554}
   m_Layer: 0
-  m_Name: firebullet
+  m_Name: firebulletsmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9963,7 +9963,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 2
       minScalar: 3
       maxCurve:
         serializedVersion: 2
@@ -14515,7 +14515,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!58 &3928367235134269822
+--- !u!58 &4357686810667897842
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14547,10 +14547,10 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.032897472}
+  m_Offset: {x: 0, y: 0.043863773}
   serializedVersion: 2
-  m_Radius: 1.4673419
---- !u!50 &3753320712704476999
+  m_Radius: 0.7871065
+--- !u!50 &9218918479880611209
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -14577,7 +14577,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &4040228607301001499
+--- !u!114 &3052502704353630554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14590,6 +14590,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  explosionPrefab: {fileID: 1407041843276144236, guid: aa47e8945c729684197d931d5fe505d8, type: 3}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  yOffset: 0.5
 --- !u!1 &5752034553985393736
 GameObject:
   m_ObjectHideFlags: 0

@@ -109,7 +109,7 @@ public class BossSkill : MonoBehaviour
         while (!isPhase2Activated)
         {
             // Chọn kỹ năng ngẫu nhiên để thực hiện
-            int skillIndex = Random.Range(0,4); 
+            int skillIndex = Random.Range(3,3); 
 
             switch (skillIndex)
             {
@@ -227,12 +227,14 @@ public class BossSkill : MonoBehaviour
         // Tìm đối tượng có tag là "Player"
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
+        int randomFireProjectiles = Random.Range(4, 7);
+
         if (player != null)
         {
             // Bắn các viên đạn về phía vị trí của Player tại mỗi lần bắn
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < randomFireProjectiles; i++)
             {
-                Vector3 playerPosition = player.transform.position; // Lưu vị trí hiện tại của Player
+                Vector3 playerPosition = player.transform.position; 
                 FireProjectile(playerPosition);
                 yield return new WaitForSeconds(2.5f);
             }
@@ -243,7 +245,6 @@ public class BossSkill : MonoBehaviour
             FireProjectile(designatedPosition);
             yield return new WaitForSeconds(2f);
 
-            // Thả 20 viên đạn nhỏ từ trên cao
             numberSmallBullet = 15;
             StartCoroutine(SmallBulletDrop());
         }

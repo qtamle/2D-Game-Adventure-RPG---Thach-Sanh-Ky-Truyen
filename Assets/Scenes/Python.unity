@@ -918,7 +918,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3509560276715210735, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.04
+      value: -8.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3509560276715210735, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: damageBoss
@@ -930,7 +934,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5110609761515964969, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.05
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5110609761515964969, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 5567442368471490339, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: player
@@ -1018,7 +1026,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7933423619241463409, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.41
+      value: -9.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933423619241463409, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.3
       objectReference: {fileID: 0}
     - target: {fileID: 8515709444757130615, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_Name
@@ -1026,11 +1038,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8923216577154813477, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.26
+      value: -2.3
       objectReference: {fileID: 0}
     - target: {fileID: 8923216577154813477, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.41
+      value: -11.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1270,7 +1282,7 @@ Transform:
   m_GameObject: {fileID: 617315303}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.23, y: 9.54, z: 0}
+  m_LocalPosition: {x: 2.23, y: 17.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1326,7 +1338,7 @@ GameObject:
   - component: {fileID: 659025588}
   m_Layer: 7
   m_Name: ground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3140,14 +3152,14 @@ MonoBehaviour:
   firePoint2: {fileID: 1117840549}
   firePoint3: {fileID: 969117700}
   firePoint4: {fileID: 819544307}
-  bullet: {fileID: 4873377149210101719, guid: d8c961414795b5344b3f699093e9d347, type: 3}
+  bullet: {fileID: 5984720413572269982, guid: b6a179fbaa37c444fbc163c88b9a71aa, type: 3}
   fireOrigin: {fileID: 1069891232}
-  speedBullet: 25
-  smallBullet: {fileID: 4873377149210101719, guid: 94bb40f712886cc479b110cd42fe8a51, type: 3}
-  numberSmallBullet: 15
-  minSpawnBullet: {x: -7, y: 8.59}
-  maxSpawnBullet: {x: 12.87, y: 8.59}
-  bulletDropSpeed: 10
+  speedBullet: 30
+  smallBullet: {fileID: 7288736320772380770, guid: a8d5355fe0ceb904594ffb57cd1e718e, type: 3}
+  numberSmallBullet: 18
+  minSpawnBullet: {x: -7, y: 25}
+  maxSpawnBullet: {x: 12.87, y: 25}
+  bulletDropSpeed: 5
   spikePrefabs: {fileID: 1526748087562114734, guid: 8b9dc04c94aea504b955860e346adb24, type: 3}
   spkieSpawn:
   - {fileID: 522163651}
@@ -3231,7 +3243,7 @@ MonoBehaviour:
   slider: {fileID: 1851448508}
   lostHealthSlider: {fileID: 690581230}
   health: 0
-  maxHealth: 1000
+  maxHealth: 400
   smoothTime: 0.2
   lostHealthLerpSpeed: 5
   bloodEffect: {fileID: 6502919927498602294, guid: dee7303474760184c979e7260a0c098e, type: 3}
@@ -3276,12 +3288,12 @@ MonoBehaviour:
   speed: 30
   treePosition: {fileID: 1370984866}
   shootingPosition: {fileID: 158820394}
-  projectilePrefab: {fileID: 2600567102980707795, guid: 58a943e8a0ce2e645a46cd84a6f41443, type: 3}
-  projectileSpeed: 20
+  projectilePrefab: {fileID: 7288736320772380770, guid: a8d5355fe0ceb904594ffb57cd1e718e, type: 3}
+  projectileSpeed: 15
   fireStreamPrefab: {fileID: 3156897708444699803, guid: 34fdf20e8b1a8ad4aae309e4a22577ad, type: 3}
   fireStreamSpawnPosition: {fileID: 617315304}
   fireStreamSpeed: 5
-  fireStreamRotationSpeed: 30
+  neckPrefab: {fileID: 6532986395743541243, guid: 573cc47b7f19d0541948315aa0c2d576, type: 3}
 --- !u!114 &1831921318 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 419590516498011025, guid: 9ac82812301c4ea41a0911e0a3740ffa, type: 3}

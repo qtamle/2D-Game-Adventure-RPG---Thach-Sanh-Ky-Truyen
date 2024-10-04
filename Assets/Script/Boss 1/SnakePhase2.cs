@@ -10,24 +10,24 @@ public class SnakePhase2 : MonoBehaviour
     public GameObject projectilePrefab;
     public float projectileSpeed = 10f;
 
-    private Vector3 targetPosition;
     private Vector3 originalPosition;
     private bool hasJumped = false;
-    private bool isAttacking = false;
-    private bool isReturning = false;
     private bool isShooting = false;
     private bool isShootingInProgress = false;
-
-    private int maxProjectiles;
+    private bool isExtendingNeck = false;
 
     public GameObject fireStreamPrefab;
     public Transform fireStreamSpawnPosition;
     public float fireStreamSpeed = 5f;
-    public float fireStreamRotationSpeed = 30f;
 
+    private Rigidbody2D rb;
+
+    public GameObject neckPrefab;
+    private GameObject currentNeck;
     void Start()
     {
         originalPosition = transform.position;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -36,15 +36,8 @@ public class SnakePhase2 : MonoBehaviour
         {
             JumpToTree();
         }
-        else if (isAttacking)
-        {
-            if (!isShooting && !isShootingInProgress)
-            {
-                MoveToTarget();
-            }
-        }
-
     }
+
     private void JumpToTree()
     {
         Vector3 adjustedTreePosition = new Vector3(treePosition.position.x, treePosition.position.y + 2f, treePosition.position.z);
@@ -63,81 +56,80 @@ public class SnakePhase2 : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        if (!isAttacking && !isShooting && !isShootingInProgress)
+        if (!isShootingInProgress && !isExtendingNeck)
         {
-            int skillIndex = Random.Range(0, 100);
+            int skillIndex = Random.Range(1, 4);
 
-            if (skillIndex < 25) 
+            if (skillIndex == 1)
             {
-                isShootingInProgress = true; 
+                isShootingInProgress = true;
                 Debug.Log("Rắn bắt đầu phun lửa!");
                 StartCoroutine(BlowFireStream());
             }
-            else if (skillIndex < 50) 
+            else if (skillIndex == 2)
             {
-                isShootingInProgress = true; 
+                isShootingInProgress = true;
                 Debug.Log("Rắn bắt đầu phun đạn!");
-                maxProjectiles = Random.Range(5, 9);
                 StartCoroutine(ShootProjectiles());
             }
-            else 
+            else if (skillIndex == 3 && !isExtendingNeck) 
             {
-                targetPosition = playerTransform.position;
-                isAttacking = true;
-                Debug.Log("Rắn bắt đầu tấn công!");
+                isExtendingNeck = true;
+                Debug.Log("Rắn bắt đầu kéo dài cổ!");
+                StartCoroutine(ExtendNeck(40, 5));
             }
         }
     }
 
-    private void MoveToTarget()
+    public void Jump()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        if (!hasJumped)
         {
-            Debug.Log("Rắn đã tới vị trí đã lưu và cắn!");
-            StartCoroutine(ReturnToTree());
+            Vector3 adjustedTreePosition = new Vector3(treePosition.position.x, treePosition.position.y + 2f, treePosition.position.z);
+            StartCoroutine(JumpAndStay(adjustedTreePosition));
         }
     }
 
-    private IEnumerator ReturnToTree()
+    private IEnumerator JumpAndStay(Vector3 targetPosition)
     {
-        isAttacking = false;
-        isReturning = true;
+        float jumpHeight = 2f; 
+        float jumpDuration = 1f; 
+        float elapsedTime = 0f;
 
-        yield return new WaitForSeconds(2f);
-
-        while (Vector3.Distance(transform.position, treePosition.position) > 0.1f)
+        Vector3 startPosition = transform.position;
+        while (elapsedTime < jumpDuration)
         {
-            transform.position = Vector3.MoveTowards(transform.position, treePosition.position, speed * Time.deltaTime);
+            float yOffset = Mathf.Sin((elapsedTime / jumpDuration) * Mathf.PI) * jumpHeight; 
+            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / jumpDuration) + new Vector3(0, yOffset, 0);
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        Debug.Log("Rắn đã quay về vị trí trên cây.");
+        transform.position = targetPosition; 
+        hasJumped = true;
+        Debug.Log("Rắn đã nhảy lên cây và đứng trên đó!");
 
-        yield return new WaitForSeconds(3f);
-
-        isReturning = false;
-        hasJumped = false;
-
-        StartCoroutine(WaitBeforeAttack());
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.gravityScale = 0;
+            rb.simulated = false;
+        }
     }
+
     private IEnumerator ShootProjectiles()
     {
-        isShootingInProgress = true;
-        isShooting = true; 
-
         Debug.Log("Bắt đầu phun đạn...");
         yield return new WaitForSeconds(2f);
 
-        int numberOfShots = Random.Range(3, 5);
+        int numberOfShots = Random.Range(3, 6);
 
         for (int shot = 0; shot < numberOfShots; shot++)
         {
-            int projectilesInFan = Random.Range(5, 10);
-            float angleSpread = 120f; // Góc phân tán của hình quạt
-            float angleStep = angleSpread / (projectilesInFan - 1); // Bước góc giữa các viên đạn
-            float startAngle = -angleSpread / 2; // Góc bắt đầu của hình quạt
+            int projectilesInFan = Random.Range(4, 6);
+            float angleSpread = 110f;
+            float angleStep = angleSpread / (projectilesInFan - 1);
+            float startAngle = -angleSpread / 2;
 
             Debug.Log($"Đợt {shot + 1}: Bắn {projectilesInFan} viên đạn");
 
@@ -153,6 +145,10 @@ public class SnakePhase2 : MonoBehaviour
                 if (rb != null)
                 {
                     rb.velocity = direction * projectileSpeed;
+
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    projectile.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
                     Debug.Log("Viên đạn được phun với tốc độ: " + rb.velocity);
                 }
                 else
@@ -168,16 +164,13 @@ public class SnakePhase2 : MonoBehaviour
         }
 
         Debug.Log("Hoàn tất phun đạn.");
+        isShootingInProgress = false;
 
-        isShootingInProgress = false; 
-        isShooting = false; 
-
-        StartCoroutine(ReturnToTree());
+        StartCoroutine(WaitBeforeAttack());
     }
+
     private IEnumerator BlowFireStream()
     {
-        isShootingInProgress = true; 
-
         GameObject fireStream = Instantiate(fireStreamPrefab, fireStreamSpawnPosition.position, Quaternion.Euler(55, 90, 0));
         Transform fireStreamTransform = fireStream.transform;
 
@@ -190,8 +183,6 @@ public class SnakePhase2 : MonoBehaviour
         while (elapsedTime < duration)
         {
             float t = elapsedTime / duration;
-
-            // Cập nhật vị trí và rotation của luồng lửa
             fireStreamTransform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
             fireStreamTransform.position = Vector3.MoveTowards(fireStreamTransform.position, fireStreamSpawnPosition.position + Vector3.up * 5f, fireStreamSpeed * Time.deltaTime);
 
@@ -200,14 +191,74 @@ public class SnakePhase2 : MonoBehaviour
         }
 
         fireStreamTransform.rotation = endRotation;
-
         Destroy(fireStream);
-
         Debug.Log("Ngọn lửa đã hoàn tất và bị hủy.");
 
-        isShootingInProgress = false; 
-
-        StartCoroutine(ReturnToTree());
+        isShootingInProgress = false;
+        StartCoroutine(WaitBeforeAttack());
     }
-}
+    private IEnumerator ExtendNeck(float speed, float duration)
+    {
+        if (currentNeck == null)
+        {
+            currentNeck = Instantiate(neckPrefab, treePosition.position, Quaternion.identity);
+        }
 
+        Vector3 targetPosition = playerTransform.position;
+
+        currentNeck.transform.position = treePosition.position;
+
+        Vector3 direction = (targetPosition - treePosition.position).normalized;
+        float distance = Vector3.Distance(treePosition.position, targetPosition);
+
+        float elapsedTime = 0f;
+        float extraLengthFactor = 1.5f;
+        float maxLength = distance * extraLengthFactor;
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; 
+
+        while (elapsedTime < maxLength / speed)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float currentLength = Mathf.Lerp(1f, maxLength, elapsedTime / (maxLength / speed));
+            currentNeck.transform.localScale = new Vector3(currentLength, 1f, 1f);
+            currentNeck.transform.rotation = Quaternion.Euler(0, 0, angle);  
+
+            yield return null;
+        }
+
+        currentNeck.transform.localScale = new Vector3(maxLength, 1f, 1f);
+        currentNeck.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        Debug.Log("Cổ rắn đã kéo dài tới vị trí của người chơi!");
+
+        yield return new WaitForSeconds(0.5f);
+
+        elapsedTime = 0f;
+
+        // Thu cổ rắn về cùng hướng kéo ra
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float currentLength = Mathf.Lerp(maxLength, 1f, elapsedTime / duration);
+            currentNeck.transform.localScale = new Vector3(currentLength, 1f, 1f);
+
+            currentNeck.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            yield return null;
+        }
+
+        currentNeck.transform.localScale = new Vector3(1f, 1f, 1f);
+
+        Destroy(currentNeck, 1f);
+        currentNeck = null;
+
+        Debug.Log("Cổ rắn đã quay về và bị hủy.");
+
+        isExtendingNeck = false;
+        StartCoroutine(WaitBeforeAttack());
+    }
+
+}
