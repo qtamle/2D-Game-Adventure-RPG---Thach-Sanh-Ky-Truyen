@@ -109,7 +109,7 @@ public class BossSkill : MonoBehaviour
         while (!isPhase2Activated)
         {
             // Chọn kỹ năng ngẫu nhiên để thực hiện
-            int skillIndex = Random.Range(3,3); 
+            int skillIndex = Random.Range(0,4); 
 
             switch (skillIndex)
             {

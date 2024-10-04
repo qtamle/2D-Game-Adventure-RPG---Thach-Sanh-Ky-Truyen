@@ -58,7 +58,7 @@ public class SnakePhase2 : MonoBehaviour
 
         if (!isShootingInProgress && !isExtendingNeck)
         {
-            int skillIndex = Random.Range(1, 4);
+            int skillIndex = Random.Range(0, 4);
 
             if (skillIndex == 1)
             {
