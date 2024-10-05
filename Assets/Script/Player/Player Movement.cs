@@ -62,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
     private Stamina stamina;
     private StatusEffects statusEffects;
     private GolemSkill golemSkill;
+  
 
     [Header("KnockBack")]
     public Vector3 knockbackDirection = Vector3.left;
