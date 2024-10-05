@@ -106,7 +106,7 @@ public class ToadSkill : MonoBehaviour
 
             yield return new WaitForSeconds(2f);
 
-            int randomSkill = Random.Range(2, 2);
+            int randomSkill = Random.Range(0, 3);
             if (healthToad.health < 400f && randomSkill == 0)
             {
                 CatchBugs();
