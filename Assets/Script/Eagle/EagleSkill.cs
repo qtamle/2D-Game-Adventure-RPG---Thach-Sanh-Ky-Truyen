@@ -77,7 +77,7 @@ public class EagleSkill : MonoBehaviour
     private bool isMovingOffScreen = false;
     private bool isRepositioning = false;
 
-    private CameraShake cam;
+    //private CameraShake cam;
     private BoxCollider2D boxCollider;
     private Rigidbody2D rb;
 

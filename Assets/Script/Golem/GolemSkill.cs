@@ -74,7 +74,7 @@ public class GolemSkill : MonoBehaviour
     private bool hasPressedZ = false;
     public GameObject afterImagePrefab;
 
-    private CameraShake cam;
+    //private CameraShake cam;
 
     [Header("Shake Camera")]
     public ShakeData dashShake;

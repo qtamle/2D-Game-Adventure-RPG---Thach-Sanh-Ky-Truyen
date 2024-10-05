@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FirstGearGames.SmoothCameraShaker;
 
 public class ToadSkill : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class ToadSkill : MonoBehaviour
 
     [Header("Bubble")]
     public GameObject bubblePrefab;
+    public Transform shootBubble;
     public float bubbleSpeed;
     public float bubbleDestroy = 10f;
     public float bubbleUpwardAngle = 45f;
@@ -49,12 +51,15 @@ public class ToadSkill : MonoBehaviour
     private Vector3 tongueDirection;
     private ToadHealth healthToad;
     private PlayerMovement playerMovement;
-    private CameraShake cameraShake;
+    //private CameraShake cameraShake;
+
+    [Header("Camera Shake")]
+    public ShakeData jumpShake;
     void Start()
     {
         healthToad = GetComponent<ToadHealth>();
         playerMovement = GetComponent<PlayerMovement>();
-        cameraShake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
+        //cameraShake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
 
         rb = GetComponent<Rigidbody2D>();
         originalJumpForce = jumpForce;
@@ -69,7 +74,7 @@ public class ToadSkill : MonoBehaviour
     {
         if (isGrounded && !isJumped && !hasCamShaken)
         {
-            cameraShake.ToadJumpShake();
+            //CameraShakerHandler.Shake(jumpShake);
             hasCamShaken = true;
         }
     }
@@ -148,6 +153,12 @@ public class ToadSkill : MonoBehaviour
         }
         else if (collision.contacts[0].normal.y > 0.5f)
         {
+            if (!hasCamShaken)
+            {
+                CameraShakerHandler.Shake(jumpShake);
+                hasCamShaken = true;
+            }
+
             if (footImpactParticlePrefab != null)
             { 
                 GameObject particleEffect = Instantiate(footImpactParticlePrefab, transformImpact.position, Quaternion.Euler(0f,0f,90f));
@@ -275,7 +286,7 @@ public class ToadSkill : MonoBehaviour
     void ShootBubble()
     {
         // Bắn viên bong bóng đầu tiên
-        GameObject bubble1 = Instantiate(bubblePrefab, transform.position, Quaternion.identity);
+        GameObject bubble1 = Instantiate(bubblePrefab, shootBubble.position, Quaternion.identity);
         Rigidbody2D bubbleRb1 = bubble1.GetComponent<Rigidbody2D>();
         Vector2 direction1 = isFacingRight ?
             new Vector2(1f, Mathf.Tan(bubbleUpwardAngle * Mathf.Deg2Rad)).normalized :
@@ -292,12 +303,25 @@ public class ToadSkill : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         // Bắn viên bong bóng thứ hai
-        GameObject bubble2 = Instantiate(bubblePrefab, transform.position, Quaternion.identity);
+        GameObject bubble2 = Instantiate(bubblePrefab, shootBubble.position, Quaternion.identity);
         Rigidbody2D bubbleRb2 = bubble2.GetComponent<Rigidbody2D>();
         Vector2 direction2 = isFacingRight ? Vector2.right : Vector2.left;
         bubbleRb2.velocity = direction2 * bubbleSpeed;
 
-        StartCoroutine(DestroyBubbleAfterTime(bubble2, bubbleDestroy));
+        StartCoroutine(ShootBubbleWithDelay3(1f));
+    }
+
+    IEnumerator ShootBubbleWithDelay3(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Bắn viên bong bóng thứ ba
+        GameObject bubble3 = Instantiate(bubblePrefab, shootBubble.position, Quaternion.identity);
+        Rigidbody2D bubbleRb3 = bubble3.GetComponent<Rigidbody2D>();
+        Vector2 direction2 = isFacingRight ? Vector2.right : Vector2.left;
+        bubbleRb3.velocity = direction2 * bubbleSpeed;
+
+        StartCoroutine(DestroyBubbleAfterTime(bubble3, bubbleDestroy));
     }
 
 
@@ -401,7 +425,7 @@ public class ToadSkill : MonoBehaviour
             Destroy(bugTransform.gameObject);
         }
         Destroy(tongue);
-        healthToad.UpHealth(100f);
+        healthToad.UpHealth(50f);
     }
 
     private void OnDrawGizmosSelected()

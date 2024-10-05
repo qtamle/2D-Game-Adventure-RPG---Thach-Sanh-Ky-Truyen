@@ -59,7 +59,7 @@ public class GhostTreeSkill : MonoBehaviour
                 Debug.Log("Waiting before executing a new skill...");
                 yield return new WaitForSeconds(2f);
 
-                int skillIndex = Random.Range(0, 4);
+                int skillIndex = Random.Range(1, 1);
                 Debug.Log($"Executing skill {skillIndex}");
 
                 isUsingSkill = true;

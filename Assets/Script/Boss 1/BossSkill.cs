@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FirstGearGames.SmoothCameraShaker;
 
 public class BossSkill : MonoBehaviour
 {
@@ -64,8 +65,7 @@ public class BossSkill : MonoBehaviour
     public float poisonDuration = 5f;
 
     [Header("Camera Shake")]
-    private CameraShake shake;
-    private CameraShake shake1;
+    public ShakeData spikeShake;
 
     private PlayerMovement playerMovement;
 
@@ -78,8 +78,8 @@ public class BossSkill : MonoBehaviour
             playerMovement = player.GetComponent<PlayerMovement>();
         }
 
-        shake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
-        shake1 = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
+        //shake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
+        //shake1 = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         rb = GetComponent<Rigidbody2D>();
         moveDirection = Vector2.right;
 
@@ -205,7 +205,7 @@ public class BossSkill : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Turn"))
         {
-            shake1.CamShake1();
+           // shake1.CamShake1();
             Flip();
             EndDash();
         }
@@ -395,7 +395,7 @@ public class BossSkill : MonoBehaviour
 
         float elapsedTime = 0f;
 
-        shake.CamShake();
+        CameraShakerHandler.Shake(spikeShake);
 
         while (elapsedTime < spikeRiseDuration)
         {

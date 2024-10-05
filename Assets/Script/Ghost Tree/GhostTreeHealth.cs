@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using FirstGearGames.SmoothCameraShaker;
 public class GhostTreeHealth : MonoBehaviour
 {
     [SerializeField] private DamageFlash dameflash;
@@ -21,6 +22,8 @@ public class GhostTreeHealth : MonoBehaviour
     private float delayedHealth;
     private Image fillImage;
     private Image lostFillImage;
+
+    public ShakeData deadthShake;
 
     private void Start()
     {
