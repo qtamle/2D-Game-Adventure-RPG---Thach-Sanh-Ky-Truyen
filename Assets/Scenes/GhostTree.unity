@@ -3192,6 +3192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 360230173}
+  spikeShake: {fileID: 0}
 --- !u!4 &1064159509
 Transform:
   m_ObjectHideFlags: 0
@@ -5495,7 +5496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  lineRenderer: {fileID: 0}
+  lineRenderer: {fileID: 1879609335}
   distanceJoint: {fileID: 1879609332}
   pointTag: Point
   maxGrappleDistance: 10
@@ -6386,6 +6387,7 @@ MonoBehaviour:
   dameflash: {fileID: 1402392053}
   slider: {fileID: 607738148}
   lostHealthSlider: {fileID: 1827508543}
+  anim: {fileID: 0}
   health: 0
   maxHealth: 500
   smoothTime: 0.2
@@ -6472,7 +6474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &2090541670
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6736,6 +6738,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.66849834
       objectReference: {fileID: 0}
+    - target: {fileID: 6450852811674859360, guid: 90e1651f1091a92429b9dbbc98b736cb, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 1351722023}
+    - target: {fileID: 6450852811674859360, guid: 90e1651f1091a92429b9dbbc98b736cb, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 7078501067463027969, guid: 90e1651f1091a92429b9dbbc98b736cb, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.8340565
@@ -6812,7 +6822,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7771093177577625625, guid: 90e1651f1091a92429b9dbbc98b736cb, type: 3}
-      insertIndex: -1
+      insertIndex: 0
       addedObject: {fileID: 1641361481}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90e1651f1091a92429b9dbbc98b736cb, type: 3}
