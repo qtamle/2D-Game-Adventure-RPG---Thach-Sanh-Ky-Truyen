@@ -44,7 +44,7 @@ public class GhostTreeSkill : MonoBehaviour
     private bool isUsingSkill = false;
     private void Start()
     {
-        numberOfSpawns = Random.Range(3, 5);
+        numberOfSpawns = Random.Range(2, 3);
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         StartCoroutine(ManageSkills());
 
@@ -67,11 +67,11 @@ public class GhostTreeSkill : MonoBehaviour
                 switch (skillIndex)
                 {
                     case 0:
-                        anim.SetTrigger("Vine");
+                        yield return StartCoroutine(AnimVine());
                         yield return StartCoroutine(SpawnVine());
                         break;
                     case 1:
-                        anim.SetTrigger("Hands");
+                        yield return StartCoroutine(AnimHands());
                         yield return StartCoroutine(MoveHands());
                         break;
                     case 2:
@@ -91,6 +91,7 @@ public class GhostTreeSkill : MonoBehaviour
             yield return null;
         }
     }
+
     private IEnumerator SpawnVine()
     {
         if (VineTie.isVineActive)
@@ -190,7 +191,8 @@ public class GhostTreeSkill : MonoBehaviour
 
         for (int i = 0; i < numberOfSpawns; i++)
         {
-            anim.SetTrigger("Spam");
+            yield return StartCoroutine(AnimSpawn());
+
             float randomX = Random.Range(minSpawnX, maxSpawnX);
             Vector3 spawnPosition = new Vector3(randomX, spawnY, spawnZ);
 
@@ -208,7 +210,8 @@ public class GhostTreeSkill : MonoBehaviour
 
         for (int i = 0; i < spikeCount; i++)
         {
-            anim.SetTrigger("Spike");
+            yield return StartCoroutine(AnimSpike());
+
             Debug.Log("Shooting spike...");
 
             Vector3 spawnPosition = spawnPoint.position;
@@ -237,6 +240,30 @@ public class GhostTreeSkill : MonoBehaviour
         }
 
         Debug.Log("Finished shooting spikes.");
+    }
+
+    IEnumerator AnimVine()
+    {
+        anim.SetTrigger("Vine");
+        yield return new WaitForSeconds(2f);
+    }
+
+    IEnumerator AnimHands()
+    {
+        anim.SetTrigger("Hands");
+        yield return new WaitForSeconds(2.2f);
+    }
+
+    IEnumerator AnimSpike()
+    {
+        anim.SetTrigger("Spike");
+        yield return new WaitForSeconds(2f);
+    }
+
+    IEnumerator AnimSpawn()
+    {
+        anim.SetTrigger("Spam");
+        yield return new WaitForSeconds(2f);
     }
 
     private void OnDrawGizmosSelected()
