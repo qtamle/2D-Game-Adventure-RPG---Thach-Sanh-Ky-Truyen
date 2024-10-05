@@ -31,11 +31,14 @@ public class ToadSkill : MonoBehaviour
     public float bubbleSpeed;
     public float bubbleDestroy = 10f;
     public float bubbleUpwardAngle = 45f;
+    public GameObject bubblePopPrefab;
 
     [Header("Catch Bug")]
     public float bugDetectionRadius = 10f;
     public LayerMask bugLayerMask;
     public Transform bugTongueStartPosition;
+    public Transform radiusTransform;
+    public float tongueShootSpeedBug;
 
     [Header("Skill Management")]
     public float minSkillDelay = 5f;
@@ -85,7 +88,7 @@ public class ToadSkill : MonoBehaviour
 
         while (true)
         {
-            int jumpTimes = Random.Range(5, 9);
+            int jumpTimes = Random.Range(6,9);
 
             for (int i = 0; i < jumpTimes; i++)
             {
@@ -103,7 +106,7 @@ public class ToadSkill : MonoBehaviour
 
             yield return new WaitForSeconds(2f);
 
-            int randomSkill = Random.Range(0, 3);
+            int randomSkill = Random.Range(2, 2);
             if (healthToad.health < 400f && randomSkill == 0)
             {
                 CatchBugs();
@@ -294,7 +297,6 @@ public class ToadSkill : MonoBehaviour
         bubbleRb1.velocity = direction1 * bubbleSpeed;
 
         StartCoroutine(DestroyBubbleAfterTime(bubble1, bubbleDestroy));
-
         StartCoroutine(ShootBubbleWithDelay(1f));
     }
 
@@ -308,6 +310,7 @@ public class ToadSkill : MonoBehaviour
         Vector2 direction2 = isFacingRight ? Vector2.right : Vector2.left;
         bubbleRb2.velocity = direction2 * bubbleSpeed;
 
+        StartCoroutine(DestroyBubbleAfterTime(bubble2, bubbleDestroy));
         StartCoroutine(ShootBubbleWithDelay3(1f));
     }
 
@@ -331,21 +334,24 @@ public class ToadSkill : MonoBehaviour
         if (bubble != null)
         {   
             Destroy(bubble);
+            GameObject bubblePop = Instantiate(bubblePopPrefab, bubble.transform.position, Quaternion.identity);
+            Destroy(bubblePop, 2f);
         }
     }
-
     void CatchBugs()
     {
-        Collider2D[] bugsInRange = Physics2D.OverlapCircleAll(transform.position, bugDetectionRadius, bugLayerMask);
+        Vector2 boxSize = new Vector2(bugDetectionRadius * 2, bugDetectionRadius * 2); 
+
+        Collider2D[] bugsInRange = Physics2D.OverlapBoxAll(radiusTransform.position, boxSize, 0f, bugLayerMask);
 
         if (bugsInRange.Length > 0)
         {
             Collider2D closestBug = bugsInRange[0];
-            float closestDistance = Vector2.Distance(transform.position, closestBug.transform.position);
+            float closestDistance = Vector2.Distance(radiusTransform.position, closestBug.transform.position);
 
             for (int i = 1; i < bugsInRange.Length; i++)
             {
-                float distance = Vector2.Distance(transform.position, bugsInRange[i].transform.position);
+                float distance = Vector2.Distance(radiusTransform.position, bugsInRange[i].transform.position);
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
@@ -358,6 +364,7 @@ public class ToadSkill : MonoBehaviour
             }
         }
     }
+
 
     IEnumerator ShootTongueAtBug(Transform bugTransform)
     {
@@ -376,7 +383,7 @@ public class ToadSkill : MonoBehaviour
         // Bắn lưỡi đến bug
         while (currentLength < distanceToBug)
         {
-            currentLength += tongueSpeed * Time.deltaTime;
+            currentLength += tongueSpeed * tongueShootSpeedBug *Time.deltaTime;
             float scaleRatio = Mathf.Clamp(currentLength / maxTongueLength, 0f, 1f);
             tongue.transform.localScale = new Vector3(tongueOriginalScale.x * scaleRatio, tongueOriginalScale.y, tongueOriginalScale.z);
 
@@ -408,7 +415,7 @@ public class ToadSkill : MonoBehaviour
 
         while (currentLength > 0f)
         {
-            currentLength -= tongueSpeed * Time.deltaTime;
+            currentLength -= tongueSpeed * tongueShootSpeedBug *Time.deltaTime;
             float scaleRatio = Mathf.Clamp(currentLength / maxTongueLength, 0f, 1f);
             tongue.transform.localScale = new Vector3(tongueOriginalScale.x * scaleRatio, tongueOriginalScale.y, tongueOriginalScale.z);
 
@@ -425,13 +432,17 @@ public class ToadSkill : MonoBehaviour
             Destroy(bugTransform.gameObject);
         }
         Destroy(tongue);
-        healthToad.UpHealth(50f);
+        healthToad.UpHealth(80f);
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, bugDetectionRadius);
+        if (radiusTransform != null)
+        {
+            Gizmos.color = Color.green;
+            Vector2 boxSize = new Vector2(bugDetectionRadius * 2, bugDetectionRadius * 2);
+            Gizmos.DrawWireCube(radiusTransform.position, boxSize);
+        }
 
         if (jumpAreaTransform != null)
         {
