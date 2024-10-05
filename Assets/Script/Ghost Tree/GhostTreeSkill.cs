@@ -59,7 +59,7 @@ public class GhostTreeSkill : MonoBehaviour
                 Debug.Log("Waiting before executing a new skill...");
                 yield return new WaitForSeconds(2f);
 
-                int skillIndex = Random.Range(1, 1);
+                int skillIndex = Random.Range(0,4);
                 Debug.Log($"Executing skill {skillIndex}");
 
                 isUsingSkill = true;
@@ -67,9 +67,11 @@ public class GhostTreeSkill : MonoBehaviour
                 switch (skillIndex)
                 {
                     case 0:
+                        anim.SetTrigger("Vine");
                         yield return StartCoroutine(SpawnVine());
                         break;
                     case 1:
+                        anim.SetTrigger("Hands");
                         yield return StartCoroutine(MoveHands());
                         break;
                     case 2:
@@ -91,7 +93,6 @@ public class GhostTreeSkill : MonoBehaviour
     }
     private IEnumerator SpawnVine()
     {
-        anim.SetTrigger("Vine");
         if (VineTie.isVineActive)
         {
             Debug.Log("Vine hiện tại vẫn tồn tại, không thể spawn Vine mới.");
@@ -145,7 +146,6 @@ public class GhostTreeSkill : MonoBehaviour
     }
     private IEnumerator MoveHands()
     {
-        anim.SetTrigger("Hands");
         leftHand = Instantiate(leftHandPrefab, leftHandStartPosition.position, Quaternion.identity);
         rightHand = Instantiate(rightHandPrefab, rightHandStartPosition.position, Quaternion.identity);
 
