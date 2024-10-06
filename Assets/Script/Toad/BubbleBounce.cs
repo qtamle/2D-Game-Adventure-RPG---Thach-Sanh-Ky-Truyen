@@ -5,6 +5,7 @@ using UnityEngine;
 public class BubbleBounce : MonoBehaviour
 {
     Vector2 lastVelocity;
+    public float shakeAmount = 0.1f;
     public float rotationSpeed = 100f;
     public GameObject bubblePop;
 
@@ -49,6 +50,7 @@ public class BubbleBounce : MonoBehaviour
         if (collision.gameObject.CompareTag("TurnOn"))
         {
             animator.SetTrigger("Check");
+            rb.AddForce(new Vector2(Random.Range(-shakeAmount, shakeAmount), Random.Range(-shakeAmount, shakeAmount)), ForceMode2D.Impulse);
 
             var speed = lastVelocity.magnitude;
             var direction = Vector2.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
