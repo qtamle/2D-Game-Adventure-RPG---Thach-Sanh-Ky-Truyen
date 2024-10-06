@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TornadoDamage : MonoBehaviour
 {
-    public float damagePerSecond = 5f; 
+    public float damagePerSecond = 1f; 
     public float damageInterval = 1f;
 
     private bool isPlayerInRange = false; 

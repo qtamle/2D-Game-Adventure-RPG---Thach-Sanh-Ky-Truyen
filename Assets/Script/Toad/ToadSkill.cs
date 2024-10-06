@@ -88,7 +88,7 @@ public class ToadSkill : MonoBehaviour
 
         while (true)
         {
-            int jumpTimes = Random.Range(6,9);
+            int jumpTimes = Random.Range(6,11);
 
             for (int i = 0; i < jumpTimes; i++)
             {

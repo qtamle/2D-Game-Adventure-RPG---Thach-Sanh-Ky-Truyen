@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8730522192128979055}
   - component: {fileID: 8662830200875834102}
   - component: {fileID: 7746056141046246746}
+  - component: {fileID: 2229411559083481350}
   m_Layer: 16
   m_Name: Bubble
   m_TagString: Untagged
@@ -174,6 +175,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cba98669d6edd643bd4d85cc1714920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeAmount: 1
-  rotationSpeed: 50
+  rotationSpeed: 150
   bubblePop: {fileID: 5436301077448349013, guid: 2ef1980ed94595b428ba991ce29ee1b7, type: 3}
+--- !u!95 &2229411559083481350
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3885670100983813357}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 31626294c59c99e4bb27af1b8a475ab9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
