@@ -131,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
             rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y * 0.5f);
         }
 
-        if (Input.GetKeyDown(KeyCode.Z) && canDash && !isWallSliding && IsGrounded())
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !isWallSliding && IsGrounded())
         {
             dustPrefab.Play();
             StartCoroutine(Dash());
