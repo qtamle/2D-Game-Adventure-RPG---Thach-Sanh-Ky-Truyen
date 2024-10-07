@@ -332,7 +332,7 @@ public class EagleSkill : MonoBehaviour
 
                 if (isButtonPressedCorrectly)
                 {
-                    float smallStep = 0.000005f;
+                    float smallStep = 1f;
                     player.position = new Vector2(
                         Mathf.Lerp(player.position.x, player.position.x + smallStep, Time.deltaTime * smoothPullForce),
                         player.position.y
