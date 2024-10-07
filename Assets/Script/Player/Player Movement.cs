@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public float horizontal;
     public float speed = 5f;
     public float jumpPower = 10f;
-    public bool isFacingRight = true;
+    public bool isFacingRight = false;
     private float staminaJump = 5f;
 
     [Header("Dash")]
@@ -186,7 +186,7 @@ public class PlayerMovement : MonoBehaviour
         if (horizontal != 0f && !isSwinging)
         {
             isFacingRight = horizontal > 0f;
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x) * Mathf.Sign(horizontal), transform.localScale.y, transform.localScale.z);
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * Mathf.Sign(horizontal), transform.localScale.y, transform.localScale.z);
         }
     }
 
