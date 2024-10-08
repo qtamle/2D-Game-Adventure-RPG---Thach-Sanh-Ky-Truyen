@@ -51,14 +51,15 @@ public class SnakePhase2 : MonoBehaviour
             StartCoroutine(WaitBeforeAttack());
         }
     }
-
     private IEnumerator WaitBeforeAttack()
     {
         yield return new WaitForSeconds(3f);
 
         if (!isShootingInProgress && !isExtendingNeck)
         {
-            int skillIndex = Random.Range(0, 4);
+            // Random skill để sử dụng
+            int skillIndex = Random.Range(1, 4);
+            Debug.Log("Skill random được chọn: " + skillIndex); 
 
             if (skillIndex == 1)
             {
@@ -72,14 +73,23 @@ public class SnakePhase2 : MonoBehaviour
                 Debug.Log("Rắn bắt đầu phun đạn!");
                 StartCoroutine(ShootProjectiles());
             }
-            else if (skillIndex == 3 && !isExtendingNeck) 
+            else if (skillIndex == 3 && !isExtendingNeck)
             {
                 isExtendingNeck = true;
                 Debug.Log("Rắn bắt đầu kéo dài cổ!");
                 StartCoroutine(ExtendNeck(40, 5));
             }
+            else
+            {
+                Debug.Log("Không có skill nào được kích hoạt."); 
+            }
+        }
+        else
+        {
+            Debug.Log("Rắn hiện đang thực hiện một skill khác, không thể random skill mới."); 
         }
     }
+
 
     public void Jump()
     {
@@ -212,7 +222,7 @@ public class SnakePhase2 : MonoBehaviour
         float distance = Vector3.Distance(treePosition.position, targetPosition);
 
         float elapsedTime = 0f;
-        float extraLengthFactor = 1.5f;
+        float extraLengthFactor = 1.8f;
         float maxLength = distance * extraLengthFactor;
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; 

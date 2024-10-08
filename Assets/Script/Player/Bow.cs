@@ -115,7 +115,6 @@ public class Bow : MonoBehaviour
         isDrawing = false;
         isAiming = false;
 
-        // Re-enable PlayerMovement if it was disabled
         if (playerMovement != null)
         {
             playerMovement.enabled = true;
@@ -134,7 +133,6 @@ public class Bow : MonoBehaviour
         Shoot(direction);
         Debug.Log("Đã bắn xong!");
 
-        // Enable PlayerMovement script
         if (playerMovement != null)
         {
             playerMovement.enabled = true;

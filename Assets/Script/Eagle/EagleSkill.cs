@@ -77,7 +77,7 @@ public class EagleSkill : MonoBehaviour
     private bool isMovingOffScreen = false;
     private bool isRepositioning = false;
 
-    private CameraShake cam;
+    //private CameraShake cam;
     private BoxCollider2D boxCollider;
     private Rigidbody2D rb;
 
@@ -139,7 +139,7 @@ public class EagleSkill : MonoBehaviour
 
         boxCollider.enabled = false;
 
-        int skillIndex = Random.Range(0, 6);
+        int skillIndex = Random.Range(1, 1);
         Debug.Log($"Executing skill index: {skillIndex}");
 
         switch (skillIndex)
@@ -312,6 +312,8 @@ public class EagleSkill : MonoBehaviour
         StartCoroutine(buttonPressScript.StartButtonPress());
 
         float elapsedTime = 0f;
+        float initialPullForce = pullForce;
+        float velocity = 0f;
 
         while (elapsedTime < tornadoDuration)
         {
@@ -324,12 +326,26 @@ public class EagleSkill : MonoBehaviour
 
                 bool isButtonPressedCorrectly = buttonPressScript.IsButtonPressedCorrectly();
 
-                float adjustedPullForce = isButtonPressedCorrectly ? pullForce * 0.65f : pullForce;
+                float targetPullForce = isButtonPressedCorrectly ? pullForce * 0.25f : pullForce;
 
-                player.position = new Vector2(
-                    Mathf.MoveTowards(player.position.x, tornadoPosition.x, adjustedPullForce * Time.deltaTime),
-                    player.position.y
-                );
+                float smoothPullForce = Mathf.SmoothDamp(initialPullForce, targetPullForce, ref velocity, 0.3f);
+
+                if (isButtonPressedCorrectly)
+                {
+                    float smallStep = 1f;
+                    player.position = new Vector2(
+                        Mathf.Lerp(player.position.x, player.position.x + smallStep, Time.deltaTime * smoothPullForce),
+                        player.position.y
+                    );
+                }
+                else
+                {
+                    // Nếu không nhấn đúng, bị kéo về phía tornado
+                    player.position = new Vector2(
+                        Mathf.MoveTowards(player.position.x, tornadoPosition.x, smoothPullForce * Time.deltaTime),
+                        player.position.y
+                    );
+                }
             }
 
             yield return null;

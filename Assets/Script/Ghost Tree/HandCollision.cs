@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FirstGearGames.SmoothCameraShaker;
 
 public class HandCollision : MonoBehaviour
 {
@@ -14,15 +15,16 @@ public class HandCollision : MonoBehaviour
     public bool isAttack = false;
 
     private Rigidbody2D rb;
-    private CameraShake cameraShake;
+    //private CameraShake cameraShake;
     public LayerMask playerLayer;
+    public ShakeData handShake;
     private void Start()
     {
         Vector3 startPosition = transform.position;
         startPosition.z = 10f;
         transform.position = startPosition;
 
-        cameraShake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
+       // cameraShake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
@@ -33,7 +35,7 @@ public class HandCollision : MonoBehaviour
 
         if (other.CompareTag("Hand"))
         {
-            cameraShake.CamShakeGhostTree();
+            CameraShakerHandler.Shake(handShake);
             Debug.Log($"{gameObject.name} đã va chạm với {other.gameObject.name}.");
             isRetracting = true;
 

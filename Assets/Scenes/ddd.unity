@@ -822,6 +822,10 @@ PrefabInstance:
       value: 0.9170166
       objectReference: {fileID: 0}
     - target: {fileID: 7449117928487576468, guid: eb369c5a1f4a57540a170f0c2c891b8c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7449117928487576468, guid: eb369c5a1f4a57540a170f0c2c891b8c, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 80e4a0f51f190494d9619a52a1e4d930, type: 2}
@@ -885,13 +889,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  moveRight: 0
   horizontal: 0
-  jumpPower: 40
+  moveRight: 0
+  rb: {fileID: 470876726}
   groundCheck: {fileID: 149898519}
   groundLayer:
+    serializedVersion: 2
     m_Bits: 128
-  rb: {fileID: 470876726}
 --- !u!50 &470876726
 Rigidbody2D:
   serializedVersion: 4
@@ -1069,7 +1073,7 @@ Animator:
   m_PrefabInstance: {fileID: 470876723}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470876724}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 80e4a0f51f190494d9619a52a1e4d930, type: 2}
   m_CullingMode: 0
@@ -2522,6 +2526,7 @@ MonoBehaviour:
   maxHealth: 500
   smoothTime: 0.2
   lostHealthLerpSpeed: 5
+  bossGlow: {fileID: 0}
 --- !u!114 &1461680640
 MonoBehaviour:
   m_ObjectHideFlags: 0

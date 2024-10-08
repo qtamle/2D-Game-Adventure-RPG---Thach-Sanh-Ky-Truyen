@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using FirstGearGames.SmoothCameraShaker;
 public class GhostTreeHealth : MonoBehaviour
 {
     [SerializeField] private DamageFlash dameflash;
     [SerializeField] private Slider slider;
     [SerializeField] private Slider lostHealthSlider;
+    [SerializeField] public Animator anim;
+
     public float health;
     public float maxHealth = 1000f;
     public float smoothTime = 0.2f;
     public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
 
-    private Animator anim;
+    
     private float targetHealth;
     private float currentHealth;
     private float healthVelocity = 0f;
@@ -20,9 +23,11 @@ public class GhostTreeHealth : MonoBehaviour
     private Image fillImage;
     private Image lostFillImage;
 
+    public ShakeData deadthShake;
+
     private void Start()
     {
-        anim = GetComponent<Animator>();
+       
 
         health = maxHealth;
         targetHealth = health;
@@ -78,6 +83,7 @@ public class GhostTreeHealth : MonoBehaviour
 
         if (targetHealth <= 0)
         {
+            anim.SetTrigger("Death");
             Destroy(gameObject);
         }
     }

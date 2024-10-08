@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FirstGearGames.SmoothCameraShaker;
 
 public class ToadSkill : MonoBehaviour
 {
@@ -26,14 +27,18 @@ public class ToadSkill : MonoBehaviour
 
     [Header("Bubble")]
     public GameObject bubblePrefab;
+    public Transform shootBubble;
     public float bubbleSpeed;
     public float bubbleDestroy = 10f;
     public float bubbleUpwardAngle = 45f;
+    public GameObject bubblePopPrefab;
 
     [Header("Catch Bug")]
     public float bugDetectionRadius = 10f;
     public LayerMask bugLayerMask;
     public Transform bugTongueStartPosition;
+    public Transform radiusTransform;
+    public float tongueShootSpeedBug;
 
     [Header("Skill Management")]
     public float minSkillDelay = 5f;
@@ -49,12 +54,15 @@ public class ToadSkill : MonoBehaviour
     private Vector3 tongueDirection;
     private ToadHealth healthToad;
     private PlayerMovement playerMovement;
-    private CameraShake cameraShake;
+    //private CameraShake cameraShake;
+
+    [Header("Camera Shake")]
+    public ShakeData jumpShake;
     void Start()
     {
         healthToad = GetComponent<ToadHealth>();
         playerMovement = GetComponent<PlayerMovement>();
-        cameraShake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
+        //cameraShake = GameObject.FindGameObjectWithTag("Shake").GetComponent<CameraShake>();
 
         rb = GetComponent<Rigidbody2D>();
         originalJumpForce = jumpForce;
@@ -69,7 +77,7 @@ public class ToadSkill : MonoBehaviour
     {
         if (isGrounded && !isJumped && !hasCamShaken)
         {
-            cameraShake.ToadJumpShake();
+            //CameraShakerHandler.Shake(jumpShake);
             hasCamShaken = true;
         }
     }
@@ -80,7 +88,7 @@ public class ToadSkill : MonoBehaviour
 
         while (true)
         {
-            int jumpTimes = Random.Range(5, 9);
+            int jumpTimes = Random.Range(6,11);
 
             for (int i = 0; i < jumpTimes; i++)
             {
@@ -148,6 +156,12 @@ public class ToadSkill : MonoBehaviour
         }
         else if (collision.contacts[0].normal.y > 0.5f)
         {
+            if (!hasCamShaken)
+            {
+                CameraShakerHandler.Shake(jumpShake);
+                hasCamShaken = true;
+            }
+
             if (footImpactParticlePrefab != null)
             { 
                 GameObject particleEffect = Instantiate(footImpactParticlePrefab, transformImpact.position, Quaternion.Euler(0f,0f,90f));
@@ -275,7 +289,7 @@ public class ToadSkill : MonoBehaviour
     void ShootBubble()
     {
         // Bắn viên bong bóng đầu tiên
-        GameObject bubble1 = Instantiate(bubblePrefab, transform.position, Quaternion.identity);
+        GameObject bubble1 = Instantiate(bubblePrefab, shootBubble.position, Quaternion.identity);
         Rigidbody2D bubbleRb1 = bubble1.GetComponent<Rigidbody2D>();
         Vector2 direction1 = isFacingRight ?
             new Vector2(1f, Mathf.Tan(bubbleUpwardAngle * Mathf.Deg2Rad)).normalized :
@@ -283,7 +297,6 @@ public class ToadSkill : MonoBehaviour
         bubbleRb1.velocity = direction1 * bubbleSpeed;
 
         StartCoroutine(DestroyBubbleAfterTime(bubble1, bubbleDestroy));
-
         StartCoroutine(ShootBubbleWithDelay(1f));
     }
 
@@ -292,12 +305,26 @@ public class ToadSkill : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         // Bắn viên bong bóng thứ hai
-        GameObject bubble2 = Instantiate(bubblePrefab, transform.position, Quaternion.identity);
+        GameObject bubble2 = Instantiate(bubblePrefab, shootBubble.position, Quaternion.identity);
         Rigidbody2D bubbleRb2 = bubble2.GetComponent<Rigidbody2D>();
         Vector2 direction2 = isFacingRight ? Vector2.right : Vector2.left;
         bubbleRb2.velocity = direction2 * bubbleSpeed;
 
         StartCoroutine(DestroyBubbleAfterTime(bubble2, bubbleDestroy));
+        StartCoroutine(ShootBubbleWithDelay3(1f));
+    }
+
+    IEnumerator ShootBubbleWithDelay3(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Bắn viên bong bóng thứ ba
+        GameObject bubble3 = Instantiate(bubblePrefab, shootBubble.position, Quaternion.identity);
+        Rigidbody2D bubbleRb3 = bubble3.GetComponent<Rigidbody2D>();
+        Vector2 direction2 = isFacingRight ? Vector2.right : Vector2.left;
+        bubbleRb3.velocity = direction2 * bubbleSpeed;
+
+        StartCoroutine(DestroyBubbleAfterTime(bubble3, bubbleDestroy));
     }
 
 
@@ -307,21 +334,24 @@ public class ToadSkill : MonoBehaviour
         if (bubble != null)
         {   
             Destroy(bubble);
+            GameObject bubblePop = Instantiate(bubblePopPrefab, bubble.transform.position, Quaternion.identity);
+            Destroy(bubblePop, 2f);
         }
     }
-
     void CatchBugs()
     {
-        Collider2D[] bugsInRange = Physics2D.OverlapCircleAll(transform.position, bugDetectionRadius, bugLayerMask);
+        Vector2 boxSize = new Vector2(bugDetectionRadius * 2, bugDetectionRadius * 2); 
+
+        Collider2D[] bugsInRange = Physics2D.OverlapBoxAll(radiusTransform.position, boxSize, 0f, bugLayerMask);
 
         if (bugsInRange.Length > 0)
         {
             Collider2D closestBug = bugsInRange[0];
-            float closestDistance = Vector2.Distance(transform.position, closestBug.transform.position);
+            float closestDistance = Vector2.Distance(radiusTransform.position, closestBug.transform.position);
 
             for (int i = 1; i < bugsInRange.Length; i++)
             {
-                float distance = Vector2.Distance(transform.position, bugsInRange[i].transform.position);
+                float distance = Vector2.Distance(radiusTransform.position, bugsInRange[i].transform.position);
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
@@ -334,6 +364,7 @@ public class ToadSkill : MonoBehaviour
             }
         }
     }
+
 
     IEnumerator ShootTongueAtBug(Transform bugTransform)
     {
@@ -352,7 +383,7 @@ public class ToadSkill : MonoBehaviour
         // Bắn lưỡi đến bug
         while (currentLength < distanceToBug)
         {
-            currentLength += tongueSpeed * Time.deltaTime;
+            currentLength += tongueSpeed * tongueShootSpeedBug *Time.deltaTime;
             float scaleRatio = Mathf.Clamp(currentLength / maxTongueLength, 0f, 1f);
             tongue.transform.localScale = new Vector3(tongueOriginalScale.x * scaleRatio, tongueOriginalScale.y, tongueOriginalScale.z);
 
@@ -384,7 +415,7 @@ public class ToadSkill : MonoBehaviour
 
         while (currentLength > 0f)
         {
-            currentLength -= tongueSpeed * Time.deltaTime;
+            currentLength -= tongueSpeed * tongueShootSpeedBug *Time.deltaTime;
             float scaleRatio = Mathf.Clamp(currentLength / maxTongueLength, 0f, 1f);
             tongue.transform.localScale = new Vector3(tongueOriginalScale.x * scaleRatio, tongueOriginalScale.y, tongueOriginalScale.z);
 
@@ -401,13 +432,17 @@ public class ToadSkill : MonoBehaviour
             Destroy(bugTransform.gameObject);
         }
         Destroy(tongue);
-        healthToad.UpHealth(100f);
+        healthToad.UpHealth(80f);
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, bugDetectionRadius);
+        if (radiusTransform != null)
+        {
+            Gizmos.color = Color.green;
+            Vector2 boxSize = new Vector2(bugDetectionRadius * 2, bugDetectionRadius * 2);
+            Gizmos.DrawWireCube(radiusTransform.position, boxSize);
+        }
 
         if (jumpAreaTransform != null)
         {

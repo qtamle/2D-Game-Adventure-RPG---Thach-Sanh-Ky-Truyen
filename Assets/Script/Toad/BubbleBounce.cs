@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class BubbleBounce : MonoBehaviour
 {
-    private Rigidbody2D rb;
     Vector2 lastVelocity;
+    public float shakeAmount = 0.1f;
+    public float rotationSpeed = 100f;
+    public GameObject bubblePop;
+
+    private Rigidbody2D rb;
+    private Animator animator;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -26,6 +32,7 @@ public class BubbleBounce : MonoBehaviour
     private void Update()
     {
         lastVelocity = rb.velocity;
+        transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -42,6 +49,9 @@ public class BubbleBounce : MonoBehaviour
 
         if (collision.gameObject.CompareTag("TurnOn"))
         {
+            animator.SetTrigger("Check");
+            rb.AddForce(new Vector2(Random.Range(-shakeAmount, shakeAmount), Random.Range(-shakeAmount, shakeAmount)), ForceMode2D.Impulse);
+
             var speed = lastVelocity.magnitude;
             var direction = Vector2.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
             rb.velocity = direction * Mathf.Max(speed, 0);
@@ -53,8 +63,12 @@ public class BubbleBounce : MonoBehaviour
             StatusEffects playerStatus = collision.gameObject.GetComponentInChildren<StatusEffects>();
             if (player != null)
             {
+                GameObject bubble = Instantiate(bubblePop, collision.transform.position, Quaternion.Euler(0f,0f,0f));
+
                 player.TakeDamage(10, 0f, 0f, 0f);
                 playerStatus.ApplyStun();
+
+                Destroy(bubble,2f);
             }
             Destroy(gameObject);
         }

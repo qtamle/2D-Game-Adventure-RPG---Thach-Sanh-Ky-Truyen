@@ -77,7 +77,7 @@ public class Attack : MonoBehaviour
     }
     private void PlayerAttack()
     {
-        Vector3 attackDirection = transform.localScale.x > 0 ? -transform.right : transform.right;
+        Vector3 attackDirection = transform.localScale.x < 0 ? -transform.right : transform.right;
 
         float halfAngle = angleAttack / 2f;
         float angleStep = angleAttack / attackSegments;
@@ -158,7 +158,7 @@ public class Attack : MonoBehaviour
         Gizmos.color = Color.blue;
         float halfAngle = angleAttack / 2f;
 
-        Vector3 forward = transform.localScale.x > 0 ? -transform.right : transform.right;
+        Vector3 forward = transform.localScale.x < 0 ? -transform.right : transform.right;
         Vector3 leftBoundary = Quaternion.Euler(0, 0, -halfAngle) * forward;
         Vector3 rightBoundary = Quaternion.Euler(0, 0, halfAngle) * forward;
 
