@@ -9,13 +9,16 @@ public class Attack : MonoBehaviour
     public float radiusAttack = 2f;
     public float angleAttack = 90f;
     public int attackSegments = 20;
+
+    [Header("Cooldown and Damage Settings")]
     public float damage = 10f;
     public float damageBoss = 5f;
     private int comboCount = 0;
     public float comboCooldown = 1f;
+    public float comboResetTime = 2f;    
+
     private bool isCooldown = false;
     private float lastAttackTime = 0f;
-    public float comboResetTime = 2f;
 
     public float reducedSpeed = 2f;
     private float originalSpeed;
@@ -47,10 +50,10 @@ public class Attack : MonoBehaviour
                 comboCount++;
                 lastAttackTime = Time.time;
 
-                if (comboCount >= 4)
+                if (comboCount >= 3)
                 {
                     StartCoroutine(ComboCooldownRoutine());
-                }
+                }   
 
             }
             else
@@ -77,6 +80,10 @@ public class Attack : MonoBehaviour
     }
     private void PlayerAttack()
     {
+        int damageRandom1 = Random.Range(5, 7);
+        int damageRandom2 = Random.Range(6, 8);
+        int damageRandom3 = Random.Range(8, 12);
+
         Vector3 attackDirection = transform.localScale.x < 0 ? -transform.right : transform.right;
 
         float halfAngle = angleAttack / 2f;
@@ -93,52 +100,134 @@ public class Attack : MonoBehaviour
 
             if (angleToEnemy <= halfAngle)
             {
-                // Process damage to enemies and bosses
+
+                // enemy normal
                 HealthbarEnemy enemyHealth = enemy.GetComponent<HealthbarEnemy>();
                 if (enemyHealth != null)
                 {
                     Vector2 knockbackDirection = directionToEnemy * 1;
-                    enemyHealth.TakeDamage(damage, knockbackDirection);
+                    if (comboCount == 0)
+                    {
+                        enemyHealth.TakeDamage(damageRandom1,knockbackDirection);
+                        Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
+                    }
+                    else if (comboCount == 1)
+                    {
+                        enemyHealth.TakeDamage(damageRandom2, knockbackDirection);
+                        Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
+                    }
+                    else if (comboCount == 2)
+                    {
+                        enemyHealth.TakeDamage(damageRandom3, knockbackDirection);
+                        Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
+                    }
                 }
 
+                // snake
                 HealthBarBoss bossHealth = enemy.GetComponent<HealthBarBoss>();
                 if (bossHealth != null)
                 {
-                    bossHealth.TakeDamage(damageBoss);
+                    if (comboCount == 0)
+                    {
+                        bossHealth.TakeDamage(damageRandom1);
+                        Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
+                    }
+                    else if (comboCount == 1)
+                    {
+                        bossHealth.TakeDamage(damageRandom2);
+                        Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
+                    }
+                    else if (comboCount == 2)
+                    {
+                        bossHealth.TakeDamage(damageRandom3);
+                        Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
+                    }
                 }
 
+                // ghost tree
                 GhostTreeHealth ghostTreeHealth = enemy.GetComponent<GhostTreeHealth>();
                 if (ghostTreeHealth != null)
                 {
                     Debug.Log("Ghost Tree detected and attacked");
-                    ghostTreeHealth.TakeDamage(damageBoss);
-                }
-                if (ghostTreeHealth == null)
-                {
-                    Debug.Log("GhostTreeHealth not found on " + enemy.name);
+                    if (comboCount == 0)
+                    {
+                        ghostTreeHealth.TakeDamage( damageRandom1);
+                        Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
+                    }
+                    else if (comboCount == 1)
+                    {
+                        ghostTreeHealth.TakeDamage(damageRandom2);
+                        Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
+                    }
+                    else if (comboCount == 2)
+                    {
+                        ghostTreeHealth.TakeDamage(damageRandom3);
+                        Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
+                    }
                 }
 
+                // eagle
                 EagleHealthbar eagleBoss = enemy.GetComponent<EagleHealthbar>();
                 if (eagleBoss != null)
                 {
                     Debug.Log("Eagle da bi tan cong");
-                    eagleBoss.TakeDamage(10, 15);
+                    if (comboCount == 0)
+                    {
+                        eagleBoss.TakeDamage(10,damageRandom1);
+                        Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
+                    }
+                    else if (comboCount == 1)
+                    {
+                        eagleBoss.TakeDamage(10,damageRandom2);
+                        Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
+                    }
+                    else if (comboCount == 2)
+                    {
+                        eagleBoss.TakeDamage(10,damageRandom3);
+                        Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
+                    }
                 }
 
+                // toad
                 ToadHealth toadhealth = enemy.GetComponent<ToadHealth>();
                 if (toadhealth != null)
                 {
-                    toadhealth.TakeDamage(damageBoss);
+                    if (comboCount == 0)
+                    {
+                        toadhealth.TakeDamage(damageRandom1);
+                        Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
+                    }
+                    else if (comboCount == 1)
+                    {
+                        toadhealth.TakeDamage(damageRandom2);
+                        Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
+                    }
+                    else if (comboCount == 2)
+                    {
+                        toadhealth.TakeDamage(damageRandom3);
+                        Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
+                    }
                 }
 
+                // golem
                 GolemHealthbar golemHealth = enemy.GetComponent<GolemHealthbar>();
                 if (golemHealth != null)
                 {
-                    golemHealth.TakeDamage(10,15);
-                }
-                else
-                {
-                    Debug.Log("khong the tan cong");
+                    if (comboCount == 0)
+                    {
+                        golemHealth.TakeDamage(10,damageRandom1);
+                        Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
+                    }
+                    else if (comboCount == 1)
+                    {
+                        golemHealth.TakeDamage(10,damageRandom2);
+                        Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
+                    }
+                    else if (comboCount == 2)
+                    {
+                        golemHealth.TakeDamage(10,damageRandom3);
+                        Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
+                    }
                 }
             }
         }
