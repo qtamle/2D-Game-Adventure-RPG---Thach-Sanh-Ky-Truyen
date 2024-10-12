@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
@@ -83,9 +84,11 @@ public class Attack : MonoBehaviour
     }
     private void PlayerAttack()
     {
-        int damageRandom1 = Random.Range(5, 7);
-        int damageRandom2 = Random.Range(6, 8);
-        int damageRandom3 = Random.Range(8, 12);
+        float damageRandom1 = Random.Range(5f, 7f);
+        float damageRandom2 = Random.Range(6f, 8f);
+        float damageRandom3 = Random.Range(8f, 12f);
+
+        int damageShield = Random.Range(25,30);
 
         Vector3 attackDirection = transform.localScale.x < 0 ? -transform.right : transform.right;
 
@@ -108,20 +111,24 @@ public class Attack : MonoBehaviour
                 HealthbarEnemy enemyHealth = enemy.GetComponent<HealthbarEnemy>();
                 if (enemyHealth != null)
                 {
+                    Vector3 popupPosition = enemyHealth.transform.position;
                     Vector2 knockbackDirection = directionToEnemy * 1;
                     if (comboCount == 0)
                     {
-                        enemyHealth.TakeDamage(damageRandom1,knockbackDirection);
+                        ShowDamage(Mathf.Round(damageRandom1 * 10).ToString(), popupPosition);
+                        enemyHealth.TakeDamage(Mathf.Round(damageRandom1), knockbackDirection);
                         Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
                     }
                     else if (comboCount == 1)
                     {
-                        enemyHealth.TakeDamage(damageRandom2, knockbackDirection);
+                        ShowDamage(Mathf.Round(damageRandom2 * 10).ToString(), popupPosition);
+                        enemyHealth.TakeDamage(Mathf.Round(damageRandom2), knockbackDirection);
                         Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
                     }
                     else if (comboCount == 2)
                     {
-                        enemyHealth.TakeDamage(damageRandom3, knockbackDirection);
+                        ShowDamage(Mathf.Round(damageRandom3 * 10).ToString(), popupPosition);
+                        enemyHealth.TakeDamage(Mathf.Round(damageRandom3), knockbackDirection);
                         Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
                     }
                 }
@@ -130,19 +137,23 @@ public class Attack : MonoBehaviour
                 HealthBarBoss bossHealth = enemy.GetComponent<HealthBarBoss>();
                 if (bossHealth != null)
                 {
+                    Vector3 popupPosition = bossHealth.transform.position;
                     if (comboCount == 0)
                     {
-                        bossHealth.TakeDamage(damageRandom1);
+                        ShowDamage(Mathf.Round(damageRandom1 * 10).ToString(), popupPosition);
+                        bossHealth.TakeDamage(Mathf.Round(damageRandom1));
                         Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
                     }
                     else if (comboCount == 1)
                     {
-                        bossHealth.TakeDamage(damageRandom2);
+                        ShowDamage(Mathf.Round(damageRandom2 * 10).ToString(), popupPosition);
+                        bossHealth.TakeDamage(Mathf.Round(damageRandom2));
                         Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
                     }
                     else if (comboCount == 2)
                     {
-                        bossHealth.TakeDamage(damageRandom3);
+                        ShowDamage(Mathf.Round(damageRandom3 * 10).ToString(), popupPosition);
+                        bossHealth.TakeDamage(Mathf.Round(damageRandom3));
                         Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
                     }
                 }
@@ -151,20 +162,24 @@ public class Attack : MonoBehaviour
                 GhostTreeHealth ghostTreeHealth = enemy.GetComponent<GhostTreeHealth>();
                 if (ghostTreeHealth != null)
                 {
+                    Vector3 popupPosition = ghostTreeHealth.transform.position;
                     Debug.Log("Ghost Tree detected and attacked");
                     if (comboCount == 0)
                     {
-                        ghostTreeHealth.TakeDamage( damageRandom1);
+                        ShowDamage(Mathf.Round(damageRandom1 * 10).ToString(), popupPosition);
+                        ghostTreeHealth.TakeDamage(Mathf.Round(damageRandom1));
                         Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
                     }
                     else if (comboCount == 1)
                     {
-                        ghostTreeHealth.TakeDamage(damageRandom2);
+                        ShowDamage(Mathf.Round(damageRandom2 * 10).ToString(), popupPosition);
+                        ghostTreeHealth.TakeDamage(Mathf.Round(damageRandom2));
                         Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
                     }
                     else if (comboCount == 2)
                     {
-                        ghostTreeHealth.TakeDamage(damageRandom3);
+                        ShowDamage(Mathf.Round(damageRandom3 * 10).ToString(), popupPosition);
+                        ghostTreeHealth.TakeDamage(Mathf.Round(damageRandom3));
                         Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
                     }
                 }
@@ -173,20 +188,24 @@ public class Attack : MonoBehaviour
                 EagleHealthbar eagleBoss = enemy.GetComponent<EagleHealthbar>();
                 if (eagleBoss != null)
                 {
+                    Vector3 popupPosition = eagleBoss.transform.position;
                     Debug.Log("Eagle da bi tan cong");
                     if (comboCount == 0)
                     {
-                        eagleBoss.TakeDamage(10,damageRandom1);
+                        ShowDamage(Mathf.Round(damageRandom1 * 10).ToString(), popupPosition);
+                        eagleBoss.TakeDamage(damageShield, Mathf.Round(damageRandom1));
                         Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
                     }
                     else if (comboCount == 1)
                     {
-                        eagleBoss.TakeDamage(10,damageRandom2);
+                        ShowDamage(Mathf.Round(damageRandom2 * 10).ToString(), popupPosition);
+                        eagleBoss.TakeDamage(damageShield, Mathf.Round(damageRandom2));
                         Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
                     }
                     else if (comboCount == 2)
                     {
-                        eagleBoss.TakeDamage(10,damageRandom3);
+                        ShowDamage(Mathf.Round(damageRandom3 * 10).ToString(), popupPosition);
+                        eagleBoss.TakeDamage(damageShield, Mathf.Round(damageRandom3));
                         Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
                     }
                 }
@@ -195,22 +214,23 @@ public class Attack : MonoBehaviour
                 ToadHealth toadhealth = enemy.GetComponent<ToadHealth>();
                 if (toadhealth != null)
                 {
+                    Vector3 popupPosition = toadhealth.transform.position;
                     if (comboCount == 0)
                     {
-                        ShowDamage(damageRandom1.ToString());
-                        toadhealth.TakeDamage(damageRandom1);
+                        ShowDamage(Mathf.Round(damageRandom1 * 10).ToString(), popupPosition);
+                        toadhealth.TakeDamage(Mathf.Round(damageRandom1));
                         Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
                     }
                     else if (comboCount == 1)
                     {
-                        ShowDamage(damageRandom2.ToString());
-                        toadhealth.TakeDamage(damageRandom2);
+                        ShowDamage(Mathf.Round(damageRandom2 * 10).ToString(), popupPosition);
+                        toadhealth.TakeDamage(Mathf.Round(damageRandom2));
                         Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
                     }
                     else if (comboCount == 2)
                     {
-                        ShowDamage(damageRandom3.ToString());
-                        toadhealth.TakeDamage(damageRandom3);
+                        ShowDamage(Mathf.Round(damageRandom3 * 10).ToString(), popupPosition);
+                        toadhealth.TakeDamage(Mathf.Round(damageRandom3));
                         Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
                     }
                 }
@@ -219,19 +239,23 @@ public class Attack : MonoBehaviour
                 GolemHealthbar golemHealth = enemy.GetComponent<GolemHealthbar>();
                 if (golemHealth != null)
                 {
+                    Vector3 popupPosition = golemHealth.transform.position;
                     if (comboCount == 0)
                     {
-                        golemHealth.TakeDamage(10,damageRandom1);
+                        ShowDamage(Mathf.Round(damageRandom1 * 10).ToString(), popupPosition);
+                        golemHealth.TakeDamage(damageShield, Mathf.Round(damageRandom1));
                         Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
                     }
                     else if (comboCount == 1)
                     {
-                        golemHealth.TakeDamage(10,damageRandom2);
+                        ShowDamage(Mathf.Round(damageRandom2 * 10).ToString(), popupPosition);
+                        golemHealth.TakeDamage(damageShield, Mathf.Round(damageRandom2));
                         Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
                     }
                     else if (comboCount == 2)
                     {
-                        golemHealth.TakeDamage(10,damageRandom3);
+                        ShowDamage(Mathf.Round(damageRandom3 * 10).ToString(), popupPosition);
+                        golemHealth.TakeDamage(damageShield, Mathf.Round(damageRandom3));
                         Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
                     }
                 }
@@ -247,13 +271,18 @@ public class Attack : MonoBehaviour
         isCooldown = false;
         Debug.Log("Cooldown end");
     }
-
-    public void ShowDamage(string text)
+    public void ShowDamage(string text, Vector3 position, int multiplier = 1)
     {
         if (PopupDamage)
         {
-            GameObject popupDamage = Instantiate(PopupDamage, transform.position, Quaternion.identity);
-            popupDamage.GetComponentInChildren<TextMesh>().text = text;
+            GameObject popupDamage = Instantiate(PopupDamage, position, Quaternion.identity);
+            TMP_Text damageText = popupDamage.GetComponentInChildren<TMP_Text>();
+
+            Color randomColor = Random.value > 0.5f ? new Color(1f, 0f, 0f, 132f / 255f) : new Color(1f, 1f, 1f, 132f / 255f);
+
+            damageText.color = randomColor;
+
+            damageText.text = (int.Parse(text) * multiplier).ToString();
         }
     }
 

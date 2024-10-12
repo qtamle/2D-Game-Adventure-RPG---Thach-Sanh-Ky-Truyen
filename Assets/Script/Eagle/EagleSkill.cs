@@ -69,6 +69,8 @@ public class EagleSkill : MonoBehaviour
     public ParticleSystem smoke;
     public Transform smokeSpawn;
     public float fallSpeed = 5f;
+    public GameObject canAttack;
+    public Transform attackEffectTransform;
 
     public bool isSkillActive = false;
     private float skillCooldownMin = 4f;
@@ -139,7 +141,7 @@ public class EagleSkill : MonoBehaviour
 
         boxCollider.enabled = false;
 
-        int skillIndex = Random.Range(1, 1);
+        int skillIndex = Random.Range(0, 6);
         Debug.Log($"Executing skill index: {skillIndex}");
 
         switch (skillIndex)
@@ -707,7 +709,7 @@ public class EagleSkill : MonoBehaviour
 
         Debug.Log("Eagle is stunned and waiting on the ground.");
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(8f);
 
         if (!isMovingOffScreen)
         {
@@ -814,6 +816,7 @@ public class EagleSkill : MonoBehaviour
 
         StartCoroutine(RunRandomSkillRoutine());
     }
+
     IEnumerator DestroyAfterTime(ParticleSystem ps, float time)
     {
         yield return new WaitForSeconds(time);

@@ -725,10 +725,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -9.1
       objectReference: {fileID: 0}
+    - target: {fileID: 3994048037206436764, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: energy
+      value: 
+      objectReference: {fileID: 9029858148979161511, guid: 57de82a0aeeea1447b2131221b874d5c, type: 3}
+    - target: {fileID: 3994048037206436764, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: itemEffect
+      value: 
+      objectReference: {fileID: 367183367}
     - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: damageBoss
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: PopupDamage
+      value: 
+      objectReference: {fileID: 5270253038824229444, guid: 6e2805bd040fa1546bdef0c4e22fe46e, type: 3}
     - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: angleAttack
       value: 180
@@ -870,6 +882,11 @@ PrefabInstance:
       addedObject: {fileID: 1075119100}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d39cec85ad230614e939528cb011a805, type: 3}
+--- !u!4 &367183367 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4397761955525489861, guid: d39cec85ad230614e939528cb011a805, type: 3}
+  m_PrefabInstance: {fileID: 367183366}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &392066926
 GameObject:
   m_ObjectHideFlags: 0

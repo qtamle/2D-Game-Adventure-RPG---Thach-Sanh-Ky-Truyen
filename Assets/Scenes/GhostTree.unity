@@ -3060,6 +3060,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0.062194824, y: 0.8125992}
   m_SizeDelta: {x: -22.8768, y: -16.2516}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1231726103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1231726104}
+  m_Layer: 6
+  m_Name: PositionItemFunction
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1231726104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231726103}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.04, y: 0.61, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1357250402}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1281865362 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8653719598885068355, guid: 6980080357e4e7b4baaf8479b4f48165, type: 3}
@@ -3501,6 +3532,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.000006143794
       objectReference: {fileID: 0}
+    - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      propertyPath: PopupDamage
+      value: 
+      objectReference: {fileID: 5270253038824229444, guid: 6e2805bd040fa1546bdef0c4e22fe46e, type: 3}
     - target: {fileID: 6466396342056229421, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -3559,9 +3594,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1901895592504865279, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1231726104}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4137146942418894410, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1357250401}
   m_SourcePrefab: {fileID: 100100000, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+--- !u!1 &1357250400 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4137146942418894410, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+  m_PrefabInstance: {fileID: 1357250399}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1357250401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357250400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7690fe3d62847634fad1c375f93e0c4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantHealAmount: 20
+  minHealOverTime: 1
+  maxHealOverTime: 3
+  healDuration: 5
+  staminaRestoreAmount: 100
+  healingFirst: {fileID: 534334354509715289, guid: 8bd6d514bbd14cb419bd26db1889a928, type: 3}
+  healingSecond: {fileID: 4867008694568057260, guid: b904d45d6b5de324c8231a40d221ef45, type: 3}
+  energy: {fileID: 9029858148979161511, guid: 57de82a0aeeea1447b2131221b874d5c, type: 3}
+  itemEffect: {fileID: 1231726104}
+--- !u!4 &1357250402 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1901895592504865279, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+  m_PrefabInstance: {fileID: 1357250399}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1402392051
 GameObject:
   m_ObjectHideFlags: 0

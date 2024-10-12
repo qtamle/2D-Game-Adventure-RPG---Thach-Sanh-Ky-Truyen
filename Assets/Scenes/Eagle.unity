@@ -604,6 +604,7 @@ Transform:
   - {fileID: 697006027}
   - {fileID: 841093732}
   - {fileID: 2117995526}
+  - {fileID: 1136890059}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &216734593
@@ -1482,6 +1483,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -0.99
       objectReference: {fileID: 0}
+    - target: {fileID: 3994048037206436764, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: energy
+      value: 
+      objectReference: {fileID: 9029858148979161511, guid: 57de82a0aeeea1447b2131221b874d5c, type: 3}
+    - target: {fileID: 3994048037206436764, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: itemEffect
+      value: 
+      objectReference: {fileID: 367183367}
     - target: {fileID: 4822431292817540752, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: damage
       value: 3
@@ -1490,6 +1499,10 @@ PrefabInstance:
       propertyPath: damageBoss
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: PopupDamage
+      value: 
+      objectReference: {fileID: 5270253038824229444, guid: 6e2805bd040fa1546bdef0c4e22fe46e, type: 3}
     - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: angleAttack
       value: 180
@@ -1592,7 +1605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7800297452373403686, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_Distance
-      value: 5.4561834
+      value: 7.919561
       objectReference: {fileID: 0}
     - target: {fileID: 7933423619241463409, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1625,6 +1638,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1490018989}
   m_SourcePrefab: {fileID: 100100000, guid: d39cec85ad230614e939528cb011a805, type: 3}
+--- !u!4 &367183367 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4397761955525489861, guid: d39cec85ad230614e939528cb011a805, type: 3}
+  m_PrefabInstance: {fileID: 367183366}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &379651114
 GameObject:
   m_ObjectHideFlags: 0
@@ -2680,6 +2698,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132734621}
   m_CullTransparentMesh: 1
+--- !u!1 &1136890058
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1136890059}
+  m_Layer: 11
+  m_Name: canAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1136890059
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136890058}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.57, y: 3.97, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 216734592}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1148638928 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 834194814871968308, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
@@ -8470,6 +8519,8 @@ MonoBehaviour:
   smoke: {fileID: 5444793455177376103, guid: 589c61b2e9e569c4d98fa6c9e9f636d5, type: 3}
   smokeSpawn: {fileID: 1229909845}
   fallSpeed: 2
+  canAttack: {fileID: 2918252317968518660, guid: a4d9195d8b0f0284c9f1c5bf2e72724a, type: 3}
+  attackEffectTransform: {fileID: 1136890059}
   isSkillActive: 0
   stompShake: {fileID: 11400000, guid: 386217d6bc5e72440be28ab6d140a888, type: 2}
   fallShake: {fileID: 11400000, guid: bfcabe569381974429f8a4b5deb71213, type: 2}

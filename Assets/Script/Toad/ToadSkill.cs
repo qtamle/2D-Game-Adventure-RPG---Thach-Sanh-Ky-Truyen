@@ -432,7 +432,7 @@ public class ToadSkill : MonoBehaviour
             Destroy(bugTransform.gameObject);
         }
         Destroy(tongue);
-        healthToad.UpHealth(80f);
+        healthToad.UpHealth(100f);
     }
 
     private void OnDrawGizmosSelected()

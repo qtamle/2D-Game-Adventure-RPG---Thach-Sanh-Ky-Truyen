@@ -1,5 +1,6 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
@@ -8,6 +9,7 @@ public class Arrow : MonoBehaviour
     public float damage = 15f;
     public LayerMask bossLayer;
     public LayerMask healthbarEnemyLayer;
+    public GameObject PopupDamage;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -20,6 +22,10 @@ public class Arrow : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        int damageShield = Random.Range(25, 30);
+
+        Vector3 popupPosition = collision.transform.position;
+
         if (((1 << collision.gameObject.layer) & bossLayer) != 0)
         {
             HealthBarBoss bossHealth = collision.gameObject.GetComponent<HealthBarBoss>();
@@ -32,7 +38,14 @@ public class Arrow : MonoBehaviour
             EagleHealthbar eagleBoss = collision.gameObject.GetComponent<EagleHealthbar>();
             if (eagleBoss != null)
             {
-                eagleBoss.TakeDamage(20,damage);
+                eagleBoss.TakeDamage(damageShield, damage);
+                Destroy(gameObject);
+            }
+
+            GolemHealthbar golemHealth = collision.gameObject.GetComponent<GolemHealthbar>();
+            if (golemHealth != null)
+            {
+                golemHealth.TakeDamage(damageShield, damage);
                 Destroy(gameObject);
             }
 
@@ -44,8 +57,25 @@ public class Arrow : MonoBehaviour
             {
                 Vector2 knockbackDirection = (collision.transform.position - transform.position).normalized;
                 enemyHealth.TakeDamage(damage, knockbackDirection);
+                ShowDamage((damage * 10).ToString(), popupPosition);
                 Destroy(gameObject);
             }
+        }
+    }
+
+    private void ShowDamage(string text, Vector3 position)
+    {
+        if (PopupDamage != null)
+        {
+            GameObject popup = Instantiate(PopupDamage, position, Quaternion.identity);
+            TMP_Text damageText = popup.GetComponentInChildren<TMP_Text>();
+
+            Color randomColor = Random.value > 0.5f
+                ? new Color(1f, 0f, 0f, 132f / 255f)
+                : new Color(1f, 1f, 1f, 132f / 255f);
+
+            damageText.color = randomColor;
+            damageText.text = text;
         }
     }
 }

@@ -212,7 +212,7 @@ public class EagleHealthbar : MonoBehaviour
 
     private IEnumerator RegenerateShield()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(13f);
 
         while (shield < maxShield)
         {
