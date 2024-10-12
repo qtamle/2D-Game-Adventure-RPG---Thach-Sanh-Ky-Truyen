@@ -65,8 +65,18 @@ public class Stamina : MonoBehaviour
         staminaSlider.value = currentStamina;
     }
 
+    public void RestoreStamina(float amount)
+    {
+        targetStamina += amount;
+        if (targetStamina > maxStamina)
+        {
+            targetStamina = maxStamina;
+        }
+    }
+
     public float CurrentStamina
     {
         get { return currentStamina; }
     }
+
 }

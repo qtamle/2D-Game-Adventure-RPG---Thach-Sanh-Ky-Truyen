@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 1275164665783424183}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.45, y: -0.15, z: 0}
+  m_LocalPosition: {x: -7.8, y: -0.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -165,7 +165,7 @@ Transform:
   m_GameObject: {fileID: 3555076276784924390}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.917, y: 0.271, z: 0}
+  m_LocalPosition: {x: -1.08, y: 0.271, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -242,7 +242,7 @@ Transform:
   m_GameObject: {fileID: 4497053103561111177}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.03, y: -0.06, z: -3.6577647}
+  m_LocalPosition: {x: -9.6, y: -0.7, z: -3.6577647}
   m_LocalScale: {x: 0.734, y: 0.6508, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -326,7 +326,38 @@ Transform:
   m_GameObject: {fileID: 5357184077320576558}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.79, z: 0}
+  m_LocalPosition: {x: -2.1, y: -11.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6387777369730315925}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7531639898782875099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4397761955525489861}
+  m_Layer: 6
+  m_Name: PositionItemFunction
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4397761955525489861
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7531639898782875099}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2, y: -10.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -357,6 +388,7 @@ GameObject:
   - component: {fileID: 2083324538028742533}
   - component: {fileID: 4822431292817540752}
   - component: {fileID: 5567442368471490339}
+  - component: {fileID: 3994048037206436764}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -374,7 +406,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.98, y: 5.2, z: 3.6577647}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: -0.2098168, y: 0.2098168, z: 0.2098168}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8923216577154813477}
@@ -382,6 +414,7 @@ Transform:
   - {fileID: 7621844624336259173}
   - {fileID: 5110609761515964969}
   - {fileID: 7933423619241463409}
+  - {fileID: 4397761955525489861}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1890904308222208758
@@ -416,18 +449,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0010181665, y: 0.0038504004}
+  m_Offset: {x: -2.8236232, y: -1.0352917}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.97, y: 1.27}
+    oldSize: {x: 25, y: 25}
     newSize: {x: 1.28, y: 2.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.99796414, y: 1.2492355}
+  m_Size: {x: 9.992143, y: 20.526718}
   m_EdgeRadius: 0
 --- !u!212 &6667744938242702059
 SpriteRenderer:
@@ -470,7 +503,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: -802059172, guid: b34aca9cc4e801c4a865440427123ada, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 66b045ad13537a842b940a030c1c5263, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -521,8 +554,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   horizontal: 0
-  speed: 5
-  jumpPower: 15
+  speed: 6
+  jumpPower: 18
   isFacingRight: 0
   isSwinging: 0
   swingForce: 500
@@ -539,13 +572,14 @@ MonoBehaviour:
   ledgeLayer:
     serializedVersion: 2
     m_Bits: 256
+  dustPrefab: {fileID: 2282438384830233658, guid: 7697a49ea05824642b45a2fab61c81c4, type: 3}
   healthBar: {fileID: 1067744827731771293}
   attackScript: {fileID: 4872468910867452117}
   ledgeDetected: 0
   isStunned: 0
   knockbackDirection: {x: -1, y: 0, z: 0}
   knockbackY: 0.5
-  bowScript: {fileID: 0}
+  bowScript: {fileID: 5567442368471490339}
 --- !u!96 &3238486048305510355
 TrailRenderer:
   serializedVersion: 3
@@ -704,7 +738,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 5.6321664
+  m_Distance: 8.311245
   m_MaxDistanceOnly: 0
 --- !u!120 &326936305264123032
 LineRenderer:
@@ -858,11 +892,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49db974855970644eb351dcb3a59dade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radiusAttack: 1.2
+  radiusAttack: 3
   angleAttack: 180
-  attackSegments: 180
+  attackSegments: 250
   damage: 10
-  damageBoss: 50
+  damageBoss: 5
   comboCooldown: 0.5
   comboResetTime: 2
   reducedSpeed: 2
@@ -900,7 +934,7 @@ MonoBehaviour:
   staminaSlider: {fileID: 0}
   maxStamina: 100
   staminaDecreaseAmount: 10
-  staminaRegenRate: 5
+  staminaRegenRate: 15
   smoothTime: 0.2
 --- !u!114 &4822431292817540752
 MonoBehaviour:
@@ -939,4 +973,25 @@ MonoBehaviour:
   arrowPrefab: {fileID: 516782397638517213, guid: fba56dd4e4e92a041b4fdeadd15aae30, type: 3}
   arrowSpeed: 50
   player: {fileID: 6387777369730315925}
+  playerStop: {fileID: 8515709444757130615}
   isAiming: 0
+--- !u!114 &3994048037206436764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8515709444757130615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7690fe3d62847634fad1c375f93e0c4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantHealAmount: 20
+  minHealOverTime: 1
+  maxHealOverTime: 3
+  healDuration: 5
+  staminaRestoreAmount: 100
+  healingFirst: {fileID: 534334354509715289, guid: 8bd6d514bbd14cb419bd26db1889a928, type: 3}
+  healingSecond: {fileID: 4867008694568057260, guid: b904d45d6b5de324c8231a40d221ef45, type: 3}
+  healing: {fileID: 4397761955525489861}

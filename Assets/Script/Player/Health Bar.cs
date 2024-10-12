@@ -93,4 +93,21 @@ public class HealthBar : MonoBehaviour
             fillImage.color = Color.red;
         }
     }
+
+    // Item
+    public void Heal(float healAmount)
+    {
+        health += healAmount; 
+
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+
+        if (damageCoroutine != null)
+        {
+            StopCoroutine(damageCoroutine);
+        }
+        damageCoroutine = StartCoroutine(UpdateLostHealth());
+    }
 }

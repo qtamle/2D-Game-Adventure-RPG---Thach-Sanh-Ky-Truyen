@@ -1,10 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StatusEffects : MonoBehaviour
 {
-    [Header("Posion")]
+    [Header("Bleed")]
     public float damage = 1.5f;
     public float bleedDuration = 5f;
     public float bleedInterval = 1f;
@@ -25,12 +25,47 @@ public class StatusEffects : MonoBehaviour
 
     private PlayerMovement playerMovement;
     private float originalSpeed;
+    private bool isImmune = false;
 
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
         originalSpeed = playerMovement.speed;
         playerStamina = GetComponent<Stamina>();
+    }
+    public void ApplyImmunity(float immunityDuration)
+    {
+        if (!isImmune)
+        {
+            isImmune = true;
+            StopAllEffects();
+            StartCoroutine(ImmunityDuration(immunityDuration));
+        }
+    }
+
+    private IEnumerator ImmunityDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        isImmune = false;
+    }
+
+    private void StopAllEffects()
+    {
+        if (isImmune) return;
+
+        isBleeding = false;
+
+        if (isStunned)
+        {
+            isStunned = false;
+            playerMovement.SetStunned(false);
+        }
+
+        if (isSlowed)
+        {
+            isSlowed = false;
+            playerMovement.speed = originalSpeed;
+        }
     }
 
     // Bleed
@@ -62,7 +97,7 @@ public class StatusEffects : MonoBehaviour
     // Stun
     public void ApplyStun()
     {
-        if (isStunned) return;
+        if (isImmune || isStunned) return;
 
         isStunned = true;
         playerMovement.SetStunned(true);
@@ -78,7 +113,7 @@ public class StatusEffects : MonoBehaviour
     // Slow
     public void ApplySlow()
     {
-        if (isSlowed) return;
+        if (isImmune || isSlowed) return;
 
         isSlowed = true;
         playerMovement.speed *= slowFactor;
