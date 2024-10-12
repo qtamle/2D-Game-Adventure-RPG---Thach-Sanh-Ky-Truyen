@@ -15,7 +15,10 @@ public class Attack : MonoBehaviour
     public float damageBoss = 5f;
     private int comboCount = 0;
     public float comboCooldown = 1f;
-    public float comboResetTime = 2f;    
+    public float comboResetTime = 2f;
+
+    [Header("Other")]
+    public GameObject PopupDamage;
 
     private bool isCooldown = false;
     private float lastAttackTime = 0f;
@@ -194,16 +197,19 @@ public class Attack : MonoBehaviour
                 {
                     if (comboCount == 0)
                     {
+                        ShowDamage(damageRandom1.ToString());
                         toadhealth.TakeDamage(damageRandom1);
                         Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
                     }
                     else if (comboCount == 1)
                     {
+                        ShowDamage(damageRandom2.ToString());
                         toadhealth.TakeDamage(damageRandom2);
                         Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
                     }
                     else if (comboCount == 2)
                     {
+                        ShowDamage(damageRandom3.ToString());
                         toadhealth.TakeDamage(damageRandom3);
                         Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
                     }
@@ -240,6 +246,15 @@ public class Attack : MonoBehaviour
         comboCount = 0;
         isCooldown = false;
         Debug.Log("Cooldown end");
+    }
+
+    public void ShowDamage(string text)
+    {
+        if (PopupDamage)
+        {
+            GameObject popupDamage = Instantiate(PopupDamage, transform.position, Quaternion.identity);
+            popupDamage.GetComponentInChildren<TextMesh>().text = text;
+        }
     }
 
     private void OnDrawGizmosSelected()

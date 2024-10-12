@@ -640,6 +640,18 @@ PrefabInstance:
       propertyPath: staminaSlider
       value: 
       objectReference: {fileID: 1938117980}
+    - target: {fileID: 3994048037206436764, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: energy
+      value: 
+      objectReference: {fileID: 9029858148979161511, guid: 57de82a0aeeea1447b2131221b874d5c, type: 3}
+    - target: {fileID: 3994048037206436764, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: itemEffect
+      value: 
+      objectReference: {fileID: 813650142}
+    - target: {fileID: 4872468910867452117, guid: d39cec85ad230614e939528cb011a805, type: 3}
+      propertyPath: PopupDamage
+      value: 
+      objectReference: {fileID: 2187507339527368205, guid: f2ba01b185aa6ab4ead5e5701470888c, type: 3}
     - target: {fileID: 6387777369730315925, guid: d39cec85ad230614e939528cb011a805, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.28
@@ -689,6 +701,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d39cec85ad230614e939528cb011a805, type: 3}
+--- !u!4 &813650142 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4397761955525489861, guid: d39cec85ad230614e939528cb011a805, type: 3}
+  m_PrefabInstance: {fileID: 813650141}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &885487720 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1260326567839861491, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}

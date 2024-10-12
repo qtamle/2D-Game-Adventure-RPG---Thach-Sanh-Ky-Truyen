@@ -16,9 +16,10 @@ public class ItemFunction : MonoBehaviour
     [Header("Particle System")]
     public GameObject healingFirst;
     public GameObject healingSecond;
+    public GameObject energy;
 
     [Header("Transform Particle System")]
-    public Transform healing;
+    public Transform itemEffect;
 
     private HealthBar healthBar;
     private Stamina stamina;
@@ -52,7 +53,7 @@ public class ItemFunction : MonoBehaviour
     // ITEM HEAL
     public void UseHealthItem()
     {
-        GameObject heal = Instantiate(healingFirst, healing.position, Quaternion.Euler(-90f, 0f, 0f));
+        GameObject heal = Instantiate(healingFirst, itemEffect.position, Quaternion.Euler(-90f, 0f, 0f));
         StartCoroutine(FollowPlayer(heal));
         Destroy(heal, 2f);
         healthBar.Heal(instantHealAmount);
@@ -79,9 +80,13 @@ public class ItemFunction : MonoBehaviour
     // ITEM STAMINA
     public void UseStaminaItem(Stamina staminaBar)
     {
+        GameObject energyPre = Instantiate(energy, itemEffect.position, Quaternion.Euler(-90f, 0f, 0f));
+        StartCoroutine(FollowPlayer(energyPre));
+        Destroy(energyPre,2f);
+
         if (staminaBar != null)
         {
-            staminaBar.RestoreStamina(staminaRestoreAmount); 
+            staminaBar.RestoreStamina(staminaRestoreAmount);
         }
     }
 
@@ -97,7 +102,7 @@ public class ItemFunction : MonoBehaviour
 
     IEnumerator HealingPerSecond()
     {
-        GameObject healPer = Instantiate(healingSecond, healing.position, Quaternion.Euler(-90f, 0f, 0f));
+        GameObject healPer = Instantiate(healingSecond, itemEffect.position, Quaternion.Euler(-90f, 0f, 0f));
         StartCoroutine(FollowPlayer(healPer));
         yield return new WaitForSeconds(5f);
         Destroy(healPer);
@@ -107,7 +112,7 @@ public class ItemFunction : MonoBehaviour
     {
         while (particle != null)
         {
-            particle.transform.position = healing.position; 
+            particle.transform.position = itemEffect.position; 
             yield return null; 
         }
     }
