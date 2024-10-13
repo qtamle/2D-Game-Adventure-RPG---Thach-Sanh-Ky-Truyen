@@ -71,6 +71,8 @@ public class StatusEffects : MonoBehaviour
     // Bleed
     public void ApplyBleed()
     {
+        if (isImmune) return;
+
         isBleeding = true;
         bleedTimer = bleedDuration;
         StartCoroutine(Bleed());

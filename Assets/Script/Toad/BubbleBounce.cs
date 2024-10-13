@@ -65,7 +65,7 @@ public class BubbleBounce : MonoBehaviour
             {
                 GameObject bubble = Instantiate(bubblePop, collision.transform.position, Quaternion.Euler(0f,0f,0f));
 
-                player.TakeDamage(10, 0f, 0f, 0f);
+                player.TakeDamage(18f, 0f, 0f, 0f);
                 playerStatus.ApplyStun();
 
                 Destroy(bubble,2f);

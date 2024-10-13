@@ -17,6 +17,7 @@ public class ItemFunction : MonoBehaviour
     public GameObject healingFirst;
     public GameObject healingSecond;
     public GameObject energy;
+    public GameObject resistance;
 
     [Header("Transform Particle System")]
     public Transform itemEffect;
@@ -93,6 +94,10 @@ public class ItemFunction : MonoBehaviour
     // ITEM INMUNE
     public void UseImmunityItem()
     {
+        GameObject resistanceEff = Instantiate(resistance, itemEffect.position, Quaternion.Euler(-90f, 0f, 0f));
+        StartCoroutine(FollowPlayer(resistanceEff));
+        Destroy(resistanceEff, 7f);
+
         StatusEffects statusEffects = FindAnyObjectByType<StatusEffects>();
         if (statusEffects != null)
         {
