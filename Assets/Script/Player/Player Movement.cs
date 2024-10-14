@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Move and Jump")]
     public float horizontal;
-    public float speed = 5f;
+    public float speed = 6f;
     public float jumpPower = 10f;
     public bool isFacingRight = false;
     private float staminaJump = 5f;
@@ -36,6 +36,9 @@ public class PlayerMovement : MonoBehaviour
     private HingeJoint2D ropeHingeJoint;
     private GameObject rope;
     public float swingForce = 200f;
+
+    [Header("Animator")]
+    private Animator animator;
 
     [Header("Check")]
     [SerializeField] private Rigidbody2D rb2d;
@@ -72,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
         if (bowScript == null)
         {
             bowScript = FindObjectOfType<Bow>(); 
@@ -117,7 +121,17 @@ public class PlayerMovement : MonoBehaviour
         }
 
         horizontal = Input.GetAxisRaw("Horizontal");
-
+        
+        if (horizontal != 0)
+        {
+            animator.SetBool("IsRun", true);
+            animator.SetBool("IsIdle", false);
+        }
+        else
+        {
+            animator.SetBool("IsRun", false);
+            animator.SetBool("IsIdle", true);
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && stamina.CurrentStamina > staminaJump)
         {
