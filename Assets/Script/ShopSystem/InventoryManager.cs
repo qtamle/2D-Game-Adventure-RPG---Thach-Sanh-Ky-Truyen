@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
-// Tạo một class để đại diện cho item và số lượng của nó
 [System.Serializable]
 public class InventoryItem
 {
@@ -20,6 +20,20 @@ public class InventoryManager : MonoBehaviour
     public int antibodyMedicine = 3;
     public int addPointsMedicine = 4;
 
+    private void Start()
+    {
+        LoadInventory();
+        StartCoroutine(UpdateItemSlotsCoroutine());
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            SaveInventory();
+            Debug.Log("Inventory saved. File path: " + Application.persistentDataPath + "/inventory.json");
+        }
+    }
 
     public void AddItem(int itemID)
     {
@@ -33,15 +47,16 @@ public class InventoryManager : MonoBehaviour
         else
         {
             // Nếu item chưa có, thêm vào danh sách
-            InventoryItem newItem = new InventoryItem();
-            newItem.itemID = itemID;
-            newItem.quantity = 1;
-            newItem.itemName = GetItemNameByID(itemID); 
+            InventoryItem newItem = new InventoryItem
+            {
+                itemID = itemID,
+                quantity = 1,
+                itemName = GetItemNameByID(itemID)
+            };
             inventoryList.Add(newItem);
         }
     }
 
-    // Hàm để tìm tên vật phẩm dựa trên ID
     private string GetItemNameByID(int itemID)
     {
         switch (itemID)
@@ -53,12 +68,37 @@ public class InventoryManager : MonoBehaviour
             default: return "Unknown Item";
         }
     }
-
-    // Hàm để kiểm tra số lượng của một vật phẩm
     public int GetItemQuantity(int itemID)
     {
         InventoryItem item = inventoryList.Find(i => i.itemID == itemID);
-        return item != null ? item.quantity : 0;
+        int quantity = item != null ? item.quantity : 0;
+        Debug.Log($"GetItemQuantity: itemID={itemID}, quantity={quantity}"); 
+        return quantity;
     }
 
+    public void SaveInventory()
+    {
+        InventorySaveLoad.SaveInventory(this);
+    }
+
+    public void LoadInventory()
+    {
+        InventorySaveLoad.LoadInventory(this);
+    }
+
+    private IEnumerator UpdateItemSlotsCoroutine()
+    {
+        yield return null; 
+        UpdateAllItemSlots();
+    }
+
+    private void UpdateAllItemSlots()
+    {
+        ItemSlot[] itemSlots = FindObjectsOfType<ItemSlot>();
+        Debug.Log("Found " + itemSlots.Length + " item slots.");
+        foreach (ItemSlot slot in itemSlots)
+        {
+            slot.UpdateQuantity();
+        }
+    }
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,6 +11,7 @@ public class ShopManager : MonoBehaviour
     public Text coinsTxt;
 
     public InventoryManager inventoryManager;
+    private InventorySaveLoad saveLoad;
 
     private void Start()
     {
@@ -28,11 +29,11 @@ public class ShopManager : MonoBehaviour
         shopItems[2, 3] = 300;
         shopItems[2, 4] = 150;
 
-        // Quantity
-        shopItems[3, 1] = 0;
-        shopItems[3, 2] = 0;
-        shopItems[3, 3] = 0;
-        shopItems[3, 4] = 0;
+        inventoryManager.LoadInventory();
+
+        UpdateShopQuantitiesFromInventory();
+
+        StartCoroutine(UpdateItemSlotsCoroutine());
     }
 
     public void Buy()
@@ -69,6 +70,49 @@ public class ShopManager : MonoBehaviour
             Debug.Log("Not enough coins.");
         }
     }
+    private IEnumerator UpdateItemSlotsCoroutine()
+    {
+        yield return null;
+        UpdateAllItemSlots();
+    }
 
+    private void UpdateAllItemSlots()
+    {
+        ItemSlot[] itemSlots = FindObjectsOfType<ItemSlot>();
+        Debug.Log("Found " + itemSlots.Length + " item slots.");
+        foreach (ItemSlot slot in itemSlots)
+        {
+            slot.UpdateQuantity();
+        }
+    }
+    private void UpdateShopQuantitiesFromInventory()
+    {
+        for (int itemID = 1; itemID <= 4; itemID++)
+        {
+            int quantity = inventoryManager.GetItemQuantity(itemID);
+            shopItems[3, itemID] = quantity; // Cập nhật số lượng trong shopItems
+
+            // Cập nhật UI cho nút
+            ButtonInfo buttonInfo = FindButtonInfoByID(itemID);
+            if (buttonInfo != null)
+            {
+                buttonInfo.quantityTxt.text = quantity.ToString();
+            }
+        }
+    }
+
+    private ButtonInfo FindButtonInfoByID(int itemID)
+    {
+        Button[] buttons = FindObjectsOfType<Button>();
+        foreach (Button button in buttons)
+        {
+            ButtonInfo buttonInfo = button.GetComponent<ButtonInfo>();
+            if (buttonInfo != null && buttonInfo.ItemID == itemID)
+            {
+                return buttonInfo; 
+            }
+        }
+        return null; 
+    }
 
 }
