@@ -10,7 +10,7 @@ public class QuickTimeEvents : MonoBehaviour
 
     public Button[] keybutton;
     public Text[] txt;
-    private string[] keys = { "W", "A", "S", "D", "Q", "E", "R" };
+    private string[] keys = { "W", "A", "S", "D", "Q", "R" };
     private int currentKeyIndex = 0;
     private List<string> selectedKeys = new List<string>();
 

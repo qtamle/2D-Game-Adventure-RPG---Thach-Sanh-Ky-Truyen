@@ -20,10 +20,13 @@ public class InventoryManager : MonoBehaviour
     public int antibodyMedicine = 3;
     public int addPointsMedicine = 4;
 
+    private int selectedPotionID;
     private void Start()
     {
         LoadInventory();
         StartCoroutine(UpdateItemSlotsCoroutine());
+
+        selectedPotionID = healingMedicine;
     }
 
     void Update()
@@ -100,5 +103,11 @@ public class InventoryManager : MonoBehaviour
         {
             slot.UpdateQuantity();
         }
+    }
+
+    public void SelectPotion(int itemID)
+    {
+        selectedPotionID = itemID;
+        Debug.Log($"Đã chọn thuốc với ID: {itemID}");
     }
 }

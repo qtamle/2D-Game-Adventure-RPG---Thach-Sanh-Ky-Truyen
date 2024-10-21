@@ -30,36 +30,19 @@ public class ItemFunction : MonoBehaviour
         healthBar = FindAnyObjectByType<HealthBar>();
         stamina = GetComponent<Stamina>();
 
+
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            UseHealthItem();
-        }
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            UseStaminaItem(stamina);
-        }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Debug.Log("Da su dung thuoc mien khong che");
-            UseImmunityItem();
-        }
-    }
 
     // ITEM HEAL
     public void UseHealthItem()
-    {
-        GameObject heal = Instantiate(healingFirst, itemEffect.position, Quaternion.Euler(-90f, 0f, 0f));
-        StartCoroutine(FollowPlayer(heal));
-        Destroy(heal, 2f);
-        healthBar.Heal(instantHealAmount);
+    {    
+            GameObject heal = Instantiate(healingFirst, itemEffect.position, Quaternion.Euler(-90f, 0f, 0f));
+            StartCoroutine(FollowPlayer(heal));
+            Destroy(heal, 2f);
+            healthBar.Heal(instantHealAmount);
 
-        StartCoroutine(HealOverTime());
+            StartCoroutine(HealOverTime());     
     }
 
     private IEnumerator HealOverTime()
@@ -121,4 +104,5 @@ public class ItemFunction : MonoBehaviour
             yield return null; 
         }
     }
+
 }

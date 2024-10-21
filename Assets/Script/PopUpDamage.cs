@@ -20,6 +20,9 @@ public class PopUpDamage : MonoBehaviour
 
     private void Start()
     {
+        float randomSize = Random.Range(0.5f, 1.5f);
+        damageTxt.fontSize *= randomSize;
+
         rb.velocity = new Vector2(Random.Range(-InitialXVelocity, InitialYVelocity), InitialYVelocity);
         Destroy(gameObject, lifeTime);
     }
