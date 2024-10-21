@@ -132,7 +132,7 @@ public class InventoryManagerWar : MonoBehaviour
                         itemFunction.UseHealthItem();
                         break;
                     case 2:
-                        itemFunction.UseStaminaItem(itemFunction.GetComponent<Stamina>()); // Sử dụng thuốc hồi stamina
+                        itemFunction.UseStaminaItem(itemFunction.GetComponent<Stamina>()); 
                         break;
                     case 3:
                         itemFunction.UseImmunityItem();

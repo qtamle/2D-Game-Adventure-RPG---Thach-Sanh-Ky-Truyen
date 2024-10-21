@@ -864,7 +864,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1923071836}
   m_HandleRect: {fileID: 1923071835}
   m_Direction: 0
-  m_Value: 0.000030517578
+  m_Value: 0
   m_Size: 0.9987516
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1904,8 +1904,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: 178.14}
-  m_SizeDelta: {x: 400, y: 93.74}
+  m_AnchoredPosition: {x: -255.1, y: 226}
+  m_SizeDelta: {x: 469.81, y: 93.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &871869213
 MonoBehaviour:
@@ -1940,7 +1940,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'HU TIEU GIO HEO '
+  m_Text: HU TIEU GIO HEO SHOP
 --- !u!222 &871869214
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1983,8 +1983,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 225, y: 161}
-  m_SizeDelta: {x: 322.03, y: 113.67}
+  m_AnchoredPosition: {x: 297.46, y: 219.98}
+  m_SizeDelta: {x: 438.98, y: 81.705}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &883515352
 MonoBehaviour:
@@ -3679,6 +3679,51 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1531894964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1531894966}
+  - component: {fileID: 1531894965}
+  m_Layer: 0
+  m_Name: CoinManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1531894965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531894964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae55dfe88984607408737b77f3a4d93a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coins: 9999
+--- !u!4 &1531894966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531894964}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.46130973, y: 4.331537, z: 1262.6344}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1552839010
 GameObject:
   m_ObjectHideFlags: 0
@@ -4553,7 +4598,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -4971,3 +5016,4 @@ SceneRoots:
   - {fileID: 166898635}
   - {fileID: 1447589008}
   - {fileID: 178249430}
+  - {fileID: 1531894966}

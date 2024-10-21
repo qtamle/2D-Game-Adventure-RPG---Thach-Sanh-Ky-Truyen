@@ -7,15 +7,17 @@ using UnityEngine.UI;
 public class ShopManager : MonoBehaviour
 {
     public int[,] shopItems = new int[5,5];
-    public float coins;
     public Text coinsTxt;
 
     public InventoryManager inventoryManager;
     private InventorySaveLoad saveLoad;
+    private CoinManager coinManager;
 
     private void Start()
     {
-        coinsTxt.text = "Coins: " + coins.ToString();
+        coinManager = FindObjectOfType<CoinManager>();
+        coinManager.LoadCoins();
+        UpdateCoinsText();
 
         // ID
         shopItems[1, 1] = 1;
@@ -34,6 +36,15 @@ public class ShopManager : MonoBehaviour
         UpdateShopQuantitiesFromInventory();
 
         StartCoroutine(UpdateItemSlotsCoroutine());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            coinManager.SaveCoins(); 
+            Debug.Log("Coins saved.");
+        }
     }
 
     public void Buy()
@@ -55,21 +66,28 @@ public class ShopManager : MonoBehaviour
         }
 
         int itemID = buttonInfo.ItemID;
-        if (coins >= shopItems[2, itemID])
+        if (coinManager.coins >= shopItems[2, itemID]) 
         {
-            coins -= shopItems[2, itemID];
+            coinManager.coins -= shopItems[2, itemID]; 
             shopItems[3, itemID]++;
 
-            coinsTxt.text = "Coins: " + coins.ToString();
+            UpdateCoinsText();
             buttonInfo.quantityTxt.text = shopItems[3, itemID].ToString();
-
             inventoryManager.AddItem(itemID);
+
+            coinManager.SaveCoins(); 
         }
         else
         {
             Debug.Log("Not enough coins.");
         }
     }
+
+    private void UpdateCoinsText()
+    {
+        coinsTxt.text = "Coins: " + coinManager.coins.ToString(); 
+    }
+
     private IEnumerator UpdateItemSlotsCoroutine()
     {
         yield return null;
