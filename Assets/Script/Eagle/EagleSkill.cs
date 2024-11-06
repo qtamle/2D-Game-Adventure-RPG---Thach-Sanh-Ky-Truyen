@@ -141,7 +141,7 @@ public class EagleSkill : MonoBehaviour
 
         boxCollider.enabled = false;
 
-        int skillIndex = Random.Range(0, 6);
+        int skillIndex = Random.Range(1, 1);
         Debug.Log($"Executing skill index: {skillIndex}");
 
         switch (skillIndex)

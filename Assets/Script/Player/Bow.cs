@@ -90,7 +90,7 @@ public class Bow : MonoBehaviour
         }
         Debug.Log("Gồng cung...");
 
-        float drawTime = 1f;  
+        float drawTime = 0.7f;  
         float elapsedTime = 0f;
 
         while (elapsedTime < drawTime)

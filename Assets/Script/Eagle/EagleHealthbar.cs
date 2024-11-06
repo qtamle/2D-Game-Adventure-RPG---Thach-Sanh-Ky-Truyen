@@ -93,6 +93,7 @@ public class EagleHealthbar : MonoBehaviour
 
     private void ApplyShieldDamage(float damage)
     {
+        dameflash.CallDamageFlash();
         float damageToShield = Mathf.Min(damage, shield);
         shield -= damageToShield;
         damage -= damageToShield;
