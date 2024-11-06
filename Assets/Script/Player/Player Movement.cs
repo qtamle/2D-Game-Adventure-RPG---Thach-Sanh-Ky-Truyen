@@ -12,12 +12,12 @@ public class PlayerMovement : MonoBehaviour
     private float staminaJump = 5f;
 
     [Header("Dash")]
-    private bool canDash = true;
     private bool isDashing;
-    private float dashingPower = 20f;
-    private float dashingTime = 0.2f;
-    private float dashingCooldown = 1f;
-    private float staminaDecreaseAmount = 10f;
+    public float dashingPower = 20f;
+    public float dashingTime = 0.2f;
+    public float dashingCooldown = 1f;
+    public float staminaDecreaseAmount = 10f;
+    private bool canDash = true;
 
     [Header("Wall Slide and Wall Jump")]
     private bool isWallSliding;

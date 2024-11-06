@@ -14,7 +14,7 @@ public class InventoryManagerWar : MonoBehaviour
     public Text quantityText;
     public InventoryManager inventoryManager;
 
-    private bool isSelecting = false;
+    public static bool isSelecting = false;
     private float targetTimeScale = 1f;
     private float smoothSpeed = 5f;
     private int selectedPotionID = 0;
@@ -43,43 +43,53 @@ public class InventoryManagerWar : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.E))
+        if (!PauseGame.isGamePaused) 
         {
-            ShowPotionPanel();
-        }
-        if (Input.GetKeyUp(KeyCode.E))
-        {
-            HidePotionPanel();
-        }
+            if (Input.GetKey(KeyCode.E))
+            {
+                ShowPotionPanel();
+            }
+            if (Input.GetKeyUp(KeyCode.E))
+            {
+                HidePotionPanel();
+            }
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            UseSelectedPotion(); 
-        }
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                UseSelectedPotion();
+            }
 
-        Time.timeScale = Mathf.Lerp(Time.timeScale, targetTimeScale, smoothSpeed * Time.unscaledDeltaTime);
+            Time.timeScale = Mathf.Lerp(Time.timeScale, targetTimeScale, smoothSpeed * Time.unscaledDeltaTime);
+        }
     }
+
 
     private void ShowPotionPanel()
     {
-        foreach (Image img in hideListImage)
+        if (!PauseGame.isGamePaused) 
         {
-            img.gameObject.SetActive(true);
+            isSelecting = true;
+            foreach (Image img in hideListImage)
+            {
+                img.gameObject.SetActive(true);
+            }
+            potionSlotPanel.SetActive(true);
+            Time.timeScale = 0.1f; 
         }
-        isSelecting = true;
-        potionSlotPanel.SetActive(true);
-        Time.timeScale = 0.1f;
     }
 
     private void HidePotionPanel()
     {
-        foreach (Image img in hideListImage)
+        if (!PauseGame.isGamePaused) 
         {
-            img.gameObject.SetActive(false);
+            isSelecting = false;
+            foreach (Image img in hideListImage)
+            {
+                img.gameObject.SetActive(false);
+            }
+            potionSlotPanel.SetActive(false);
+            Time.timeScale = 1f; 
         }
-        isSelecting = false;
-        potionSlotPanel.SetActive(false);
-        Time.timeScale = 1f;
     }
 
     private void SelectDefaultPotion()

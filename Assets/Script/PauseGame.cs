@@ -1,49 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 public class PauseGame : MonoBehaviour
 {
     public GameObject pauseGamePanel;
-
-    public bool isPauseGame = false;
+    public static bool isGamePaused = false;
 
     private void Start()
     {
-        isPauseGame = false;
+        isGamePaused = false;
         Time.timeScale = 1;
         pauseGamePanel.SetActive(false);
     }
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !isPauseGame)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("Escape key pressed");
-            Pause();
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && isPauseGame)
-        {
-            Continue();
+            if (!isGamePaused && !InventoryManagerWar.isSelecting)
+            {
+                Pause();
+            }
+            else if (isGamePaused)
+            {
+                Continue();
+            }
         }
     }
 
     public void Pause()
     {
-        isPauseGame = true;
+        isGamePaused = true;
         pauseGamePanel.SetActive(true);
         Time.timeScale = 0;
+        Debug.Log("Game paused");
     }
 
     public void Continue()
     {
-        isPauseGame = false;
+        isGamePaused = false;
         pauseGamePanel.SetActive(false);
         Time.timeScale = 1;
+        Debug.Log("Game continued");
     }
 
     public void MainMenu()
     {
-        isPauseGame = false;
+        isGamePaused = false;
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
     }

@@ -33,7 +33,6 @@ public class ItemFunction : MonoBehaviour
 
     }
 
-
     // ITEM HEAL
     public void UseHealthItem()
     {    
