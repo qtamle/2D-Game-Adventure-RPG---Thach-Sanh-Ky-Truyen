@@ -61,6 +61,11 @@ public class Arrow : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+
+        if (collision.gameObject.CompareTag("Block"))
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void ShowDamage(string text, Vector3 position)

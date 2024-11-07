@@ -16,9 +16,11 @@ public class Stamina : MonoBehaviour
     private float staminaVelocity = 0f; 
 
     private StatusEffects statusEffects;
+    private Bow bow;
     private void Start()
     {
         statusEffects = GetComponent<StatusEffects>();
+        bow = GetComponent<Bow>();
 
         currentStamina = maxStamina;
         targetStamina = currentStamina;
@@ -27,13 +29,19 @@ public class Stamina : MonoBehaviour
 
     private void Update()
     {
-        // Tự động hồi phục stamina
-        RegenerateStamina();
+        if (bow.isAiming)
+        {
+            DecreaseStamina(staminaDecreaseAmount * Time.deltaTime); 
+        }
+        else
+        {
+            RegenerateStamina(); 
+        }
 
         currentStamina = Mathf.SmoothDamp(currentStamina, targetStamina, ref staminaVelocity, smoothTime);
         UpdateStaminaUI();
-
     }
+
 
     public void DecreaseStamina(float amount)
     {

@@ -33,6 +33,8 @@ public class EagleHealthbar : MonoBehaviour
 
     public Transform glassSpawn;
     [SerializeField] private ParticleSystem shieldDepletedEffect;
+    [SerializeField] private EagleSkillRemake eagleSkillRemake;
+
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -101,15 +103,14 @@ public class EagleHealthbar : MonoBehaviour
         if (shield <= 0)
         {
             shield = 0;
+
             if (shieldDepletedEffect != null)
             {
                 ParticleSystem effect = Instantiate(shieldDepletedEffect, glassSpawn.position, Quaternion.identity);
                 effect.Play();
                 Destroy(effect.gameObject, 3f);
             }
-
             StartCoroutine(RegenerateShield());
-            NotifyShieldDepleted(); 
         }
 
         StartCoroutine(UpdateShieldBar());
@@ -213,7 +214,7 @@ public class EagleHealthbar : MonoBehaviour
 
     private IEnumerator RegenerateShield()
     {
-        yield return new WaitForSeconds(13f);
+        yield return new WaitForSeconds(12.5f);
 
         while (shield < maxShield)
         {
@@ -257,15 +258,6 @@ public class EagleHealthbar : MonoBehaviour
         else
         {
             healthFillImage.color = Color.red;
-        }
-    }
-
-    private void NotifyShieldDepleted()
-    {
-        EagleSkill eagleSkill = GetComponent<EagleSkill>();
-        if (eagleSkill != null)
-        {
-            eagleSkill.OnShieldDepleted();
         }
     }
 }
