@@ -21,9 +21,6 @@ public class HealthBarBoss : MonoBehaviour
     private Rigidbody2D rb;
 
     public ParticleSystem bloodEffect;
-    public SnakePhase2 snakePhase2;
-    public Transform treePosition;
-    private bool isPhase2Activated = false;
     public BossSkill bossSkill;
     public ObjectManager objectManager;
 
@@ -51,20 +48,8 @@ public class HealthBarBoss : MonoBehaviour
             lostHealthSlider.value = health;
             lostFillImage = lostHealthSlider.fillRect.GetComponent<Image>();
         }
-
-        if (snakePhase2 != null)
-        {
-            snakePhase2.enabled = false;
-        }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            TakeDamage(50);
-        }
-    }
     public void TakeDamage(float damage)
     {
         targetHealth -= damage;
@@ -73,41 +58,8 @@ public class HealthBarBoss : MonoBehaviour
         health = targetHealth;
         StartCoroutine(UpdateHealthBar());
         StartCoroutine(UpdateLostHealthBar());
-        HealthBarShake();
         ShowBloodEffect();
-
-        if (!isPhase2Activated && health <= maxHealth * 0.5f)
-        {
-            ActivatePhase2();
-        }
     }
-    private void ActivatePhase2()
-    {
-        if (snakePhase2 != null)
-        {
-            // Bật SnakePhase2
-            snakePhase2.enabled = true;
-
-            snakePhase2.treePosition = treePosition;
-
-            snakePhase2.Jump();
-        }
-
-        if (bossSkill != null)
-        {
-            bossSkill.ActivatePhase2();
-            bossSkill.DestroyAllSpikeEffects();
-        }
-
-        isPhase2Activated = true;
-
-        if (objectManager != null)
-        {
-            objectManager.RemoveAllObjects();
-        }
-    }
-
-
 
     private IEnumerator UpdateHealthBar()
     {
@@ -182,13 +134,6 @@ public class HealthBarBoss : MonoBehaviour
         }
     }
 
-    public void HealthBarShake()
-    {
-        if (anim != null)
-        {
-            anim.SetTrigger("HealthbarShake");
-        }
-    }
 
     private void ShowBloodEffect()
     {

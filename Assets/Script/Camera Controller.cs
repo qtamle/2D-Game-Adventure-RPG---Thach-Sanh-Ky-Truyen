@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         Vector3 targetPosition = target.position + positionOffset;
         targetPosition = new Vector3(Mathf.Clamp(targetPosition.x, xLimit.x, xLimit.y), Mathf.Clamp(targetPosition.y, yLimit.x, yLimit.y), -10);
