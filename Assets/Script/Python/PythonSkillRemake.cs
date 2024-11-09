@@ -46,6 +46,13 @@ public class PythonSkillRemake : MonoBehaviour
     private Vector3 lastPlayerPosition;
     public Transform playerTransform;
 
+    private bool hasDamaged = false;
+    private bool isSkillActive = false;
+    private List<int> skillList = new List<int> { 0, 1, 2, 3, 4 };
+    private int lastSkillIndex = -1;
+    private bool isDowned = false;
+    private bool isSkyfallActive = false;
+    private bool isRandomSkillActive = false;
     private void Start()
     {
         // Bỏ qua layer 
@@ -55,6 +62,8 @@ public class PythonSkillRemake : MonoBehaviour
         Physics2D.IgnoreLayerCollision(myLayer, playerLayer, true);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        StartCoroutine(SkillRoutine());
     }
 
     private void Update()
@@ -65,15 +74,83 @@ public class PythonSkillRemake : MonoBehaviour
             lastPlayerPosition = player.position;
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
+    }
+
+    private IEnumerator SkillRoutine()
+    {
+        yield return new WaitForSeconds(3f);
+
+        while (true)
         {
-            StartCoroutine(LaunchProjectile());
+            if (!isSkillActive && !isRandomSkillActive)
+            {
+                isRandomSkillActive = true;
+                int skillIndex = GetRandomSkill();
+                yield return StartCoroutine(ActivateSkill(skillIndex));
+                isRandomSkillActive = false;
+
+                yield return new WaitForSeconds(Random.Range(3f, 4f));
+            }
+            else
+            {
+                yield return null;
+            }
         }
     }
 
-    // Lướt
-    private void Dash()
+    private int GetRandomSkill()
     {
+        int skillIndex;
+        do
+        {
+            skillIndex = skillList[Random.Range(0, skillList.Count)];
+        } while (skillIndex == lastSkillIndex);
+
+        lastSkillIndex = skillIndex;
+        return skillIndex;
+    }
+
+    private IEnumerator ActivateSkill(int skillIndex)
+    {
+        if (isSkillActive) yield break;
+
+        isSkillActive = true;
+        FlipCharacter();
+
+        switch (skillIndex)
+        {
+            case 0:
+                Debug.Log("Skill Dash");
+                yield return Dash();
+                break;
+            case 1:
+                Vector3 playerPosition = player.transform.position;
+                Debug.Log("Skill Tail");
+                yield return TailStrong(playerPosition);
+                break;
+            case 2:
+                Debug.Log("Skill Fire Stream");
+                yield return FireStreamSkill();
+                break;
+            case 3:
+                Debug.Log("Skill Fire Pillar");
+                yield return ActivateFirePillarSkill();
+                break;
+            case 4:
+                Debug.Log("Skill Projectile");
+                yield return LaunchProjectile();
+                break;
+            default:
+                Debug.Log("Skill ra khỏi tầm random");
+                break;
+        }
+        isSkillActive = false;
+    }
+
+    // Lướt
+    private IEnumerator Dash()
+    {
+        yield return new WaitForSeconds(0.1f);
         if (!isDashing)
         {
             isDashing = true;
@@ -117,7 +194,7 @@ public class PythonSkillRemake : MonoBehaviour
         transform.position = targetPosition;
         isDashing = false;
 
-        Debug.Log("Kết thúc lướt, bắt đầu mọc đuôi.");
+        /*Debug.Log("Kết thúc lướt, bắt đầu mọc đuôi.");
         yield return new WaitForSeconds(1f);
 
         Vector3 tailPosition;
@@ -130,11 +207,11 @@ public class PythonSkillRemake : MonoBehaviour
             tailPosition = transform.position + new Vector3(-15f, 0, 0);  // Vị trí đuôi phía bên trái
         }
         Debug.Log($"Vị trí tạo đuôi: {tailPosition}");
-        ActivateTailSkill(tailPosition);
+        ActivateTailSkill(tailPosition);*/
     }
 
     // đuôi
-    public void ActivateTailSkill(Vector3 position)
+    /*public void ActivateTailSkill(Vector3 position)
     {
         spawnPosition = new Vector3(position.x, position.y - 20f, position.z);
 
@@ -143,9 +220,9 @@ public class PythonSkillRemake : MonoBehaviour
         retractPosition = tail.transform.position;
 
         StartCoroutine(GrowAndRetractTail(tail));
-    }
+    }*/
 
-    private IEnumerator GrowAndRetractTail(GameObject tail)
+    /*private IEnumerator GrowAndRetractTail(GameObject tail)
     {
         float elapsedTime = 0f;
         Vector3 targetPosition = new Vector3(tail.transform.position.x, tail.transform.position.y + 15f, tail.transform.position.z);
@@ -169,15 +246,14 @@ public class PythonSkillRemake : MonoBehaviour
         }
 
         Destroy(tail);
-    }
+    }*/
 
     // phun lửa
     public IEnumerator FireStreamSkill()
     {
-        Vector3 targetPosition = lastPlayerPosition;
-
         FlipCharacter();
 
+        Vector3 targetPosition = lastPlayerPosition;
         yield return new WaitForSeconds(1f);
         GameObject fireStream = Instantiate(fireStreamPrefab, fireStreamStartPoint.position, Quaternion.identity);
 
@@ -304,4 +380,53 @@ public class PythonSkillRemake : MonoBehaviour
         fireball.transform.position = targetPosition;
     }
 
+    // tấn công bằng đuôi 3 lần
+    private IEnumerator TailStrong(Vector3 playerPosition)
+    {
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(GrowTail(playerPosition));
+    }
+
+    private IEnumerator GrowTail(Vector3 initialPlayerPosition)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            // Lấy vị trí cuối cùng của player trước mỗi lần mọc đuôi
+            Vector3 spawnPosition = new Vector3(initialPlayerPosition.x, initialPlayerPosition.y - 20f, initialPlayerPosition.z);
+            GameObject tail = Instantiate(tailPrefab, spawnPosition, Quaternion.identity);
+
+            Vector3 retractPosition = tail.transform.position;
+            Vector3 targetPosition = new Vector3(tail.transform.position.x, tail.transform.position.y + 15f, tail.transform.position.z);
+
+            float elapsedTime = 0f;
+
+            // Tạo đuôi mọc lên
+            while (elapsedTime < tailGrowTime)
+            {
+                elapsedTime += Time.deltaTime;
+                tail.transform.position = Vector3.Lerp(retractPosition, targetPosition, elapsedTime / tailGrowTime);
+                yield return null;
+            }
+
+            elapsedTime = 0f;
+
+            // Tạo đuôi thu lại
+            while (elapsedTime < tailRetractTime)
+            {
+                elapsedTime += Time.deltaTime;
+                tail.transform.position = Vector3.Lerp(targetPosition, retractPosition, elapsedTime / tailRetractTime);
+                yield return null;
+            }
+
+            Destroy(tail);
+            initialPlayerPosition = GetLastKnownPlayerPosition();
+
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private Vector3 GetLastKnownPlayerPosition()
+    {
+        return player.transform.position;
+    }
 }
