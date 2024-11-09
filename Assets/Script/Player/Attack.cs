@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
+    [SerializeField] private Animator animator;
     [Header("Attack Settings")]
     public float radiusAttack = 2f;
     public float angleAttack = 90f;
@@ -42,23 +43,22 @@ public class Attack : MonoBehaviour
     }
     private void Update()
     {
-        // Kiểm tra các điều kiện để thực hiện tấn công
         if (Input.GetMouseButtonDown(0) && !ladder.isClimbing && !playerMovement.isSwinging && playerMovement.CanAttack())
         {
-            // Kiểm tra xem stamina có đủ để thực hiện tấn công không
+            // Check if the attack is not on cooldown and has enough stamina
             if (!isCooldown && stamina.CurrentStamina > staminaCostPerAttack)
             {
                 stamina.DecreaseStamina(staminaCostPerAttack);
                 StartCoroutine(AttackRoutine());
                 Debug.Log($"Attack {comboCount + 1}");
+
                 comboCount++;
                 lastAttackTime = Time.time;
 
                 if (comboCount >= 3)
                 {
                     StartCoroutine(ComboCooldownRoutine());
-                }   
-
+                }
             }
             else
             {
@@ -66,10 +66,12 @@ public class Attack : MonoBehaviour
             }
         }
 
-        // Reset combo count nếu đã qua thời gian reset
+        // Reset combo count and animation if reset time has passed
         if (Time.time - lastAttackTime > comboResetTime && comboCount > 0)
         {
             comboCount = 0;
+            animator.SetBool("isIdle", true);  // Return to idle state
+            animator.SetInteger("attackCombo", 0);  // Reset attack combo state
             Debug.Log("Combo attack reset");
         }
     }
@@ -77,11 +79,36 @@ public class Attack : MonoBehaviour
     // giảm speed khi vừa tấn công vừa di chuyển
     private IEnumerator AttackRoutine()
     {
+        // Giảm tốc độ khi tấn công
         playerMovement.speed = reducedSpeed;
+
+        // Gọi hàm tấn công, thực hiện logic tấn công
         PlayerAttack();
-        yield return new WaitForSeconds(0.1f);
+
+        // Thời gian giảm tốc độ khi tấn công (có thể thay đổi dựa trên combo)
+        float reducedSpeedDuration = 0.1f;
+
+        // Nếu comboCount tăng, có thể giảm thời gian di chuyển chậm hơn
+        switch (comboCount)
+        {
+            case 0:
+                reducedSpeedDuration = 0.1f;
+                break;
+            case 1:
+                reducedSpeedDuration = 0.15f; // Combo 1, thời gian giảm tốc độ lâu hơn chút
+                break;
+            case 2:
+                reducedSpeedDuration = 0.2f;  // Combo 2, giảm tốc độ lâu nhất
+                break;
+        }
+
+        // Giữ tốc độ giảm trong khoảng thời gian nhất định
+        yield return new WaitForSeconds(reducedSpeedDuration);
+
+        // Khôi phục tốc độ ban đầu
         playerMovement.speed = originalSpeed;
     }
+
     private void PlayerAttack()
     {
         float damageRandom1 = Random.Range(5f, 7f);
