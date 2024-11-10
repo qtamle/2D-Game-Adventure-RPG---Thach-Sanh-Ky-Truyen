@@ -6,6 +6,8 @@ public class PythonSkillRemake : MonoBehaviour
 {
     [Header("Dash")]
     public float speed = 5f;
+    public Transform damageAreaTransform;
+    public float damageRadius;
     private Transform player;
     private bool isDashing = false;
 
@@ -63,7 +65,7 @@ public class PythonSkillRemake : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        StartCoroutine(SkillRoutine());
+        //StartCoroutine(SkillRoutine());
     }
 
     private void Update()
@@ -74,6 +76,10 @@ public class PythonSkillRemake : MonoBehaviour
             lastPlayerPosition = player.position;
         }
 
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            StartCoroutine(Dash());
+        }
     }
 
     private IEnumerator SkillRoutine()
@@ -147,18 +153,6 @@ public class PythonSkillRemake : MonoBehaviour
         isSkillActive = false;
     }
 
-    // Lướt
-    private IEnumerator Dash()
-    {
-        yield return new WaitForSeconds(0.1f);
-        if (!isDashing)
-        {
-            isDashing = true;
-            FlipCharacter();
-            StartCoroutine(DashCoroutine());
-        }
-    }
-
     private void FlipCharacter()
     {
         if (lastPlayerPosition.x > transform.position.x)
@@ -173,10 +167,25 @@ public class PythonSkillRemake : MonoBehaviour
         }
     }
 
+    // Lướt
+    private IEnumerator Dash()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (!isDashing)
+        {
+            isDashing = true;
+            FlipCharacter();
+            StartCoroutine(DashCoroutine());
+        }
+    }
+
     private IEnumerator DashCoroutine()
     {
-        // Lướt tới vị trí cuối cùng của player
-        Vector3 targetPosition = new Vector3(lastPlayerPosition.x, transform.position.y, transform.position.z);
+        float distance = 10f; 
+
+        // Lướt tới vị trí cuối cùng của player, cộng thêm khoảng cách (tính cả hướng trái/phải)
+        float direction = Mathf.Sign(lastPlayerPosition.x - transform.position.x); 
+        Vector3 targetPosition = new Vector3(lastPlayerPosition.x - direction * distance, transform.position.y, transform.position.z);
         Debug.Log($"Target Position: {targetPosition}");
 
         yield return new WaitForSeconds(1.5f);
@@ -194,6 +203,26 @@ public class PythonSkillRemake : MonoBehaviour
         transform.position = targetPosition;
         isDashing = false;
 
+        yield return new WaitForSeconds(0.7f);
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(damageAreaTransform.position, damageRadius);
+
+        foreach (var collider in colliders)
+        {
+            if (collider.CompareTag("Player"))
+            {
+                // Gây sát thương cho player
+                Debug.Log("Đã va chạm với Player khi dash và gây sát thương.");
+
+                PlayerMovement playerMovement = collider.GetComponent<PlayerMovement>();
+                StatusEffects status = collider.GetComponentInChildren<StatusEffects>();
+                if (playerMovement != null)
+                {
+                    playerMovement.TakeDamage(15f, 0.5f, 0.65f, 0.1f);
+                    status.ApplyBleed();
+                }
+            }
+        }
         /*Debug.Log("Kết thúc lướt, bắt đầu mọc đuôi.");
         yield return new WaitForSeconds(1f);
 
@@ -428,5 +457,11 @@ public class PythonSkillRemake : MonoBehaviour
     private Vector3 GetLastKnownPlayerPosition()
     {
         return player.transform.position;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(damageAreaTransform.position, damageRadius);
     }
 }

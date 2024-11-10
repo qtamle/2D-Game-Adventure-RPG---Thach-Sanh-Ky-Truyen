@@ -14,6 +14,9 @@ public class LTSpear : MonoBehaviour
     [Header("Jump Attack")]
     public float jumpHeight;
     public float activationRadius;
+    public Transform damageAreaTransform;
+    public float damageRadius;
+    public float stopDistanceJump;
     private bool isJumping;
 
     [Header("Gas Bomb Attack")]
@@ -21,9 +24,27 @@ public class LTSpear : MonoBehaviour
     public float throwSpeed = 5f;
     public Transform throwPoint;
 
+    [Header("Stab Spear")]
+    public Transform attackTransform;
+    public float attackRadius;
+    public float damageAmount;
+
+    [Header("Swipe Spear")]
+    public float swipeRadius;
+    public float swipeDuration = 1f;
+    public Transform swipeTransform;
+
+    [Header("Chase Player")]
+    public float chaseSpeed = 5f;
+
     [Header("Check Ground")]
     public LayerMask groundLayer;
     public Transform groundCheck;
+
+    [Header("Active Zone")]
+    public float activationRadiusZone;
+    private bool isChasing = true;
+    private bool isUsingSkill = false;
 
     private void Start()
     {
@@ -31,6 +52,8 @@ public class LTSpear : MonoBehaviour
         int playerLayer = LayerMask.NameToLayer("Player");
 
         Physics2D.IgnoreLayerCollision(myLayer, playerLayer, true);
+
+        StartCoroutine(RandomSkillSelection());
     }
     private void Update()
     {
@@ -39,25 +62,84 @@ public class LTSpear : MonoBehaviour
             lastKnownPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
         }
 
-        if (CheckGround())
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            if (Input.GetKeyDown(KeyCode.P) && !isDashing)
+            StartCoroutine(ThrowGasBomb());
+        }
+
+    }
+
+    private void FixedUpdate()
+    {
+        if (isChasing && !isUsingSkill)
+        {
+            FlipSprite();
+            ChasePlayer();
+        }
+    }
+
+    private IEnumerator RandomSkillSelection()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(2f, 3f));
+
+            if (!CheckGround() || isUsingSkill) continue;
+
+            FlipSprite();
+            isChasing = false;
+            isUsingSkill = true;
+
+            int skill = Random.Range(0, 5);
+            if (skill == 0)
             {
-                FlipSprite();  
                 StartDash();
-            }
 
-            if (Input.GetKeyDown(KeyCode.O) && !isJumping && Vector3.Distance(transform.position, player.position) <= activationRadius)
-            {
-                FlipSprite();  
-                StartCoroutine(StartJumpAttack());
+                // sau khi dash thì chọn random 2 skill đâm và quạt
+                int nextSkill = Random.Range(3, 5);  
+                if (nextSkill == 3)
+                {
+                    Debug.Log("Xai skill đâm giáo");
+                    if (Vector3.Distance(transform.position, player.position) <= activationRadiusZone)
+                        StartCoroutine(StabSpear());
+                }
+                else if (nextSkill == 4)
+                {
+                    Debug.Log("Xai skill quạt giáo");
+                    if (Vector3.Distance(transform.position, player.position) <= activationRadiusZone)
+                        StartCoroutine(SwipeSpear());
+                }
             }
-
-            if (Input.GetKeyDown(KeyCode.I))
+            else if (skill == 1)
             {
-                FlipSprite();
+                Debug.Log("nhảy lên và đập giáo");
+                if (Vector3.Distance(transform.position, player.position) <= activationRadius)
+                    StartCoroutine(StartJumpAttack());
+            }
+            else if (skill == 2)
+            {
+                Debug.Log("ném ám khí");
                 StartCoroutine(ThrowGasBomb());
             }
+            else if (skill == 3)
+            {
+                Debug.Log("Xai skill đâm giáo");
+                StartDash();
+                yield return new WaitUntil(() => !isDashing);
+                if (Vector3.Distance(transform.position, player.position) <= activationRadiusZone)
+                    StartCoroutine(StabSpear());
+            }
+            else if (skill == 4)
+            {
+                Debug.Log("Xai skill quạt giáo");
+                StartDash();
+                yield return new WaitUntil(() => !isDashing);
+                if (Vector3.Distance(transform.position, player.position) <= activationRadiusZone)
+                    StartCoroutine(SwipeSpear());
+            }
+
+            yield return new WaitForSeconds(1f);
+            isChasing = true;
         }
     }
 
@@ -81,10 +163,13 @@ public class LTSpear : MonoBehaviour
         }
     }
 
+    // lướt tới
     public void StartDash()
     {
+        isUsingSkill = true;
         lastKnownPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
         isDashing = true;
+        isChasing = false;
         StartCoroutine(DashToLastKnownPosition());
     }
 
@@ -106,12 +191,20 @@ public class LTSpear : MonoBehaviour
 
             yield return null;
         }
+        yield return new WaitForSeconds(1.5f);
+
+        isUsingSkill = false;
+        isChasing = true;
     }
 
+    // tấn công bằng nhảy
     public IEnumerator StartJumpAttack()
     {
+        isUsingSkill = true;
         isJumping = true;
         lastKnownPosition = new Vector3(player.position.x, player.position.y, transform.position.z);
+
+        isChasing = false;
         yield return new WaitForSeconds(1f);
         StartCoroutine(JumpAndDashDownward());
     }
@@ -121,14 +214,24 @@ public class LTSpear : MonoBehaviour
         Vector3 startPosition = transform.position;
         Vector3 targetPosition = lastKnownPosition;
 
-        float jumpDuration = 1.2f;
+        float adjustedTargetX;
+        if (player.position.x < transform.position.x)
+        {
+            adjustedTargetX = targetPosition.x + 10f;  
+        }
+        else
+        {
+            adjustedTargetX = targetPosition.x - 10f;  
+        }
+
+        float jumpDuration = 1f;
         float elapsedTime = 0f;
 
         while (elapsedTime < jumpDuration)
         {
             float t = elapsedTime / jumpDuration;
 
-            float xPos = Mathf.Lerp(startPosition.x, targetPosition.x, t);
+            float xPos = Mathf.Lerp(startPosition.x, adjustedTargetX, t);
             float yPos = Mathf.Lerp(startPosition.y, targetPosition.y, t) + jumpHeight * Mathf.Sin(Mathf.PI * t);
 
             transform.position = new Vector3(xPos, yPos, transform.position.z);
@@ -137,20 +240,149 @@ public class LTSpear : MonoBehaviour
             yield return null;
         }
 
-        transform.position = targetPosition;
+        transform.position = new Vector3(adjustedTargetX, targetPosition.y, transform.position.z);
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(damageAreaTransform.position, damageRadius);
+
+        foreach (var collider in colliders)
+        {
+            if (collider.CompareTag("Player"))
+            {
+                // Gây sát thương cho player
+                Debug.Log("Đã va chạm với Player khi nhảy xuống và gây sát thương.");
+
+                PlayerMovement playerMovement = collider.GetComponent<PlayerMovement>();
+                if (playerMovement != null)
+                {
+                    playerMovement.TakeDamage(15f, 0.5f, 0.65f, 0.1f);  
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(1.5f);
 
         isJumping = false;
+        isUsingSkill = false;
+        isChasing = true;
     }
 
+    // ném ám khí
     private IEnumerator ThrowGasBomb()
     {
+        isUsingSkill = true;
+        isChasing = false;
         yield return new WaitForSeconds(1f);
-        if (throwPoint != null)
-        {
-            GameObject gasBomb = Instantiate(gasBombPrefab, throwPoint.position, Quaternion.identity);
 
-            Vector2 direction = new Vector2(Mathf.Sign(player.position.x - throwPoint.position.x), 0).normalized;
-            gasBomb.GetComponent<Rigidbody2D>().velocity = direction * throwSpeed;
+        for (int i = 0; i < 3; i++)  
+        {
+            if (throwPoint != null)
+            {
+                GameObject gasBomb = Instantiate(gasBombPrefab, throwPoint.position, Quaternion.identity);
+
+                Vector2 direction = new Vector2(Mathf.Sign(player.position.x - throwPoint.position.x), 0).normalized;
+                gasBomb.GetComponent<Rigidbody2D>().velocity = direction * throwSpeed;
+            }
+
+            // Chờ 1 giây trước khi ném quả tiếp theo
+            yield return new WaitForSeconds(1.5f);
+        }
+
+        yield return new WaitForSeconds(1.5f);
+
+        isUsingSkill = false;
+        isChasing = true;
+    }
+
+    // đâm giáo liên tuc
+    private IEnumerator StabSpear()
+    {
+        isUsingSkill = true;
+        isChasing = false;
+        yield return new WaitForSeconds(1f);
+
+        float attackTime = 0f;
+        float stabDuration = 3f; 
+        float damageInterval = 0.5f; 
+        float lastDamageTime = 0f; 
+
+        while (attackTime < stabDuration)
+        {
+            // Kiểm tra vùng tấn công tại attackTransform
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(attackTransform.position, attackRadius);
+
+            foreach (var collider in colliders)
+            {
+                if (collider.CompareTag("Player"))
+                {
+                    // Kiểm tra xem có đủ thời gian để gây sát thương tiếp không
+                    if (attackTime - lastDamageTime >= damageInterval)
+                    {
+                        Debug.Log("Đã va chạm với Player khi đâm giáo.");
+
+                        PlayerMovement playerMovement = collider.GetComponent<PlayerMovement>();
+                        if (playerMovement != null)
+                        {
+                            playerMovement.TakeDamage(damageAmount, 0f, 0f, 0f); 
+                            lastDamageTime = attackTime; 
+                        }
+                    }
+                }
+            }
+
+            attackTime += Time.deltaTime; // Tăng thời gian tấn công
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1.5f);
+        Debug.Log("Da hoan tat skill dam giao");
+        isUsingSkill = false;
+        isChasing = true;
+    }
+
+    // quạt giáo
+    private IEnumerator SwipeSpear()
+    {
+        isUsingSkill = true;
+        isChasing = false;
+        yield return new WaitForSeconds(1.5f);
+
+        // Kiểm tra nếu đối thủ trong vùng kích hoạt
+        if (Vector3.Distance(transform.position, player.position) <= activationRadiusZone)
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(swipeTransform.position, swipeRadius);
+
+            foreach (var collider in colliders)
+            {
+                if (collider.CompareTag("Player"))
+                {
+                    Debug.Log("Đã va chạm với Player khi quạt giáo.");
+
+                    PlayerMovement playerMovement = collider.GetComponent<PlayerMovement>();
+                    if (playerMovement != null)
+                    {
+                        playerMovement.TakeDamage(30f, 0.5f, 0.65f, 0.1f);
+                    }
+                }
+            }
+
+            yield return new WaitForSeconds(swipeDuration); 
+        }
+        yield return new WaitForSeconds(1.5f);
+
+        Debug.Log("Da hoan tat skill quat giao");
+        isUsingSkill = false;
+        isChasing = true;
+    }
+
+    private void ChasePlayer()
+    {
+        float distanceToPlayerX = Mathf.Abs(transform.position.x - player.position.x);
+
+        if (distanceToPlayerX > stopDistance)
+        {
+            // Di chuyển về phía player chỉ theo chiều X
+            Vector3 targetPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, chaseSpeed * Time.deltaTime);
         }
     }
 
@@ -158,5 +390,17 @@ public class LTSpear : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, activationRadius);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(attackTransform.position, attackRadius);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, activationRadiusZone);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(swipeTransform.position, swipeRadius);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(damageAreaTransform.position, damageRadius);
     }
 }
