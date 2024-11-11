@@ -65,7 +65,7 @@ public class PythonSkillRemake : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        //StartCoroutine(SkillRoutine());
+        StartCoroutine(SkillRoutine());
     }
 
     private void Update()
@@ -74,11 +74,6 @@ public class PythonSkillRemake : MonoBehaviour
         if (player != null)
         {
             lastPlayerPosition = player.position;
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            StartCoroutine(Dash());
         }
     }
 
@@ -150,6 +145,7 @@ public class PythonSkillRemake : MonoBehaviour
                 Debug.Log("Skill ra khỏi tầm random");
                 break;
         }
+
         isSkillActive = false;
     }
 
@@ -170,6 +166,8 @@ public class PythonSkillRemake : MonoBehaviour
     // Lướt
     private IEnumerator Dash()
     {
+        isSkillActive = true;
+
         yield return new WaitForSeconds(0.1f);
         if (!isDashing)
         {
@@ -237,6 +235,8 @@ public class PythonSkillRemake : MonoBehaviour
         }
         Debug.Log($"Vị trí tạo đuôi: {tailPosition}");
         ActivateTailSkill(tailPosition);*/
+
+        isSkillActive = false;
     }
 
     // đuôi
@@ -280,29 +280,32 @@ public class PythonSkillRemake : MonoBehaviour
     // phun lửa
     public IEnumerator FireStreamSkill()
     {
-        FlipCharacter();
+        isSkillActive = true;
 
-        Vector3 targetPosition = lastPlayerPosition;
-        yield return new WaitForSeconds(1f);
+        FlipCharacter();  
+
+        Vector3 targetPosition = lastPlayerPosition;  
+        yield return new WaitForSeconds(1f); 
+
+        // Tạo luồng lửa từ điểm bắt đầu
         GameObject fireStream = Instantiate(fireStreamPrefab, fireStreamStartPoint.position, Quaternion.identity);
 
+        // Tính toán hướng phun
         Vector3 direction = (targetPosition - fireStreamStartPoint.position).normalized;
 
+        // Lấy góc quay
         float angle = -Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // Kiểm tra hướng của nhân vật (trái hoặc phải)
         if (transform.localScale.x < 0) // Quay trái
         {
-            // Nếu nhân vật quay trái, cộng thêm 180 độ vào góc
-            fireStream.transform.rotation = Quaternion.Euler(angle - 130f, -90f, 0f);
+            fireStream.transform.rotation = Quaternion.Euler(angle - 130f, -90f, 0f);  // Xoay sang trái
         }
         else // Quay phải
         {
-            // Nếu nhân vật quay phải, góc quay tính toán bình thường
-            fireStream.transform.rotation = Quaternion.Euler(angle + 10f, 90f, 0f);
+            fireStream.transform.rotation = Quaternion.Euler(angle + 10f, 90f, 0f);  // Xoay sang phải
         }
 
-        // Bắt đầu việc thổi luồng lửa
+        // Bắt đầu việc phun lửa
         StartCoroutine(FireStreamRoutine(fireStream));
     }
 
@@ -324,11 +327,15 @@ public class PythonSkillRemake : MonoBehaviour
         }
 
         Destroy(fireStream);
+
+        isSkillActive = false;
     }
 
     // cột lửa
     public IEnumerator ActivateFirePillarSkill()
     {
+        isSkillActive = false;
+
         Vector3 targetPosition = new Vector3(lastPlayerPosition.x, -13f, lastPlayerPosition.z);
 
         GameObject explosion = Instantiate(explosionPrefab, targetPosition, Quaternion.identity);
@@ -357,11 +364,14 @@ public class PythonSkillRemake : MonoBehaviour
         yield return new WaitForSeconds(firePillarDuration);
 
         Destroy(firePillar);
+
+        isSkillActive = false;
     }
 
     // quả cầu lửa
     private IEnumerator LaunchProjectile()
     {
+        isSkillActive = true;
         // Tạo projectile tại firePoint
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
 
@@ -380,6 +390,7 @@ public class PythonSkillRemake : MonoBehaviour
         projectile.transform.position = targetPosition;
 
         Destroy(projectile);
+        isSkillActive = false;
         StartCoroutine(FireballsRain());
     }
 
@@ -400,7 +411,7 @@ public class PythonSkillRemake : MonoBehaviour
 
     private IEnumerator FireballFall(GameObject fireball, Vector3 targetPosition)
     {
-        float fallSpeed = 10f;
+        float fallSpeed = 60f;
         while (fireball.transform.position.y > targetPosition.y)
         {
             fireball.transform.position = Vector3.MoveTowards(fireball.transform.position, targetPosition, fallSpeed * Time.deltaTime);
@@ -412,13 +423,15 @@ public class PythonSkillRemake : MonoBehaviour
     // tấn công bằng đuôi 3 lần
     private IEnumerator TailStrong(Vector3 playerPosition)
     {
+        isSkillActive = true;
         yield return new WaitForSeconds(1f);
         StartCoroutine(GrowTail(playerPosition));
+        isSkillActive = false;
     }
 
     private IEnumerator GrowTail(Vector3 initialPlayerPosition)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 1; i++)
         {
             // Lấy vị trí cuối cùng của player trước mỗi lần mọc đuôi
             Vector3 spawnPosition = new Vector3(initialPlayerPosition.x, initialPlayerPosition.y - 20f, initialPlayerPosition.z);
