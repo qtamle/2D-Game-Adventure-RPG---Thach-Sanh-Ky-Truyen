@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FirstGearGames.SmoothCameraShaker;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,6 +49,9 @@ public class PythonSkillRemake : MonoBehaviour
     private Vector3 lastPlayerPosition;
     public Transform playerTransform;
 
+    [Header("Camera Shake")]
+    public ShakeData spikeShake;
+
     private bool hasDamaged = false;
     private bool isSkillActive = false;
     private List<int> skillList = new List<int> { 0, 1, 2, 3, 4 };
@@ -90,7 +94,7 @@ public class PythonSkillRemake : MonoBehaviour
                 yield return StartCoroutine(ActivateSkill(skillIndex));
                 isRandomSkillActive = false;
 
-                yield return new WaitForSeconds(Random.Range(3f, 4f));
+                yield return new WaitForSeconds(Random.Range(2f, 3f));
             }
             else
             {
@@ -420,7 +424,7 @@ public class PythonSkillRemake : MonoBehaviour
         fireball.transform.position = targetPosition;
     }
 
-    // tấn công bằng đuôi 3 lần
+    // tấn công bằng đuôi
     private IEnumerator TailStrong(Vector3 playerPosition)
     {
         isSkillActive = true;
@@ -442,6 +446,7 @@ public class PythonSkillRemake : MonoBehaviour
 
             float elapsedTime = 0f;
 
+            CameraShakerHandler.Shake(spikeShake);
             // Tạo đuôi mọc lên
             while (elapsedTime < tailGrowTime)
             {

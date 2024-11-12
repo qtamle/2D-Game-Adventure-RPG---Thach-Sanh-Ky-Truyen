@@ -138,13 +138,11 @@ public class Attack : MonoBehaviour
         playerMovement.isAttacking = true; // Đặt trạng thái đang tấn công
         // Giảm tốc độ khi tấn công
         playerMovement.speed = reducedSpeed;
-
-        // Gọi hàm tấn công, thực hiện logic tấn công
         
-        PlayerAttack();
-
         // Thời gian giảm tốc độ khi tấn công (có thể thay đổi dựa trên combo)
         float reducedSpeedDuration = 0.1f;
+
+        PlayerAttack();
 
         // Nếu comboCount tăng, có thể giảm thời gian di chuyển chậm hơn
         switch (comboCount)
@@ -171,9 +169,9 @@ public class Attack : MonoBehaviour
 
     private void PlayerAttack()
     {
-        float damageRandom1 = Random.Range(8f, 10f);
-        float damageRandom2 = Random.Range(10f, 13f);
-        float damageRandom3 = Random.Range(15f, 17f);
+        float damageRandom1 = Random.Range(10f, 14f);
+        float damageRandom2 = Random.Range(15f, 18f);
+        float damageRandom3 = Random.Range(19f, 22f);
 
         int damageShield = Random.Range(25,30);
 
@@ -182,7 +180,8 @@ public class Attack : MonoBehaviour
         float halfAngle = angleAttack / 2f;
         float angleStep = angleAttack / attackSegments;
 
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, radiusAttack, LayerMask.GetMask("Enemy"));
+        LayerMask attackMask = LayerMask.GetMask("Enemy") | LayerMask.GetMask("Dart");
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, radiusAttack, attackMask);
 
         foreach (var enemy in enemies)
         {
@@ -194,6 +193,12 @@ public class Attack : MonoBehaviour
             if (angleToEnemy <= halfAngle)
             {
 
+                DartDamage dart = enemy.GetComponent<DartDamage>();
+                if (dart != null)
+                {
+                    dart.BounceOnHit();
+                    Debug.Log("Dart bị tấn công và sẽ nảy lên!");
+                }
                 // enemy normal
                 HealthbarEnemy enemyHealth = enemy.GetComponent<HealthbarEnemy>();
                 if (enemyHealth != null)

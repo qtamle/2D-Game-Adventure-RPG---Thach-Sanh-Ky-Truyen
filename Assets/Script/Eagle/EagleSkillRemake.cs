@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using FirstGearGames.SmoothCameraShaker;
 
 public class EagleSkillRemake : MonoBehaviour
 {
@@ -56,6 +57,10 @@ public class EagleSkillRemake : MonoBehaviour
     public Transform player;
     public Transform attackSkyfall;
     public LayerMask playerMask;
+
+    [Header("Camera Shake")]
+    public ShakeData stompShake;
+    public ShakeData fallShake;
 
     private bool hasDamaged = false;
     private bool isSkillActive = false;
@@ -117,6 +122,15 @@ public class EagleSkillRemake : MonoBehaviour
 
     private IEnumerator ActivateSkill(int skillIndex)
     {
+        if (eagleHealth.shield <= 0)
+        {
+            Debug.Log("Shield đã hết, chuyển sang SkyfallSkillAlt");
+            isSkyfallActive = false;
+            isSkillActive = false; 
+            yield return StartCoroutine(SkyfallSkillAlt());
+            yield break;
+        }
+
         isSkillActive = true;
 
         switch(skillIndex)
@@ -397,7 +411,6 @@ public class EagleSkillRemake : MonoBehaviour
         }
     }
 
-
     private bool IsGrounded()
     {
         Collider2D hit = Physics2D.OverlapCircle(layerGround.position, 1f, LayerMask.GetMask("Ground"));
@@ -590,6 +603,7 @@ public class EagleSkillRemake : MonoBehaviour
                     {
                         if (eagleHealth.shield <= 0)
                         {
+                            CameraShakerHandler.Shake(fallShake);
                             isDowned = true;
                             Debug.Log("Đã gục trong 7 giây");
                             yield return new WaitForSeconds(7f);
@@ -597,6 +611,7 @@ public class EagleSkillRemake : MonoBehaviour
                         }
                         else
                         {
+                            CameraShakerHandler.Shake(stompShake);
                             Debug.Log("Chạm đất, dừng lại 0,5 giây");
                             yield return new WaitForSeconds(0.2f);
                         }
@@ -698,6 +713,7 @@ public class EagleSkillRemake : MonoBehaviour
                 {
                     if (eagleHealth.shield <= 0)
                     {
+                        CameraShakerHandler.Shake(fallShake);
                         isDowned = true;
                         Debug.Log("Đã gục trong 7 giây");
                         yield return new WaitForSeconds(7f);
@@ -705,6 +721,7 @@ public class EagleSkillRemake : MonoBehaviour
                     }
                     else
                     {
+                        CameraShakerHandler.Shake(stompShake);
                         Debug.Log("Chạm đất, dừng lại 0,5 giây");
                         yield return new WaitForSeconds(0.2f);
                     }

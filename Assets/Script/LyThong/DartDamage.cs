@@ -73,11 +73,4 @@ public class DartDamage : MonoBehaviour
 
         Destroy(gameObject, 3f);
     }
-
-    /*DartDamage dart = enemy.GetComponent<DartDamage>();
-            if (dart != null)
-            {
-                dart.BounceOnHit();
-                Debug.Log("Dart bị tấn công và sẽ nảy lên!");
-            }*/
 }

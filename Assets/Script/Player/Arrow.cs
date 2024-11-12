@@ -23,32 +23,32 @@ public class Arrow : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         int damageShield = Random.Range(25, 30);
+        int damageBoss = Random.Range(25, 30);
 
         Vector3 popupPosition = collision.transform.position;
 
         if (((1 << collision.gameObject.layer) & bossLayer) != 0)
         {
-            HealthBarBoss bossHealth = collision.gameObject.GetComponent<HealthBarBoss>();
-            if (bossHealth != null)
-            {
-                bossHealth.TakeDamage(damage);
-                Destroy(gameObject);
-            }
-
             EagleHealthbar eagleBoss = collision.gameObject.GetComponent<EagleHealthbar>();
             if (eagleBoss != null)
             {
-                eagleBoss.TakeDamage(damageShield, damage);
+                eagleBoss.TakeDamage(damageShield, damageBoss);
                 Destroy(gameObject);
             }
 
             GolemHealthbar golemHealth = collision.gameObject.GetComponent<GolemHealthbar>();
             if (golemHealth != null)
             {
-                golemHealth.TakeDamage(damageShield, damage);
+                golemHealth.TakeDamage(damageShield, damageBoss);
                 Destroy(gameObject);
             }
 
+            HealthBarLT lt = collision.gameObject.GetComponent<HealthBarLT>();
+            if (lt != null)
+            {
+                lt.TakeDamage(damageBoss);
+                Destroy(gameObject);
+            }
         }
         if (((1 << collision.gameObject.layer) & healthbarEnemyLayer) != 0)
         {

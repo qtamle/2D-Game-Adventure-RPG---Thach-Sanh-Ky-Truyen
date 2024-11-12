@@ -907,6 +907,7 @@ GameObject:
   - component: {fileID: 402885454}
   - component: {fileID: 402885457}
   - component: {fileID: 402885458}
+  - component: {fileID: 402885459}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1048,6 +1049,23 @@ MonoBehaviour:
   positionOffset: {x: 0, y: 0, z: -10}
   xLimit: {x: -43.9, y: 60.6}
   yLimit: {x: 0, y: 0}
+--- !u!114 &402885459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402885453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab8353b5ebd32545867da143199a814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shakeTechnique: 0
+  _makeDefaultOnEnable: 1
+  _limitMagnitude: 0
+  _positionalMagnitudeLimit: 10
+  _rotationalMagnitudeLimit: 3
 --- !u!1 &466579496
 GameObject:
   m_ObjectHideFlags: 0
@@ -3304,7 +3322,7 @@ MonoBehaviour:
   damageRadius: 6
   stopDistanceJump: 1
   gasBombPrefab: {fileID: 5014843265048800567, guid: 923fcbec2622d3445a64d51300e148c2, type: 3}
-  throwSpeed: 40
+  throwSpeed: 60
   throwPoint: {fileID: 689023804}
   attackTransform: {fileID: 1757622986}
   attackRadius: 5
@@ -3318,6 +3336,7 @@ MonoBehaviour:
     m_Bits: 128
   groundCheck: {fileID: 1588431993}
   activationRadiusZone: 14.2
+  jumpShake: {fileID: 11400000, guid: 442152faf161d2043b78170ce3854b94, type: 2}
 --- !u!61 &1065566705
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3943,7 +3962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66a2df61c2477047a71739deb0b0183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spikeShake: {fileID: 11400000, guid: 304c3d57ea04ca44da637191d19eae0e, type: 2}
+  spikeShake: {fileID: 11400000, guid: 442152faf161d2043b78170ce3854b94, type: 2}
 --- !u!4 &1373256870
 Transform:
   m_ObjectHideFlags: 0
@@ -4303,7 +4322,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1748946790
 Transform:
   m_ObjectHideFlags: 0

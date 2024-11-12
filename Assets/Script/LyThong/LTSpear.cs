@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FirstGearGames.SmoothCameraShaker;
 
 public class LTSpear : MonoBehaviour
 {
@@ -46,6 +47,10 @@ public class LTSpear : MonoBehaviour
     private bool isChasing = true;
     private bool isUsingSkill = false;
     private Rigidbody2D rb;
+
+    [Header("Camera Shake")]
+    public ShakeData jumpShake;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -243,6 +248,8 @@ public class LTSpear : MonoBehaviour
 
         transform.position = new Vector3(adjustedTargetX, targetPosition.y, transform.position.z);
 
+        CameraShakerHandler.Shake(jumpShake);
+
         Collider2D[] colliders = Physics2D.OverlapCircleAll(damageAreaTransform.position, damageRadius);
 
         foreach (var collider in colliders)
@@ -274,7 +281,7 @@ public class LTSpear : MonoBehaviour
         isChasing = false;
         yield return new WaitForSeconds(1f);
 
-        for (int i = 0; i < 3; i++)  
+        for (int i = 0; i < 1; i++)  
         {
             if (throwPoint != null)
             {
@@ -285,10 +292,10 @@ public class LTSpear : MonoBehaviour
             }
 
             // Chờ 1 giây trước khi ném quả tiếp theo
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.5f);
         }
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
 
         isUsingSkill = false;
         isChasing = true;

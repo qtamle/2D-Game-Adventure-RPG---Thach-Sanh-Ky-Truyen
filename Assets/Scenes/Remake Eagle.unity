@@ -2031,6 +2031,7 @@ GameObject:
   - component: {fileID: 674164948}
   - component: {fileID: 674164947}
   - component: {fileID: 674164950}
+  - component: {fileID: 674164951}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2156,6 +2157,23 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &674164951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674164946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab8353b5ebd32545867da143199a814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shakeTechnique: 0
+  _makeDefaultOnEnable: 1
+  _limitMagnitude: 0
+  _positionalMagnitudeLimit: 10
+  _rotationalMagnitudeLimit: 3
 --- !u!1 &751542000
 GameObject:
   m_ObjectHideFlags: 0
@@ -2621,7 +2639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66a2df61c2477047a71739deb0b0183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spikeShake: {fileID: 11400000, guid: bfcabe569381974429f8a4b5deb71213, type: 2}
+  spikeShake: {fileID: 11400000, guid: 386217d6bc5e72440be28ab6d140a888, type: 2}
 --- !u!4 &949768380
 Transform:
   m_ObjectHideFlags: 0
@@ -8956,6 +8974,8 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 64
+  stompShake: {fileID: 11400000, guid: 386217d6bc5e72440be28ab6d140a888, type: 2}
+  fallShake: {fileID: 11400000, guid: bfcabe569381974429f8a4b5deb71213, type: 2}
   eagleHealth: {fileID: 1494818820}
 --- !u!114 &1530015609 stripped
 MonoBehaviour:

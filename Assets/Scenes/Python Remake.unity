@@ -4014,6 +4014,7 @@ GameObject:
   - component: {fileID: 1347226994}
   - component: {fileID: 1347226997}
   - component: {fileID: 1347226998}
+  - component: {fileID: 1347226999}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4155,6 +4156,23 @@ MonoBehaviour:
   positionOffset: {x: 0, y: 0, z: -10}
   xLimit: {x: -38.5, y: 38.9}
   yLimit: {x: 0, y: 0}
+--- !u!114 &1347226999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347226993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab8353b5ebd32545867da143199a814, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shakeTechnique: 0
+  _makeDefaultOnEnable: 1
+  _limitMagnitude: 0
+  _positionalMagnitudeLimit: 10
+  _rotationalMagnitudeLimit: 3
 --- !u!1 &1429574844
 GameObject:
   m_ObjectHideFlags: 0
@@ -4977,6 +4995,7 @@ MonoBehaviour:
   maxFireballs: 8
   fireballFallHeight: 29.4
   playerTransform: {fileID: 1313266973}
+  spikeShake: {fileID: 11400000, guid: 304c3d57ea04ca44da637191d19eae0e, type: 2}
 --- !u!1 &1850808827
 GameObject:
   m_ObjectHideFlags: 0
