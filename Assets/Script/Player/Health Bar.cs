@@ -15,7 +15,9 @@ public class HealthBar : MonoBehaviour
     private float currentHealth;
     private float delayedHealth;
     private Coroutine damageCoroutine;
-
+    
+    public GameOverScene gameOverScene;
+    private bool gameOverTriggered = false;
     void Start()
     {
         health = maxHealth;
@@ -37,13 +39,19 @@ public class HealthBar : MonoBehaviour
 
         UpdateHealthColor();
 
-        if (health < 0)
+        if (health <= 0 && !gameOverTriggered)
         {
             health = 0f;
+            TriggerGameOver();
         }
         else if (health > maxHealth)
         {
             health = maxHealth;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            TakeDamage(50f);
         }
     }
 
@@ -109,5 +117,14 @@ public class HealthBar : MonoBehaviour
             StopCoroutine(damageCoroutine);
         }
         damageCoroutine = StartCoroutine(UpdateLostHealth());
+    }
+
+    private void TriggerGameOver()
+    {
+        if (gameOverScene != null)
+        {
+            gameOverScene.TriggerGameOver();
+            gameOverTriggered = true; 
+        }
     }
 }

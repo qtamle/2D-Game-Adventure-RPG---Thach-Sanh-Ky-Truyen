@@ -13,7 +13,7 @@ public class Attack : MonoBehaviour
     public float radiusAttack = 2f;
     public float angleAttack = 90f;
     public int attackSegments = 20;
-
+    
     [Header("Cooldown and Damage Settings")]
     public float damage = 10f;
     public float damageBoss = 5f;
@@ -24,8 +24,14 @@ public class Attack : MonoBehaviour
     [Header("Other")]
     public GameObject PopupDamage;
 
+    [Header("Combo Timing")]
+    public float timeBetweenCombos = 1f; 
+    private float lastComboTime = 0f;
+
     private bool isCooldown = false;
     private float lastAttackTime = 0f;
+    private bool isAttack;
+    private bool canAttackAgain = true;
 
     public float reducedSpeed = 2f;
     private float originalSpeed;
@@ -35,6 +41,7 @@ public class Attack : MonoBehaviour
     private Stamina stamina;
 
     public float staminaCostPerAttack = 5f;
+
     private void Start()
     {
         if (animationManager == null)
@@ -50,26 +57,35 @@ public class Attack : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !ladder.isClimbing && !playerMovement.isSwinging && playerMovement.CanAttack())
+        if (Input.GetMouseButtonDown(0) && !ladder.isClimbing && !playerMovement.isSwinging && playerMovement.CanAttack() && !isAttack && canAttackAgain)
         {
-            if (!isCooldown && stamina.CurrentStamina > staminaCostPerAttack)
+            if (Time.time - lastComboTime >= timeBetweenCombos)
             {
-                stamina.DecreaseStamina(staminaCostPerAttack);
-                StartCoroutine(AttackRoutine());
-
-                comboCount++;
-                lastAttackTime = Time.time;
-
-                PlayAttackAnimation();
-
-                if (comboCount >= 3)
+                if (!isCooldown && stamina.CurrentStamina > staminaCostPerAttack)
                 {
-                    StartCoroutine(ComboCooldownRoutine());
+                    stamina.DecreaseStamina(staminaCostPerAttack);
+                    StartCoroutine(AttackRoutine());
+
+                    comboCount++;
+                    lastAttackTime = Time.time;
+
+                    PlayAttackAnimation();
+
+                    lastComboTime = Time.time; 
+
+                    if (comboCount >= 3)
+                    {
+                        StartCoroutine(ComboCooldownRoutine());
+                    }
+                }
+                else
+                {
+                    Debug.Log("Not enough stamina to attack!");
                 }
             }
             else
             {
-                Debug.Log("Not enough stamina to attack!");
+                Debug.Log("Too soon to perform another combo!");
             }
         }
 
@@ -108,6 +124,11 @@ public class Attack : MonoBehaviour
 
         bool isRunning = playerMovement.horizontal != 0;
         animator.ResetAnimations(isRunning);  // Gọi ResetAnimations với trạng thái di chuyển
+        isAttack = false;
+
+        canAttackAgain = false;
+        yield return new WaitForSeconds(0.5f); 
+        canAttackAgain = true;
     }
 
 
@@ -115,6 +136,7 @@ public class Attack : MonoBehaviour
     // giảm speed khi vừa tấn công vừa di chuyển
     private IEnumerator AttackRoutine()
     {
+        isAttack = true;
         playerMovement.isAttacking = true; // Đặt trạng thái đang tấn công
         // Giảm tốc độ khi tấn công
         playerMovement.speed = reducedSpeed;
@@ -146,7 +168,7 @@ public class Attack : MonoBehaviour
         // Khôi phục tốc độ ban đầu
         playerMovement.speed = originalSpeed;
         playerMovement.isAttacking = false; // Kết thúc trạng thái tấn công
-
+        isAttack = false;
     }
 
     private void PlayerAttack()

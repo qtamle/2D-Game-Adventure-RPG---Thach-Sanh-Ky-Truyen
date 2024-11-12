@@ -45,9 +45,10 @@ public class LTSpear : MonoBehaviour
     public float activationRadiusZone;
     private bool isChasing = true;
     private bool isUsingSkill = false;
-
+    private Rigidbody2D rb;
     private void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         int myLayer = gameObject.layer;
         int playerLayer = LayerMask.NameToLayer("Player");
 
@@ -296,6 +297,7 @@ public class LTSpear : MonoBehaviour
     // đâm giáo liên tuc
     private IEnumerator StabSpear()
     {
+        rb.isKinematic = true;
         isUsingSkill = true;
         isChasing = false;
         yield return new WaitForSeconds(1f);
@@ -337,6 +339,7 @@ public class LTSpear : MonoBehaviour
         Debug.Log("Da hoan tat skill dam giao");
         isUsingSkill = false;
         isChasing = true;
+        rb.isKinematic = false;
     }
 
     // quạt giáo
