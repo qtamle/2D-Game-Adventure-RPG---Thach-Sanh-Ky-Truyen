@@ -120,14 +120,12 @@ public class Attack : MonoBehaviour
     // Coroutine kết thúc combo và chuyển trạng thái về Idle hoặc Run nếu cần
     private IEnumerator EndComboRoutine()
     {
-        yield return new WaitForSeconds(0.2f); // Thời gian chờ cho kết thúc combo
-
         bool isRunning = playerMovement.horizontal != 0;
         animator.ResetAnimations(isRunning);  // Gọi ResetAnimations với trạng thái di chuyển
         isAttack = false;
 
         canAttackAgain = false;
-        yield return new WaitForSeconds(0.5f); 
+        yield return new WaitForSeconds(0.1f); 
         canAttackAgain = true;
     }
 
@@ -173,9 +171,9 @@ public class Attack : MonoBehaviour
 
     private void PlayerAttack()
     {
-        float damageRandom1 = Random.Range(5f, 7f);
-        float damageRandom2 = Random.Range(6f, 8f);
-        float damageRandom3 = Random.Range(8f, 12f);
+        float damageRandom1 = Random.Range(8f, 10f);
+        float damageRandom2 = Random.Range(10f, 13f);
+        float damageRandom3 = Random.Range(15f, 17f);
 
         int damageShield = Random.Range(25,30);
 
@@ -345,6 +343,31 @@ public class Attack : MonoBehaviour
                     {
                         ShowDamage(Mathf.Round(damageRandom3 * 10).ToString(), popupPosition);
                         golemHealth.TakeDamage(damageShield, Mathf.Round(damageRandom3));
+                        Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
+                    }
+                }
+
+                // ly thong phase 1
+                HealthBarLT lt = enemy.GetComponent<HealthBarLT>();
+                if (lt != null)
+                {
+                    Vector3 popupPosition = lt.transform.position;
+                    if (comboCount == 0)
+                    {
+                        ShowDamage(Mathf.Round(damageRandom1 * 10).ToString(), popupPosition);
+                        lt.TakeDamage(Mathf.Round(damageRandom1));
+                        Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
+                    }
+                    else if (comboCount == 1)
+                    {
+                        ShowDamage(Mathf.Round(damageRandom2 * 10).ToString(), popupPosition);
+                        lt.TakeDamage(Mathf.Round(damageRandom2));
+                        Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
+                    }
+                    else if (comboCount == 2)
+                    {
+                        ShowDamage(Mathf.Round(damageRandom3 * 10).ToString(), popupPosition);
+                        lt.TakeDamage(Mathf.Round(damageRandom3));
                         Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
                     }
                 }

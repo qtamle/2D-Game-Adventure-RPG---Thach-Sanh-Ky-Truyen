@@ -5208,11 +5208,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2005354974148098748, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.87326723
       objectReference: {fileID: 0}
     - target: {fileID: 2005354974148098748, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000005170043
+      value: 0.48724166
       objectReference: {fileID: 0}
     - target: {fileID: 2486483419928072412, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5232,11 +5232,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3075088445408681824, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99926865
       objectReference: {fileID: 0}
     - target: {fileID: 3075088445408681824, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000070006413
+      value: -0.038238958
       objectReference: {fileID: 0}
     - target: {fileID: 3915373986296187116, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: staminaSlider
@@ -5256,16 +5256,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4791708107638566603, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.891263
       objectReference: {fileID: 0}
     - target: {fileID: 4791708107638566603, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000045918023
+      value: -0.45348668
       objectReference: {fileID: 0}
+    - target: {fileID: 5716720148098459112, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1357250403}
     - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: PopupDamage
       value: 
       objectReference: {fileID: 5270253038824229444, guid: 6e2805bd040fa1546bdef0c4e22fe46e, type: 3}
+    - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      propertyPath: comboResetTime
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      propertyPath: animationManager
+      value: 
+      objectReference: {fileID: 1357250404}
+    - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      propertyPath: timeBetweenCombos
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6466396342056229421, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -5381,6 +5397,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1901895592504865279, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
   m_PrefabInstance: {fileID: 1357250399}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1357250403 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8814821825390380968, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+  m_PrefabInstance: {fileID: 1357250399}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357250400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54c5448ff3178bc458d0385c01d8efdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1357250404 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5716720148098459112, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+  m_PrefabInstance: {fileID: 1357250399}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357250400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 050a2c7480e1a7f42bdc7a32c1a94d08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1374644912
 GameObject:
   m_ObjectHideFlags: 0

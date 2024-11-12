@@ -1064,11 +1064,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2005354974148098748, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.8732676
       objectReference: {fileID: 0}
     - target: {fileID: 2005354974148098748, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000008036377
+      value: 0.48724085
       objectReference: {fileID: 0}
     - target: {fileID: 2486483419928072412, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1088,11 +1088,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3075088445408681824, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99926865
       objectReference: {fileID: 0}
     - target: {fileID: 3075088445408681824, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000004515446
+      value: -0.038238175
       objectReference: {fileID: 0}
     - target: {fileID: 3915373986296187116, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: staminaSlider
@@ -1116,12 +1116,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4791708107638566603, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.89126307
       objectReference: {fileID: 0}
     - target: {fileID: 4791708107638566603, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000002710592
+      value: -0.45348662
       objectReference: {fileID: 0}
+    - target: {fileID: 5716720148098459112, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 259764607}
     - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: PopupDamage
       value: 
@@ -1137,6 +1141,18 @@ PrefabInstance:
     - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: attackSegments
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      propertyPath: comboResetTime
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      propertyPath: animationManager
+      value: 
+      objectReference: {fileID: 259764605}
+    - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      propertyPath: timeBetweenCombos
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5865906879296065952, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: staminaCostPerAttack
@@ -1248,6 +1264,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1901895592504865279, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
   m_PrefabInstance: {fileID: 259764601}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &259764605 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5716720148098459112, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+  m_PrefabInstance: {fileID: 259764601}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259764602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 050a2c7480e1a7f42bdc7a32c1a94d08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &259764606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1270,6 +1297,17 @@ MonoBehaviour:
   energy: {fileID: 9029858148979161511, guid: 57de82a0aeeea1447b2131221b874d5c, type: 3}
   resistance: {fileID: 1237940334166013333, guid: b57a46a1398f16f4ca9a840e5e1c8f0c, type: 3}
   itemEffect: {fileID: 1685127311}
+--- !u!114 &259764607 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8814821825390380968, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+  m_PrefabInstance: {fileID: 259764601}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259764602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54c5448ff3178bc458d0385c01d8efdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &314607283
 GameObject:
   m_ObjectHideFlags: 0
