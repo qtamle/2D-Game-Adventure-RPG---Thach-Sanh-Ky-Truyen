@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    
+    [SerializeField] private AnyStateAnimator animator;
+    public AnimationManager animationManager;
     [Header("Attack Settings")]
     public float radiusAttack = 2f;
     public float angleAttack = 90f;
@@ -35,25 +37,30 @@ public class Attack : MonoBehaviour
     public float staminaCostPerAttack = 5f;
     private void Start()
     {
+        if (animationManager == null)
+        {
+            animationManager = GetComponent<AnimationManager>();
+        }
         ladder = GetComponent<LadderMovement>();
         playerMovement = GetComponent<PlayerMovement>();
         stamina = GetComponent<Stamina>();
         originalSpeed = playerMovement.speed;
+        animator.SetInteger("attackCombo", comboCount);
 
     }
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && !ladder.isClimbing && !playerMovement.isSwinging && playerMovement.CanAttack())
         {
-            // Check if the attack is not on cooldown and has enough stamina
             if (!isCooldown && stamina.CurrentStamina > staminaCostPerAttack)
             {
                 stamina.DecreaseStamina(staminaCostPerAttack);
                 StartCoroutine(AttackRoutine());
-                Debug.Log($"Attack {comboCount + 1}");
 
                 comboCount++;
                 lastAttackTime = Time.time;
+
+                PlayAttackAnimation();
 
                 if (comboCount >= 3)
                 {
@@ -66,23 +73,54 @@ public class Attack : MonoBehaviour
             }
         }
 
-        // Reset combo count and animation if reset time has passed
         if (Time.time - lastAttackTime > comboResetTime && comboCount > 0)
         {
             comboCount = 0;
-            animator.SetBool("isIdle", true);  // Return to idle state
-            animator.SetInteger("attackCombo", 0);  // Reset attack combo state
+            animator.SetInteger("attackCombo", comboCount);
+            animator.ResetTrigger("Attack");
             Debug.Log("Combo attack reset");
         }
     }
 
+    private void PlayAttackAnimation()
+    {
+
+        bool isRunning = playerMovement.horizontal != 0;
+        animator.SetInteger("attackCombo", comboCount);
+        string bodyAnimation = $"Body_Attack{comboCount % 3}";
+        string legsAnimation = isRunning ? "Legs_Run" : $"Legs_Attack{comboCount % 3}";
+
+        animator.TryPlayAnimation(bodyAnimation);
+        animator.TryPlayAnimation(legsAnimation);
+
+        animator.SetTrigger("Attack");
+        // Sau khi hoàn thành combo 3 đòn, kiểm tra và đặt về trạng thái chạy hoặc đứng yên
+        if (comboCount == 3)
+        {
+            StartCoroutine(EndComboRoutine());
+        }
+    }
+
+    // Coroutine kết thúc combo và chuyển trạng thái về Idle hoặc Run nếu cần
+    private IEnumerator EndComboRoutine()
+    {
+        yield return new WaitForSeconds(0.2f); // Thời gian chờ cho kết thúc combo
+
+        bool isRunning = playerMovement.horizontal != 0;
+        animator.ResetAnimations(isRunning);  // Gọi ResetAnimations với trạng thái di chuyển
+    }
+
+
+
     // giảm speed khi vừa tấn công vừa di chuyển
     private IEnumerator AttackRoutine()
     {
+        playerMovement.isAttacking = true; // Đặt trạng thái đang tấn công
         // Giảm tốc độ khi tấn công
         playerMovement.speed = reducedSpeed;
 
         // Gọi hàm tấn công, thực hiện logic tấn công
+        
         PlayerAttack();
 
         // Thời gian giảm tốc độ khi tấn công (có thể thay đổi dựa trên combo)
@@ -107,6 +145,8 @@ public class Attack : MonoBehaviour
 
         // Khôi phục tốc độ ban đầu
         playerMovement.speed = originalSpeed;
+        playerMovement.isAttacking = false; // Kết thúc trạng thái tấn công
+
     }
 
     private void PlayerAttack()
@@ -295,6 +335,8 @@ public class Attack : MonoBehaviour
         Debug.Log("Combo attack complete");
         yield return new WaitForSeconds(comboCooldown);
         comboCount = 0;
+        animator.SetInteger("attackCombo", comboCount);
+        animator.ResetTrigger("Attack");
         isCooldown = false;
         Debug.Log("Cooldown end");
     }

@@ -38,7 +38,8 @@ public class PlayerMovement : MonoBehaviour
     public float swingForce = 200f;
 
     [Header("Animator")]
-    private Animator animator;
+    private AnyStateAnimator animator;
+    public AnimationManager animationManager;
 
     [Header("Check")]
     [SerializeField] private Rigidbody2D rb2d;
@@ -73,9 +74,15 @@ public class PlayerMovement : MonoBehaviour
     [Header("Bow")]
     [SerializeField] private Bow bowScript;
 
+
+    public bool isAttacking = false;
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        if (animationManager == null)
+        {
+            animationManager = GetComponent<AnimationManager>();
+        }
+
         if (bowScript == null)
         {
             bowScript = FindObjectOfType<Bow>(); 
@@ -119,20 +126,7 @@ public class PlayerMovement : MonoBehaviour
             }
             return;
         }
-
-        horizontal = Input.GetAxisRaw("Horizontal");
-        
-        if (horizontal != 0)
-        {
-            animator.SetBool("IsRun", true);
-            animator.SetBool("IsIdle", false);
-        }
-        else
-        {
-            animator.SetBool("IsRun", false);
-            animator.SetBool("IsIdle", true);
-        }
-
+        Move();
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded() && stamina.CurrentStamina > staminaJump)
         {
             dustPrefab.Play();
@@ -186,6 +180,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    
     private bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
@@ -201,6 +196,23 @@ public class PlayerMovement : MonoBehaviour
         {
             isFacingRight = horizontal > 0f;
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * Mathf.Sign(horizontal), transform.localScale.y, transform.localScale.z);
+        }
+    }
+    private void Move()
+    {
+        if (isAttacking) return; // Bỏ qua hoạt động di chuyển nếu đang tấn công
+
+        horizontal = Input.GetAxisRaw("Horizontal");
+
+        if (horizontal != 0)
+        {
+            animationManager.animator.TryPlayAnimation("Body_Run");
+            animationManager.animator.TryPlayAnimation("Legs_Run");
+        }
+        else
+        {
+            animationManager.animator.TryPlayAnimation("Body_Idle");
+            animationManager.animator.TryPlayAnimation("Legs_Idle");
         }
     }
 
