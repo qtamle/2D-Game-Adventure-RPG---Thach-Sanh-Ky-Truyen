@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c58ec01af8077d844bc26c97b9b2a189
+guid: 10c3c124fd9b1a04da45746b502c78c6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 640
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: THACH SANH ROI_0
+      name: PlayerBody_0
       rect:
         serializedVersion: 2
-        x: 250
-        y: 1555
-        width: 907
-        height: 922
+        x: 189
+        y: 1646
+        width: 998
+        height: 839
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e514868a5447bd648bb6adfeb4672877
-      internalID: -478956840
+      spriteID: 7472289a6602a874598465c77b06415e
+      internalID: 2038365035
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: THACH SANH ROI_1
+      name: PlayerBody_1
       rect:
         serializedVersion: 2
-        x: 1318
-        y: 1741
-        width: 1146
-        height: 759
+        x: 272
+        y: 699
+        width: 345
+        height: 890
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e82cf14cb506e746984fc9fec135914
-      internalID: -1394352452
+      spriteID: 60d2bb8a9ac2cea48923342025ac52f5
+      internalID: -806246251
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: THACH SANH ROI_2
+      name: PlayerBody_2
       rect:
         serializedVersion: 2
-        x: 1529
-        y: 1063
-        width: 920
-        height: 780
+        x: 566
+        y: 24
+        width: 382
+        height: 912
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92bdd8cd5b7eb7c449e11aeaa747958f
+      internalID: -1427878690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerBody_3
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 922
+        width: 579
+        height: 716
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,145 +174,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e8deccd7f98b70b42abc1ee3bc3383dd
-      internalID: 1501023232
+      spriteID: c3337df1acd10ff4a8bea037261430af
+      internalID: -203451690
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: THACH SANH ROI_3
+      name: PlayerBody_4
       rect:
         serializedVersion: 2
-        x: 282
-        y: 687
-        width: 346
-        height: 888
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d1678edb11d442c4ca9036bc6cf241d8
-      internalID: -1692506670
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: THACH SANH ROI_4
-      rect:
-        serializedVersion: 2
-        x: 527
-        y: 0
-        width: 953
-        height: 970
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bf795d2268b60aa4d89946acead31c73
-      internalID: -204650266
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: THACH SANH ROI_5
-      rect:
-        serializedVersion: 2
-        x: 970
-        y: 874
-        width: 598
-        height: 776
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 63e602e3f8315e44ea91a66d268030ef
-      internalID: -2105729835
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: THACH SANH ROI_6
-      rect:
-        serializedVersion: 2
-        x: 1728
-        y: 716
-        width: 252
-        height: 206
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8cca0907c61917848a94a507e71c28ff
-      internalID: 1821375314
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: THACH SANH ROI_7
-      rect:
-        serializedVersion: 2
-        x: 2076
-        y: 705
-        width: 248
-        height: 216
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 57990216203f7d1438d745cff665a80e
-      internalID: -1539502933
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: THACH SANH ROI_8
-      rect:
-        serializedVersion: 2
-        x: 2007
-        y: 725
-        width: 42
-        height: 35
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1f0b464e93811cc47a874a9207bb2671
-      internalID: -46568185
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: THACH SANH ROI_9
-      rect:
-        serializedVersion: 2
-        x: 1980
-        y: 692
-        width: 11
+        x: 1347
+        y: 2136
+        width: 14
         height: 7
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -300,20 +195,83 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 614b2214718704641a2de91fb6a82550
-      internalID: 1467409711
+      spriteID: 6f5cfb694a154784f84c92f9bda01051
+      internalID: 572865186
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: THACH SANH ROI_10
+      name: PlayerBody_5
       rect:
         serializedVersion: 2
-        x: 1698
-        y: 600
-        width: 653
-        height: 376
+        x: 1681
+        y: 648
+        width: 730
+        height: 317
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83772578155da084f8d8d53db2249ba4
+      internalID: -1119340903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerBody_6
+      rect:
+        serializedVersion: 2
+        x: 1472
+        y: 1085
+        width: 1010
+        height: 624
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a23f13019319374c9e48d4a61a0fd83
+      internalID: -1697184773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerBody_7
+      rect:
+        serializedVersion: 2
+        x: 1267
+        y: 1855
+        width: 1212
+        height: 645
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ab60d6143408a040a75ff7cf3dd6cbb
+      internalID: -646886988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerBody_8
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 27
+        width: 405
+        height: 906
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -321,8 +279,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 53c87e785f5d465419136c1495b2d512
-      internalID: -375618312
+      spriteID: ee3502f0d78507a40966448795dc063e
+      internalID: 1465587370
       vertices: []
       indices: 
       edges: []
@@ -338,17 +296,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      THACH SANH ROI_0: -478956840
-      THACH SANH ROI_1: -1394352452
-      THACH SANH ROI_10: -375618312
-      THACH SANH ROI_2: 1501023232
-      THACH SANH ROI_3: -1692506670
-      THACH SANH ROI_4: -204650266
-      THACH SANH ROI_5: -2105729835
-      THACH SANH ROI_6: 1821375314
-      THACH SANH ROI_7: -1539502933
-      THACH SANH ROI_8: -46568185
-      THACH SANH ROI_9: 1467409711
+      PlayerBody_0: 2038365035
+      PlayerBody_1: -806246251
+      PlayerBody_2: -1427878690
+      PlayerBody_3: -203451690
+      PlayerBody_4: 572865186
+      PlayerBody_5: -1119340903
+      PlayerBody_6: -1697184773
+      PlayerBody_7: -646886988
+      PlayerBody_8: 1465587370
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
