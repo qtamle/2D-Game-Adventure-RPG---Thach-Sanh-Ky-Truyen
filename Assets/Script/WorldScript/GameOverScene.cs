@@ -20,6 +20,7 @@ public class GameOverScene : MonoBehaviour
 
     public void TriggerGameOver()
     {
+        PauseGame.isGameOver = true;
 
         blackBackground.gameObject.SetActive(true);
         StartCoroutine(FadeInBackground());
@@ -28,6 +29,8 @@ public class GameOverScene : MonoBehaviour
         {
             canvas.enabled = false;
         }
+
+        Time.timeScale = 0;
     }
 
     private IEnumerator FadeInBackground()
@@ -76,7 +79,11 @@ public class GameOverScene : MonoBehaviour
 
     private IEnumerator ReloadSceneAndShowCanvases()
     {
+        PauseGame.isGameOver = false;
+
         yield return new WaitForSeconds(1f);
+
+        Time.timeScale = 1;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
@@ -86,6 +93,8 @@ public class GameOverScene : MonoBehaviour
         {
             canvas.enabled = true;
         }
+
+        Time.timeScale = 1;
     }
 
     private IEnumerator FadeOutBackground()

@@ -67,12 +67,6 @@ public class LTSpear : MonoBehaviour
         {
             lastKnownPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
         }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            StartCoroutine(ThrowGasBomb());
-        }
-
     }
 
     private void FixedUpdate()
@@ -86,6 +80,8 @@ public class LTSpear : MonoBehaviour
 
     private IEnumerator RandomSkillSelection()
     {
+        yield return new WaitForSeconds(2.5f);
+
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(2f, 3f));

@@ -6,16 +6,18 @@ public class PauseGame : MonoBehaviour
     public GameObject pauseGamePanel;
     public static bool isGamePaused = false;
 
+    public static bool isGameOver = false;
     private void Start()
     {
         isGamePaused = false;
+        isGameOver = false;
         Time.timeScale = 1;
         pauseGamePanel.SetActive(false);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !isGameOver)
         {
             if (!isGamePaused && !InventoryManagerWar.isSelecting)
             {
@@ -30,6 +32,8 @@ public class PauseGame : MonoBehaviour
 
     public void Pause()
     {
+        if (isGameOver) return;
+
         isGamePaused = true;
         pauseGamePanel.SetActive(true);
         Time.timeScale = 0;
@@ -47,6 +51,7 @@ public class PauseGame : MonoBehaviour
     public void MainMenu()
     {
         isGamePaused = false;
+        isGameOver = false;
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
     }
