@@ -155,12 +155,12 @@ public class PythonSkillRemake : MonoBehaviour
 
     private void FlipCharacter()
     {
-        if (lastPlayerPosition.x > transform.position.x)
+        if (lastPlayerPosition.x < transform.position.x)
         {
             // Quay phải
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-        else if (lastPlayerPosition.x < transform.position.x)
+        else if (lastPlayerPosition.x > transform.position.x)
         {
             // Quay trái
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
@@ -340,7 +340,7 @@ public class PythonSkillRemake : MonoBehaviour
     {
         isSkillActive = false;
 
-        Vector3 targetPosition = new Vector3(lastPlayerPosition.x, -13f, lastPlayerPosition.z);
+        Vector3 targetPosition = new Vector3(lastPlayerPosition.x, -20f, lastPlayerPosition.z);
 
         GameObject explosion = Instantiate(explosionPrefab, targetPosition, Quaternion.identity);
         yield return new WaitForSeconds(explosionDuration);
@@ -354,7 +354,7 @@ public class PythonSkillRemake : MonoBehaviour
     private IEnumerator FirePillarRoutine(GameObject firePillar)
     {
         Vector3 startPosition = firePillar.transform.position;
-        Vector3 endPosition = new Vector3(firePillar.transform.position.x, firePillar.transform.position.y + 10f, firePillar.transform.position.z);
+        Vector3 endPosition = new Vector3(firePillar.transform.position.x, firePillar.transform.position.y + 50f, firePillar.transform.position.z);
 
         float elapsedTime = 0f;
 

@@ -870,8 +870,8 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5000
-      minScalar: 3000
+      scalar: 3000
+      minScalar: 1000
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -3934,7 +3934,7 @@ ParticleSystem:
         m_RotationOrder: 4
     maxLights: 20
   TrailModule:
-    enabled: 0
+    enabled: 1
     mode: 0
     ratio: 1
     lifetime:
@@ -4778,6 +4778,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 00fc33931c1fdfa4c8bd7f385a657a9a, type: 2}
+  - {fileID: 2100000, guid: 267c865e4fc5ed44fb6d3ce35dc88bbe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
