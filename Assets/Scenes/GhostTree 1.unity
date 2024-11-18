@@ -6336,6 +6336,7 @@ MonoBehaviour:
   lerpSpeed: 5
   fillImage: {fileID: 111206794}
   lostFillImage: {fileID: 852769170}
+  gameOverScene: {fileID: 0}
 --- !u!1 &1275164666011865777
 GameObject:
   m_ObjectHideFlags: 0
@@ -6863,6 +6864,7 @@ MonoBehaviour:
   comboCooldown: 0.5
   comboResetTime: 2
   PopupDamage: {fileID: 0}
+  timeBetweenCombos: 1
   reducedSpeed: 2
   staminaCostPerAttack: 8
 --- !u!50 &4913328015215124771
