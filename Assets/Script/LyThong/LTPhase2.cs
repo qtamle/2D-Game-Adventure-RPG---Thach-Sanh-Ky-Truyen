@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class LTPhase2 : MonoBehaviour
 {
@@ -31,8 +33,24 @@ public class LTPhase2 : MonoBehaviour
     private bool skillCompleted = false;
     private bool isSkillInProgress = false;
 
+    [Header("Lightning Shoot")]
+    public GameObject lightningShootPrefab;
+    public GameObject explositionLightning;
+    public Transform spawnPoint;     
+    public Transform playerPosition;
+    private bool isLightningActive = false;
+    private int lightningStrikeCount = 0;
+
+    [Header("Spear")]
+    [SerializeField] private GameObject spearPrefab;
+    [SerializeField] private float spearSpawnHeight = 15.4f; 
+    [SerializeField] private float spearSpacing = 4f;
+    [SerializeField] private float spearSpeed = 10f;
+    [SerializeField] private Transform playerPositionShoot;
+
     [Header("Teleport")]
     public Collider2D teleportArea;
+    private bool isTeleporting = false;
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -42,6 +60,15 @@ public class LTPhase2 : MonoBehaviour
 
     private Rigidbody2D rb;
     private bool isFacingRight = true;
+
+    [Header("Random Skill")]
+    private bool hasDamaged = false;
+    private bool isSkillActive = false;
+    private List<int> skillList = new List<int> { 0, 1, 2, 3, 4, 5 };
+    private int lastSkillIndex = -1;
+    private bool isDowned = false;
+    private bool isSkyfallActive = false;
+    private bool isRandomSkillActive = false;
     private void Start()
     {
         int myLayer = gameObject.layer;
@@ -50,28 +77,118 @@ public class LTPhase2 : MonoBehaviour
         Physics2D.IgnoreLayerCollision(myLayer, playerLayer, true);
 
         rb = GetComponent<Rigidbody2D>();
+
+        StartCoroutine(SkillRoutine());
     }
 
     private void Update()
     {
         isOnGround = CheckGround();
 
-        if (Input.GetKeyDown(KeyCode.P))
+    }
+
+    private IEnumerator SkillRoutine()
+    {
+        yield return new WaitForSeconds(3f);
+
+        while (true)
         {
-            if (!isSkillInProgress && !skillCompleted) 
+            if (!IsAnySkillRunning())
             {
-                StartCoroutine(JumpAndSummonLightning());
+                isRandomSkillActive = true;
+                int skillIndex = GetRandomSkill();
+
+                if (isTeleporting && (skillIndex == 3 || skillIndex == 4))
+                {
+                    Debug.Log("Skipping skill due to ongoing teleportation.");
+                    isRandomSkillActive = false; 
+                    yield return new WaitForSeconds(0.5f);
+                    continue; 
+                }
+
+                yield return StartCoroutine(ActivateSkill(skillIndex));
+                isRandomSkillActive = false;
+
+                yield return new WaitForSeconds(Random.Range(2f, 2.5f)); 
             }
-            else if (skillCompleted) 
+            else
             {
-                skillCompleted = false;
-                StartCoroutine(JumpAndSummonLightning());
+                yield return null;
             }
+        }   
+    }
+
+    private int GetRandomSkill()
+    {
+        int skillIndex;
+        do
+        {
+            skillIndex = skillList[Random.Range(0, skillList.Count)];
+        } while (skillIndex == lastSkillIndex); 
+
+        lastSkillIndex = skillIndex;
+        return skillIndex;
+    }
+
+    private IEnumerator ActivateSkill(int skillIndex)
+    {
+        if (isSkillActive) yield break;
+
+        isSkillActive = true;
+        Vector3 originalPosition = transform.position;
+
+        if (skillIndex == 0 || skillIndex == 1 || skillIndex == 2 || skillIndex == 5)
+        {
+            // Bắt đầu dịch chuyển
+            yield return StartCoroutine(TeleportSkill());
+            // Sử dụng skill ngay trong trạng thái dịch chuyển
+            yield return StartCoroutine(ExecuteSkill(skillIndex));
+            // Kết thúc dịch chuyển, quay lại vị trí cũ
+            yield return StartCoroutine(ReturnToOriginalPosition(originalPosition));
+        }
+        else
+        {
+            FlipBasedOnPlayerPosition();
+            yield return StartCoroutine(ExecuteSkill(skillIndex));
         }
 
-        if (Input.GetKeyDown(KeyCode.O) && CheckGround())
+        isSkillActive = false;
+    }
+
+    private IEnumerator ExecuteSkill(int skillIndex)
+    {
+        switch (skillIndex)
         {
-            StartCoroutine(TeleportSkill());
+            case 0:
+                Debug.Log("Skill Summon Lightning");
+                yield return SummonLightning();
+                break;
+            case 1:
+                Debug.Log("Skill Fireball");
+                yield return FireballSkill();
+                break;
+            case 2:
+                Debug.Log("Skill Fire and Flames");
+                yield return FireballAndFlames();
+                break;
+            case 3:
+                Debug.Log("Skill Jump and Lightning");
+                yield return JumpAndSummonLightning();
+                break;
+            case 4:
+                Debug.Log("Skill Spawn Lightning");
+                if (CheckGround())
+                {
+                    yield return SpawnLightning();
+                }
+                break;
+            case 5:
+                Debug.Log("Skill Spear");
+                yield return SpearAttackDuringTeleport();
+                break;
+            default:
+                Debug.Log("Skill ra khỏi tầm random");
+                break;
         }
     }
 
@@ -98,11 +215,11 @@ public class LTPhase2 : MonoBehaviour
 
     private IEnumerator TeleportSkill()
     {
-        Vector3 originalPosition = transform.position;
+        isTeleporting = true;
 
         Vector3 targetPosition = GetRandomPositionInCollider(teleportArea);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f); 
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
@@ -112,11 +229,10 @@ public class LTPhase2 : MonoBehaviour
 
         if (rb != null)
         {
-            rb.isKinematic = true; 
+            rb.isKinematic = true;
         }
 
         transform.position = targetPosition;
-
         FlipBasedOnPlayerPosition();
 
         if (spriteRenderer != null)
@@ -124,27 +240,11 @@ public class LTPhase2 : MonoBehaviour
             spriteRenderer.enabled = true;
         }
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(0.5f);
 
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.enabled = false;
-        }
-
-        transform.position = originalPosition;
-
-        FlipBasedOnPlayerPosition();
-
-        if (rb != null)
-        {
-            rb.isKinematic = false; 
-        }
-
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.enabled = true;
-        }
+        isTeleporting = false;
     }
+
     private Vector3 GetRandomPositionInCollider(Collider2D collider)
     {
         Bounds bounds = collider.bounds;
@@ -154,10 +254,42 @@ public class LTPhase2 : MonoBehaviour
 
         return new Vector3(randomX, randomY, transform.position.z);
     }
+    private IEnumerator ReturnToOriginalPosition(Vector3 originalPosition)
+    {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = false; // Tắt hiển thị
+        }
+
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+        }
+
+        // Quay về vị trí ban đầu
+        transform.position = originalPosition;
+        FlipBasedOnPlayerPosition();
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = true; // Hiển thị lại
+        }
+
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+        }
+
+        yield return null;
+    }
+
 
     // summon lightning
     private IEnumerator SummonLightning()
     {
+        isSkillActive = true;
+
         FlipBasedOnPlayerPosition();
 
         int summonCount = Random.Range(5, 7);
@@ -180,11 +312,17 @@ public class LTPhase2 : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
         }
+
+        StartCoroutine(SummonRandomLightning());
+
+        isSkillActive = false;
     }
 
     // Fireball Skill
     private IEnumerator FireballSkill()
     {
+        isSkillActive = true;
+
         int fireballCount = Random.Range(3, 6);
 
         /*Vector3 originalPosition = transform.position;
@@ -237,6 +375,7 @@ public class LTPhase2 : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
         }
+        isSkillActive = false;
 
         /*elapsedTime = 0f;
         while (elapsedTime < duration)
@@ -256,6 +395,8 @@ public class LTPhase2 : MonoBehaviour
     // Fireball and Flame
     private IEnumerator FireballAndFlames()
     {
+        isSkillActive = true;
+
         FlipBasedOnPlayerPosition();
 
         // Bay lên
@@ -285,7 +426,7 @@ public class LTPhase2 : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
-        Vector3 throwDirection = new Vector3(1, -1, 0).normalized;
+        Vector3 throwDirection = isFacingRight ? new Vector3(1, -1, 0).normalized : new Vector3(-1, -1, 0).normalized;
 
         Rigidbody2D fireballRb = fireball.GetComponent<Rigidbody2D>();
         if (fireballRb != null)
@@ -310,7 +451,7 @@ public class LTPhase2 : MonoBehaviour
         GameObject explosion = Instantiate(explosionFirePrefab, explosionPosition, Quaternion.identity);
         Destroy(explosion, 1f);
 
-        Vector3 summonPosition = explosionPosition + new Vector3(4f, 0f, 0f);
+        Vector3 summonPosition = explosionPosition + (isFacingRight ? new Vector3(4f, 0f, 0f) : new Vector3(-4f, 0f, 0f));
 
         yield return new WaitForSeconds(0.5f);
 
@@ -320,10 +461,12 @@ public class LTPhase2 : MonoBehaviour
 
             Destroy(flame, 5f);
 
-            summonPosition += new Vector3(5f, 0f, 0f); 
+            summonPosition += isFacingRight ? new Vector3(5f, 0f, 0f) : new Vector3(-5f, 0f, 0f);
 
             yield return new WaitForSeconds(flameInterval); 
         }
+
+        isSkillActive = false;
 
         /*yield return new WaitForSeconds(0.5f);
 
@@ -345,40 +488,42 @@ public class LTPhase2 : MonoBehaviour
     // Jump Attack and Lightning
     private IEnumerator JumpAndSummonLightning()
     {
-        if (isSkillInProgress || skillCompleted) yield break; 
+        if (isSkillInProgress) yield break; 
 
         isSkillInProgress = true;
-        skillCompleted = false;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f); 
 
         Vector3 lastPlayerPosition = player.position;
 
+        // Thực hiện các lần nhảy
         for (int i = 0; i < jumpsCount; i++)
         {
             FlipBasedOnPlayerPosition();
 
             Vector3 jumpTarget = player.position;
-
-            float elapsedTime = 0f;
             Vector3 startPosition = transform.position;
 
+            float elapsedTime = 0f;
+
+            // Tính toán và thực hiện nhảy theo quỹ đạo parabol
             while (elapsedTime < jumpDuration)
             {
                 elapsedTime += Time.deltaTime;
                 float t = elapsedTime / jumpDuration;
-                float heightOffset = Mathf.Sin(t * Mathf.PI) * jumpHeight;
+                float heightOffset = Mathf.Sin(t * Mathf.PI) * jumpHeight; // Độ cao nhảy
 
                 transform.position = Vector3.Lerp(startPosition, jumpTarget, t) + new Vector3(0, heightOffset, 0);
                 yield return null;
             }
 
             transform.position = jumpTarget; 
+
             if (CheckGround())
             {
                 Vector3 explosionGround = new Vector3(transform.position.x, 18.73f, transform.position.z);
-                GameObject explosion1 = Instantiate(explosionPrefab, explosionGround, Quaternion.identity);
-                Destroy(explosion1, 1f);
+                GameObject explosion = Instantiate(explosionPrefab, explosionGround, Quaternion.identity);
+                Destroy(explosion, 1f);
 
                 yield return new WaitForSeconds(0.5f);
 
@@ -392,6 +537,7 @@ public class LTPhase2 : MonoBehaviour
 
         StartCoroutine(SummonRandomLightning());
 
+        // Tạo vụ nổ và tia sét cuối cùng
         Vector3 finalExplosionPosition = new Vector3(transform.position.x, 18.73f, transform.position.z);
         GameObject finalExplosion = Instantiate(explosionPrefab, finalExplosionPosition, Quaternion.identity);
         Destroy(finalExplosion, 1f);
@@ -402,9 +548,9 @@ public class LTPhase2 : MonoBehaviour
         GameObject finalLightning = Instantiate(lightningPrefab, finalLightningPosition, Quaternion.Euler(90f, 0f, 0f));
         Destroy(finalLightning, 1f);
 
-        skillCompleted = true;
-        isSkillInProgress = false;
+        isSkillInProgress = false; // Kết thúc trạng thái skill
     }
+
 
     private IEnumerator SummonRandomLightning()
     {
@@ -429,12 +575,104 @@ public class LTPhase2 : MonoBehaviour
         }
     }
 
+    // Spawn Lightning
+    public IEnumerator SpawnLightning()
+    {
+        isSkillActive = true;
+
+        if (lightningPrefab == null || spawnPoint == null || player == null || explosionPrefab == null)
+        {
+            Debug.LogWarning("Thiếu Lightning Prefab, Spawn Point, Player hoặc Explosion Prefab.");
+            yield break;
+        }
+
+        if (isLightningActive)
+        {
+            Debug.LogWarning("Tia sét đã được kích hoạt, không thể tạo thêm.");
+            yield break;
+        }
+
+        isLightningActive = true; 
+
+        Instantiate(explosionPrefab, spawnPoint.position, Quaternion.identity);
+
+        yield return new WaitForSeconds(1f);
+
+        GameObject lightning = Instantiate(lightningPrefab, spawnPoint.position, Quaternion.Euler(90f, 90f, 90f));
+
+        Vector3 directionToPlayer = player.position - spawnPoint.position;
+
+        if (directionToPlayer.x > 0)
+        {
+            lightning.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
+        }
+        else
+        {
+            lightning.transform.rotation = Quaternion.Euler(180f, 90f, 90f);
+        }
+
+        Debug.Log("Tia sét được tạo và hướng về phía player.");
+
+        yield return new WaitForSeconds(1f);
+
+        Destroy(lightning);
+        isLightningActive = false;
+        isSkillActive = true;
+
+    }
+
+    // Spear
+    private IEnumerator SpearAttackDuringTeleport()
+    {
+        int spearCount = Random.Range(3, 6);
+        List<GameObject> spears = new List<GameObject>();
+
+        Vector3 spawnStartPosition = new Vector3(transform.position.x - (spearCount - 1) * spearSpacing / 2, spearSpawnHeight, transform.position.z);
+
+        // Triệu hồi giáo
+        for (int i = 0; i < spearCount; i++)
+        {
+            Vector3 spawnPosition = spawnStartPosition + new Vector3(i * spearSpacing, 0, 0);
+            GameObject spear = Instantiate(spearPrefab, spawnPosition, Quaternion.identity);
+            spears.Add(spear);
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        // Tấn công từng ngọn giáo
+        foreach (GameObject spear in spears)
+        {
+            if (spear == null) continue;
+
+            Vector3 targetPosition = playerPositionShoot.position;
+            Vector3 direction = (targetPosition - spear.transform.position).normalized;
+
+            // Tính góc xoay trục Z để mũi giáo hướng về Player
+            float rot = Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg; 
+            spear.transform.rotation = Quaternion.Euler(0, 0, rot + 20f); 
+
+            // Di chuyển ngọn giáo về phía Player
+            while (spear != null && Vector3.Distance(spear.transform.position, targetPosition) > 0.1f)
+            {
+                spear.transform.position += direction * spearSpeed * Time.deltaTime;
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
 
     private bool CheckGround()
     {
         Collider2D hit = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
 
         return hit != null;
+    }
+
+    private bool IsAnySkillRunning()
+    {
+        return isSkillActive || isRandomSkillActive || isTeleporting;
     }
 
     private void OnDrawGizmosSelected()
