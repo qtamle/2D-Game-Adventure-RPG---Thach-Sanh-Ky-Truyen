@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 8165027408238331915}
   - component: {fileID: 4610020869055772970}
   - component: {fileID: 970366717364418344}
-  m_Layer: 0
+  - component: {fileID: 6155781591264574820}
+  m_Layer: 23
   m_Name: FireBall 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3636,10 +3637,10 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
-    type: 0
-    collisionMode: 0
+    type: 1
+    collisionMode: 1
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
@@ -3809,11 +3810,11 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 8386551
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
@@ -4942,6 +4943,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6155781591264574820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5984720413572269982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34bc368c66fddd1458212a7c0d38b994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
 --- !u!1 &6623763061589675621
 GameObject:
   m_ObjectHideFlags: 0
@@ -4953,7 +4967,7 @@ GameObject:
   - component: {fileID: 5511424334304812703}
   - component: {fileID: 959480570390376087}
   - component: {fileID: 8020005040491522311}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: spark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9792,7 +9806,7 @@ GameObject:
   - component: {fileID: 2758752006440975047}
   - component: {fileID: 6789686410579970940}
   - component: {fileID: 4629440188836925648}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14622,7 +14636,7 @@ GameObject:
   - component: {fileID: 520981547338894818}
   - component: {fileID: 3466172420966016154}
   - component: {fileID: 1813311375675094988}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: FireBall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19461,7 +19475,7 @@ GameObject:
   - component: {fileID: 4506764331144017177}
   - component: {fileID: 1629374236034217316}
   - component: {fileID: 5143170479470282245}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}

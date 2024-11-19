@@ -376,6 +376,31 @@ public class Attack : MonoBehaviour
                         Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
                     }
                 }
+
+                // ly thong phase 2
+                Phase2Health ltPhase2 = enemy.GetComponent<Phase2Health>();
+                if (ltPhase2 != null)
+                {
+                    Vector3 popupPosition = ltPhase2.transform.position;
+                    if (comboCount == 0)
+                    {
+                        ShowDamage(Mathf.Round(damageRandom1 * 10).ToString(), popupPosition);
+                        ltPhase2.TakeDamage(Mathf.Round(damageRandom1));
+                        Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
+                    }
+                    else if (comboCount == 1)
+                    {
+                        ShowDamage(Mathf.Round(damageRandom2 * 10).ToString(), popupPosition);
+                        ltPhase2.TakeDamage(Mathf.Round(damageRandom2));
+                        Debug.Log("Đòn 2 với sát thương: " + damageRandom2);
+                    }
+                    else if (comboCount == 2)
+                    {
+                        ShowDamage(Mathf.Round(damageRandom3 * 10).ToString(), popupPosition);
+                        ltPhase2.TakeDamage(Mathf.Round(damageRandom3));
+                        Debug.Log("Đòn 3 với sát thương: " + damageRandom3);
+                    }
+                }
             }
         }
     }

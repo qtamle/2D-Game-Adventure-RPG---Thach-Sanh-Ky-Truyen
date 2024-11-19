@@ -30,6 +30,9 @@ public class LTPhase2 : MonoBehaviour
     public float jumpHeight;
     public float jumpDuration = 1f;
     public float jumpDistance = 5f;
+    public Transform damageAreaTransform;
+    public GameObject jumpImpact;
+    public float damageRadius;
     private bool skillCompleted = false;
     private bool isSkillInProgress = false;
 
@@ -517,10 +520,31 @@ public class LTPhase2 : MonoBehaviour
                 yield return null;
             }
 
-            transform.position = jumpTarget; 
+            transform.position = jumpTarget;
+
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(damageAreaTransform.position, damageRadius);
+
+            foreach (var collider in colliders)
+            {
+                if (collider.CompareTag("Player"))
+                {
+                    // Gây sát thương cho player
+                    Debug.Log("Đã va chạm với Player khi nhảy xuống và gây sát thương.");
+
+                    PlayerMovement playerMovement = collider.GetComponent<PlayerMovement>();
+                    if (playerMovement != null)
+                    {
+                        playerMovement.TakeDamage(10f, 0.5f, 0.65f, 0.1f);
+                    }
+                }
+            }
 
             if (CheckGround())
             {
+                Vector3 groundImpactPosition = new Vector3(transform.position.x, transform.position.y - 2f, transform.position.z);
+                GameObject groundImpactPrefab = Instantiate(jumpImpact, groundImpactPosition, Quaternion.Euler(-90f,0f,0f));
+                Destroy(groundImpactPrefab, 2f);
+
                 Vector3 explosionGround = new Vector3(transform.position.x, 18.73f, transform.position.z);
                 GameObject explosion = Instantiate(explosionPrefab, explosionGround, Quaternion.identity);
                 Destroy(explosion, 1f);
@@ -550,7 +574,6 @@ public class LTPhase2 : MonoBehaviour
 
         isSkillInProgress = false; // Kết thúc trạng thái skill
     }
-
 
     private IEnumerator SummonRandomLightning()
     {
@@ -676,5 +699,9 @@ public class LTPhase2 : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(damageAreaTransform.position, damageRadius);
+
     }
 }
