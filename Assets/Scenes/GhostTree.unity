@@ -6578,6 +6578,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Avatar Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 6581148821231981523, guid: e1a6cd06322fd874da70d52ec32e89d2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7929491751438395869, guid: e1a6cd06322fd874da70d52ec32e89d2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.07069005
@@ -6651,6 +6655,8 @@ MonoBehaviour:
   - {fileID: 1432691257}
   - {fileID: 384215410}
   - {fileID: 1902170222}
+  objectsToHideOnRestart:
+  - {fileID: 1949822209}
 --- !u!4 &1878208178
 Transform:
   m_ObjectHideFlags: 0

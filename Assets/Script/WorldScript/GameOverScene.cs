@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,12 +10,20 @@ public class GameOverScene : MonoBehaviour
     public GameObject[] gameOverButtons;
     public TextMeshProUGUI gameOverText;
     public Canvas[] hiddenCanvases;
-
+    public Button[] objectsToHideOnRestart;
     private void Start()
     {
         blackBackground.gameObject.SetActive(false);
         SetButtonsAlpha(0);
         gameOverText.color = new Color(gameOverText.color.r, gameOverText.color.g, gameOverText.color.b, 0);
+
+        foreach (Button button in objectsToHideOnRestart)
+        {
+            if (button != null)
+            {
+                button.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void TriggerGameOver()
@@ -28,6 +36,15 @@ public class GameOverScene : MonoBehaviour
         foreach (Canvas canvas in hiddenCanvases)
         {
             canvas.enabled = false;
+        }
+
+
+        foreach (Button button in objectsToHideOnRestart)
+        {
+            if (button != null)
+            {
+                button.gameObject.SetActive(false);
+            }
         }
 
         Time.timeScale = 0;
@@ -88,6 +105,14 @@ public class GameOverScene : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         yield return new WaitForSeconds(1f);
+
+        foreach (Button button in objectsToHideOnRestart)
+        {
+            if (button != null)
+            {
+                button.gameObject.SetActive(false);
+            }
+        }
 
         foreach (Canvas canvas in hiddenCanvases)
         {

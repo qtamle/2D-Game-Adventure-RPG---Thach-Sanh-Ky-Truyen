@@ -84,7 +84,7 @@ public class GhostTreeSkill : MonoBehaviour
 
                 isUsingSkill = false;
 
-                float waitTime = Random.Range(1f, 2.5f);
+                float waitTime = Random.Range(1f, 2.2f);
                 Debug.Log($"Waiting {waitTime} seconds before the next skill.");
                 yield return new WaitForSeconds(waitTime);
             }
