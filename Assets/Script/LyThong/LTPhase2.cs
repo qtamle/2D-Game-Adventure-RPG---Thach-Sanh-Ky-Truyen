@@ -592,7 +592,7 @@ public class LTPhase2 : MonoBehaviour
             yield break;
         }
 
-        isLightningActive = true; 
+        isLightningActive = true;
 
         Instantiate(explosionPrefab, spawnPoint.position, Quaternion.identity);
 
@@ -600,25 +600,22 @@ public class LTPhase2 : MonoBehaviour
 
         GameObject lightning = Instantiate(lightningPrefab, spawnPoint.position, Quaternion.Euler(90f, 90f, 90f));
 
-        Vector3 directionToPlayer = player.position - spawnPoint.position;
-
-        if (directionToPlayer.x > 0)
+        if (isFacingRight)
         {
             lightning.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
         }
         else
         {
-            lightning.transform.rotation = Quaternion.Euler(180f, 90f, 90f);
+            lightning.transform.rotation = Quaternion.Euler(180f, 90f, 90f); 
         }
 
-        Debug.Log("Tia sét được tạo và hướng về phía player.");
+        Debug.Log("Tia sét được tạo và bắn theo hướng nhân vật đang đối mặt.");
 
         yield return new WaitForSeconds(1f);
 
         Destroy(lightning);
         isLightningActive = false;
         isSkillActive = true;
-
     }
 
     // Spear
