@@ -627,6 +627,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2044339372575472554, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044339372575472554, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044339372575472554, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b38398f27e1b6de45abcd3779e9bdcb0, type: 2}
     - target: {fileID: 2281329643634333255, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
       propertyPath: m_Name
       value: RainNew
@@ -672,24 +684,52 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
-      propertyPath: LightsModule.enabled
+      propertyPath: UVModule.enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
-      propertyPath: CustomDataModule.enabled
+      propertyPath: ColorModule.enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
-      propertyPath: CollisionModule.m_Bounce.scalar
-      value: 0.5
+      propertyPath: NoiseModule.enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 150
+      propertyPath: TrailModule.enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
+      propertyPath: RotationModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
+      propertyPath: ColorBySpeedModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
+      propertyPath: InheritVelocityModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
+      propertyPath: RotationBySpeedModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
+      propertyPath: InitialModule.gravityModifier.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
+      propertyPath: LifetimeByEmitterSpeedModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
+      propertyPath: InitialModule.gravityModifier.minScalar
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6783621029773582415, guid: 4da9efffd41b4574f89245ab7e577346, type: 3}
+      propertyPath: InitialModule.gravityModifier.minMaxState
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

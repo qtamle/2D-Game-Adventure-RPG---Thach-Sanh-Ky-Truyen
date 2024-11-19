@@ -109,7 +109,7 @@ public class LTPhase2 : MonoBehaviour
                 yield return StartCoroutine(ActivateSkill(skillIndex));
                 isRandomSkillActive = false;
 
-                yield return new WaitForSeconds(Random.Range(1f, 1.7f)); 
+                yield return new WaitForSeconds(Random.Range(0.5f, 1f)); 
             }
             else
             {
