@@ -67,7 +67,7 @@ public class LTPhase2 : MonoBehaviour
     [Header("Random Skill")]
     private bool hasDamaged = false;
     private bool isSkillActive = false;
-    private List<int> skillList = new List<int> { 0, 1, 2, 3, 4, 5 };
+    private List<int> skillList = new List<int> { 0, 1, 2, 3, 4, 5, 6 };
     private int lastSkillIndex = -1;
     private bool isDowned = false;
     private bool isSkyfallActive = false;
@@ -140,7 +140,7 @@ public class LTPhase2 : MonoBehaviour
         isSkillActive = true;
         Vector3 originalPosition = transform.position;
 
-        if (skillIndex == 0 || skillIndex == 1 || skillIndex == 2 || skillIndex == 5)
+        if (skillIndex == 0 || skillIndex == 1 || skillIndex == 2 || skillIndex == 5 || skillIndex == 6)
         {
             // Bắt đầu dịch chuyển
             yield return StartCoroutine(TeleportSkill());
@@ -188,6 +188,10 @@ public class LTPhase2 : MonoBehaviour
             case 5:
                 Debug.Log("Skill Spear");
                 yield return SpearAttackDuringTeleport();
+                break;
+            case 6:
+                Debug.Log("Shoot Lightning");
+                yield return ShootLigtning();
                 break;
             default:
                 Debug.Log("Skill ra khỏi tầm random");
@@ -682,6 +686,50 @@ public class LTPhase2 : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
         }
     }
+
+    public IEnumerator ShootLigtning()
+    {
+        isSkillActive = true;
+
+        if (lightningPrefab == null || spawnPoint == null || player == null || explosionPrefab == null)
+        {
+            Debug.LogWarning("Thiếu Lightning Prefab, Spawn Point, Player hoặc Explosion Prefab.");
+            yield break;
+        }
+
+        if (isLightningActive)
+        {
+            Debug.LogWarning("Tia sét đã được kích hoạt, không thể tạo thêm.");
+            yield break;
+        }
+
+        isLightningActive = true;
+
+        // Hiệu ứng nổ tại điểm xuất phát
+        Instantiate(explosionPrefab, spawnPoint.position, Quaternion.identity);
+
+        // Lưu vị trí hiện tại của player
+        Vector3 targetPosition = player.position;
+
+        yield return new WaitForSeconds(1f);
+
+        // Tạo tia sét tại điểm spawn
+        GameObject lightning = Instantiate(lightningPrefab, spawnPoint.position, Quaternion.Euler(90f, 90f, 90f));
+
+        // Tính toán hướng tia sét đến vị trí đã lưu
+        Vector3 directionToTarget = targetPosition - spawnPoint.position;
+        lightning.transform.rotation = Quaternion.LookRotation(directionToTarget);
+
+        Debug.Log("Tia sét được tạo và bắn về vị trí đã lưu của player.");
+
+        yield return new WaitForSeconds(1f);
+
+        // Hủy tia sét sau 1 giây
+        Destroy(lightning);
+        isLightningActive = false;
+        isSkillActive = true;
+    }
+
 
     private bool CheckGround()
     {
