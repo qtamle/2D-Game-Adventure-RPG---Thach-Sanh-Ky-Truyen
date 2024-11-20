@@ -49,6 +49,13 @@ public class Arrow : MonoBehaviour
                 lt.TakeDamage(damageBoss);
                 Destroy(gameObject);
             }
+
+            Phase2Health ltPhase2 = collision.gameObject.GetComponent<Phase2Health>();
+            if (ltPhase2 != null)
+            {
+                ltPhase2.TakeDamage(damageBoss);
+                Destroy(gameObject);
+            }
         }
         if (((1 << collision.gameObject.layer) & healthbarEnemyLayer) != 0)
         {

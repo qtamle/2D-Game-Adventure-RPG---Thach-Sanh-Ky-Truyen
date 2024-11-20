@@ -15,7 +15,11 @@ public class Spear : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            PlayerMovement playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                playerMovement.TakeDamage(10f, 0.5f, 0.65f, 0.1f);
+            }
         }
         else if (collision.gameObject.CompareTag("Ground"))
         {

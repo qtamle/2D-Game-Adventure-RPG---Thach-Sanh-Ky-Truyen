@@ -11,7 +11,6 @@ public class PauseGame : MonoBehaviour
     {
         isGamePaused = false;
         isGameOver = false;
-        Time.timeScale = 1;
         pauseGamePanel.SetActive(false);
     }
 
@@ -44,7 +43,6 @@ public class PauseGame : MonoBehaviour
     {
         isGamePaused = false;
         pauseGamePanel.SetActive(false);
-        Time.timeScale = 1;
         Debug.Log("Game continued");
     }
 

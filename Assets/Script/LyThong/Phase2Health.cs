@@ -1,39 +1,30 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using UnityEngine.Events;
 
-public class HealthBarBoss : MonoBehaviour
+public class Phase2Health : MonoBehaviour
 {
+    [SerializeField] private DamageFlash dameflash;
     [SerializeField] private Slider slider;
     [SerializeField] private Slider lostHealthSlider;
+
     public float health;
     public float maxHealth = 1000f;
     public float smoothTime = 0.2f;
     public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
 
-    private Animator anim;
-    private AnyStateAnimation animator;
-    public AnimationManager animationManager;
 
-    public float targetHealth;
+    private float targetHealth;
     private float currentHealth;
     private float healthVelocity = 0f;
     private float delayedHealth;
     private Image fillImage;
     private Image lostFillImage;
-    private Rigidbody2D rb;
-
-    public ParticleSystem bloodEffect;
-    public BossSkill bossSkill;
-    public ObjectManager objectManager;
-
-
 
     private void Start()
     {
-        anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+
 
         health = maxHealth;
         targetHealth = health;
@@ -54,17 +45,18 @@ public class HealthBarBoss : MonoBehaviour
             lostHealthSlider.value = health;
             lostFillImage = lostHealthSlider.fillRect.GetComponent<Image>();
         }
+
     }
 
     public void TakeDamage(float damage)
     {
         targetHealth -= damage;
+        dameflash.CallDamageFlash();
         if (targetHealth < 0) targetHealth = 0;
 
         health = targetHealth;
         StartCoroutine(UpdateHealthBar());
         StartCoroutine(UpdateLostHealthBar());
-        ShowBloodEffect();
     }
 
     private IEnumerator UpdateHealthBar()
@@ -85,16 +77,16 @@ public class HealthBarBoss : MonoBehaviour
             slider.value = targetHealth;
             UpdateHealthBarColor();
         }
+
         if (targetHealth <= 0)
         {
-            anim.SetTrigger("Snake_Die");
             Destroy(gameObject);
         }
     }
 
     private IEnumerator UpdateLostHealthBar()
     {
-        yield return new WaitForSeconds(1.5f); 
+        yield return new WaitForSeconds(1.5f);
 
         while (Mathf.Abs(delayedHealth - health) > 0.01f)
         {
@@ -137,18 +129,6 @@ public class HealthBarBoss : MonoBehaviour
         else
         {
             fillImage.color = Color.red;
-        }
-    }
-
-
-    private void ShowBloodEffect()
-    {
-        if (bloodEffect != null)
-        {
-            Vector3 offset = new Vector3(0f, -2f, 0f);
-            Vector3 effectPosition = transform.position + offset;
-            ParticleSystem blood = Instantiate(bloodEffect, effectPosition, Quaternion.identity);
-            Destroy(blood.gameObject, 0.5f);
         }
     }
 }

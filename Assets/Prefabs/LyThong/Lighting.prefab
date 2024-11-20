@@ -9731,6 +9731,7 @@ GameObject:
   - component: {fileID: 6711585012474610754}
   - component: {fileID: 3617101685580292904}
   - component: {fileID: 7068729202663093079}
+  - component: {fileID: 7147970772061248169}
   m_Layer: 0
   m_Name: Lighting
   m_TagString: Untagged
@@ -13578,7 +13579,7 @@ ParticleSystem:
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
@@ -14628,6 +14629,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &7147970772061248169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5116705552768060587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5eb8d8d24ea75f40baf9c5b48b7b154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 15
 --- !u!1 &5502095846431737299
 GameObject:
   m_ObjectHideFlags: 0
