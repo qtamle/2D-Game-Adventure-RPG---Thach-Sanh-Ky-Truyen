@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.Events;
 
 public class HealthBarBoss : MonoBehaviour
 {
@@ -12,7 +13,10 @@ public class HealthBarBoss : MonoBehaviour
     public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
 
     private Animator anim;
-    private float targetHealth;
+    private AnyStateAnimation animator;
+    public AnimationManager animationManager;
+
+    public float targetHealth;
     private float currentHealth;
     private float healthVelocity = 0f;
     private float delayedHealth;
@@ -23,6 +27,8 @@ public class HealthBarBoss : MonoBehaviour
     public ParticleSystem bloodEffect;
     public BossSkill bossSkill;
     public ObjectManager objectManager;
+
+
 
     private void Start()
     {
@@ -79,9 +85,9 @@ public class HealthBarBoss : MonoBehaviour
             slider.value = targetHealth;
             UpdateHealthBarColor();
         }
-
         if (targetHealth <= 0)
         {
+            anim.SetTrigger("Snake_Die");
             Destroy(gameObject);
         }
     }

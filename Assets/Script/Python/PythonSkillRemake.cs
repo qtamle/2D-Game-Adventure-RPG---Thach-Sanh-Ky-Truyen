@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class PythonSkillRemake : MonoBehaviour
 {
+    [Header("Animator")]
+    [SerializeField] public Animator anim;
+
+    [Header("Health")]
+    public HealthBarBoss healthBarBoss; // Tham chiếu tới HealthBarBoss
+    private bool isAlive = true; // Trạng thái sống/chết
+
     [Header("Dash")]
     public float speed = 5f;
     public Transform damageAreaTransform;
@@ -59,8 +66,14 @@ public class PythonSkillRemake : MonoBehaviour
     private bool isDowned = false;
     private bool isSkyfallActive = false;
     private bool isRandomSkillActive = false;
+
+    private void Awake()
+    {
+        healthBarBoss = GetComponent<HealthBarBoss>();
+    }
     private void Start()
     {
+       
         // Bỏ qua layer 
         int myLayer = gameObject.layer;
         int playerLayer = LayerMask.NameToLayer("Player");
@@ -68,10 +81,11 @@ public class PythonSkillRemake : MonoBehaviour
         Physics2D.IgnoreLayerCollision(myLayer, playerLayer, true);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
-
+        
         StartCoroutine(SkillRoutine());
     }
-
+    
+    
     private void Update()
     {
         // Cập nhật vị trí player liên tục
@@ -85,7 +99,7 @@ public class PythonSkillRemake : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        while (true)
+        while (isAlive && healthBarBoss.targetHealth > 0)
         {
             if (!isSkillActive && !isRandomSkillActive)
             {
@@ -93,7 +107,6 @@ public class PythonSkillRemake : MonoBehaviour
                 int skillIndex = GetRandomSkill();
                 yield return StartCoroutine(ActivateSkill(skillIndex));
                 isRandomSkillActive = false;
-
                 yield return new WaitForSeconds(Random.Range(2f, 3f));
             }
             else
@@ -101,7 +114,16 @@ public class PythonSkillRemake : MonoBehaviour
                 yield return null;
             }
         }
+
+        // Nếu isAlive là false hoặc health <= 0, kết thúc kỹ năng
+        if (healthBarBoss.targetHealth <= 0)
+        {
+            isAlive = false;
+            anim.SetTrigger("Snake_Die"); // Kích hoạt animation chết
+            StopAllCoroutines(); // Dừng toàn bộ kỹ năng
+        }
     }
+
 
     private int GetRandomSkill()
     {
@@ -122,27 +144,33 @@ public class PythonSkillRemake : MonoBehaviour
         isSkillActive = true;
         FlipCharacter();
 
+
         switch (skillIndex)
         {
             case 0:
                 Debug.Log("Skill Dash");
+                yield return StartCoroutine(AnimDash());
                 yield return Dash();
                 break;
             case 1:
                 Vector3 playerPosition = player.transform.position;
                 Debug.Log("Skill Tail");
+                yield return StartCoroutine(AnimTail());
                 yield return TailStrong(playerPosition);
                 break;
             case 2:
                 Debug.Log("Skill Fire Stream");
+                yield return StartCoroutine(AnimFireSteam());
                 yield return FireStreamSkill();
                 break;
             case 3:
                 Debug.Log("Skill Fire Pillar");
+                yield return StartCoroutine(AnimFirePillar());
                 yield return ActivateFirePillarSkill();
                 break;
             case 4:
                 Debug.Log("Skill Projectile");
+                yield return StartCoroutine(AnimProjectile());
                 yield return LaunchProjectile();
                 break;
             default:
@@ -152,6 +180,43 @@ public class PythonSkillRemake : MonoBehaviour
 
         isSkillActive = false;
     }
+
+    // Hàm gọi animation tương ứng với từng kỹ năng
+
+    IEnumerator AnimDash()
+    {
+        Debug.Log("ThucHIenAnimation");
+        anim.SetTrigger("Snake_Dash");
+        yield return new WaitForSeconds(2f);
+    }
+
+    IEnumerator AnimTail()
+    {
+        Debug.Log("ThucHIenAnimation");
+        anim.SetTrigger("Snake_Tail");
+        yield return new WaitForSeconds(2f);
+    }
+    IEnumerator AnimFireSteam()
+    {
+        Debug.Log("ThucHIenAnimation");
+        anim.SetTrigger("Snake_FireSteam");
+        yield return new WaitForSeconds(2f);
+    }
+    IEnumerator AnimFirePillar()
+    {
+        Debug.Log("ThucHIenAnimation");
+        anim.SetTrigger("Snake_FirePillar");
+        yield return new WaitForSeconds(2f);
+    }
+    
+    IEnumerator AnimProjectile()
+    {
+        Debug.Log("ThucHIenAnimation");
+        anim.SetTrigger("Snake_Projectile");
+        yield return new WaitForSeconds(2f);
+    }
+    
+
 
     private void FlipCharacter()
     {
@@ -171,6 +236,7 @@ public class PythonSkillRemake : MonoBehaviour
     private IEnumerator Dash()
     {
         isSkillActive = true;
+
 
         yield return new WaitForSeconds(0.1f);
         if (!isDashing)
@@ -286,9 +352,8 @@ public class PythonSkillRemake : MonoBehaviour
     {
         isSkillActive = true;
 
-        FlipCharacter();  
-
-        Vector3 targetPosition = lastPlayerPosition;  
+        FlipCharacter();
+                Vector3 targetPosition = lastPlayerPosition;  
         yield return new WaitForSeconds(1f); 
 
         // Tạo luồng lửa từ điểm bắt đầu
@@ -339,7 +404,6 @@ public class PythonSkillRemake : MonoBehaviour
     public IEnumerator ActivateFirePillarSkill()
     {
         isSkillActive = false;
-
         Vector3 targetPosition = new Vector3(lastPlayerPosition.x, -20f, lastPlayerPosition.z);
 
         GameObject explosion = Instantiate(explosionPrefab, targetPosition, Quaternion.identity);
@@ -393,7 +457,7 @@ public class PythonSkillRemake : MonoBehaviour
 
         projectile.transform.position = targetPosition;
 
-        Destroy(projectile);
+        Destroy(projectile,1f);
         isSkillActive = false;
         StartCoroutine(FireballsRain());
     }
@@ -477,9 +541,17 @@ public class PythonSkillRemake : MonoBehaviour
         return player.transform.position;
     }
 
-    private void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(damageAreaTransform.position, damageRadius);
+        // Kiểm tra nếu đối tượng và transform không null trước khi truy cập
+        if (player != null && player.transform != null)
+        {
+            Gizmos.DrawWireSphere(player.transform.position, 1f);
+        }
+        else
+        {
+            Debug.LogWarning("Player or Player's Transform is null!");
+        }
     }
+
 }

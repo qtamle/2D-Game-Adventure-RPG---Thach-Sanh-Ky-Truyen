@@ -622,7 +622,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &135509409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,10 +741,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1432500082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1040, y: -425}
-  m_SizeDelta: {x: 130, y: 200}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &197722572
 MonoBehaviour:
@@ -1081,10 +1081,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1432500082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 880, y: -425}
-  m_SizeDelta: {x: 130, y: 200}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &308699649
 MonoBehaviour:
@@ -1609,7 +1609,7 @@ RectTransform:
   m_Father: {fileID: 1329594046}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -2.499878, y: 0}
   m_SizeDelta: {x: 5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2195,7 +2195,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &768014858
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2318,10 +2318,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1432500082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1040, y: -655}
-  m_SizeDelta: {x: 130, y: 200}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &775761863
 MonoBehaviour:
@@ -2499,7 +2499,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &813333963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2871,7 +2871,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1120159782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2943,10 +2943,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1432500082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 880, y: -655}
-  m_SizeDelta: {x: 130, y: 200}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1159455496
 MonoBehaviour:
@@ -3164,7 +3164,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 8
   m_Sprite: {fileID: 21300000, guid: 1ce8b7e461168774288a28983a9b6785, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4632,6 +4632,8 @@ MonoBehaviour:
   maxHealth: 1500
   smoothTime: 0.2
   lostHealthLerpSpeed: 5
+  animationManager: {fileID: 0}
+  targetHealth: 0
   bloodEffect: {fileID: 6502919927498602294, guid: dee7303474760184c979e7260a0c098e, type: 3}
   bossSkill: {fileID: 1774674148}
   objectManager: {fileID: 695579173}
@@ -4823,6 +4825,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af77fe9db3ef4be44abc3906f96bc8fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  healthBarBoss: {fileID: 0}
   speed: 50
   damageAreaTransform: {fileID: 1217886838}
   damageRadius: 9
@@ -4880,7 +4884,7 @@ RectTransform:
   m_Father: {fileID: 892044481}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -2.499878, y: 0}
   m_SizeDelta: {x: 5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5490,7 +5494,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3013975159726015986}
   serializedVersion: 2
-  m_LocalRotation: {x: -3.2457942e-10, y: -5.729998e-10, z: 0.10230247, w: 0.9947533}
+  m_LocalRotation: {x: -3.243749e-10, y: -5.731157e-10, z: 0.10265755, w: 0.99471676}
   m_LocalPosition: {x: 4.46, y: 0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5950,7 +5954,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3974215298564688342}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.4469589, w: 0.89455456}
+  m_LocalRotation: {x: 0, y: 0, z: 0.4470279, w: 0.89452004}
   m_LocalPosition: {x: 7.0892763, y: -0.000001340349, z: 0}
   m_LocalScale: {x: 0.9999996, y: 0.9999996, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6059,11 +6063,11 @@ Transform:
   m_GameObject: {fileID: 25055832688189602}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.32, y: 0.264, z: -0}
+  m_LocalPosition: {x: 1.63, y: 6.92, z: -0.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5951258675513261424}
+  m_Father: {fileID: 8277849819991284461}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2312537302163314659
 GameObject:
@@ -6325,7 +6329,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3724447582757676732}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.5356856, w: 0.8444176}
+  m_LocalRotation: {x: 0, y: 0, z: 0.53549296, w: 0.8445397}
   m_LocalPosition: {x: 8.140668, y: -0.0000008123656, z: 0}
   m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6469,7 +6473,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6801498644845874301}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70bd250635991ab46a3e65b1bdd4cfc6, type: 3}
   m_Name: 
@@ -6477,9 +6481,11 @@ MonoBehaviour:
   slider: {fileID: 7703450584782200544}
   lostHealthSlider: {fileID: 84644895334112397}
   health: 0
-  maxHealth: 1500
+  maxHealth: 100
   smoothTime: 0.2
   lostHealthLerpSpeed: 5
+  animationManager: {fileID: 0}
+  targetHealth: 0
   bloodEffect: {fileID: 6502919927498602294, guid: dee7303474760184c979e7260a0c098e, type: 3}
   bossSkill: {fileID: 0}
   objectManager: {fileID: 695579173}
@@ -6677,6 +6683,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af77fe9db3ef4be44abc3906f96bc8fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  healthBarBoss: {fileID: 3528837154467039191}
   speed: 50
   damageAreaTransform: {fileID: 2297353903667150747}
   damageRadius: 9
@@ -16738,8 +16746,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4839531308730448472}
-  - {fileID: 7468444925952726626}
-  - {fileID: 2297353903667150747}
   - {fileID: 8543325791046351123}
   - {fileID: 1285705130877699503}
   - {fileID: 4087905000911013567}
@@ -22009,11 +22015,11 @@ Transform:
   m_GameObject: {fileID: 5566791587950290677}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.375, y: 0.297, z: 0}
+  m_LocalPosition: {x: 1.74, y: 7.05, z: -0.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5951258675513261424}
+  m_Father: {fileID: 8277849819991284461}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7537946833199982707
 MonoBehaviour:
@@ -22313,8 +22319,10 @@ Transform:
   - {fileID: 8261082142320356365}
   - {fileID: 652521478062754492}
   - {fileID: 1553852008596575566}
+  - {fileID: 2297353903667150747}
+  - {fileID: 7468444925952726626}
   m_Father: {fileID: 7812478188517880038}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -13.856}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -35.512}
 --- !u!1 &8304088359149198054
 GameObject:
   m_ObjectHideFlags: 0
@@ -22339,14 +22347,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8070382993699918015}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7283181, w: 0.6852392}
+  m_LocalRotation: {x: 0, y: 0, z: 0.72819483, w: 0.68537027}
   m_LocalPosition: {x: 7.749367, y: -0.00000015756657, z: 0}
   m_LocalScale: {x: 1.0000002, y: 1.0000002, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1938734226172555678}
   m_Father: {fileID: 5348627900681754814}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 109.264}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 94.625}
 --- !u!212 &8405603267230359440
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22612,11 +22620,12 @@ GameObject:
   - component: {fileID: 7797088517533162400}
   - component: {fileID: 5041218200109667752}
   - component: {fileID: 9006296998031918020}
+  - component: {fileID: 9006296998031918026}
   - component: {fileID: 9006296998031918021}
   - component: {fileID: 9006296998031918022}
   m_Layer: 11
   m_Name: "Boss_Ch\u1EB1n_Tinh"
-  m_TagString: Untagged
+  m_TagString: Snake
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22685,6 +22694,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af77fe9db3ef4be44abc3906f96bc8fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 9006296998031918022}
+  healthBarBoss: {fileID: 9006296998031918026}
   speed: 50
   damageAreaTransform: {fileID: 2297353903667150747}
   damageRadius: 9
@@ -22730,6 +22741,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9006296998031918026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006296998031918019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70bd250635991ab46a3e65b1bdd4cfc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 7703450584782200544}
+  lostHealthSlider: {fileID: 84644895334112397}
+  health: 0
+  maxHealth: 300
+  smoothTime: 0.2
+  lostHealthLerpSpeed: 5
+  animationManager: {fileID: 0}
+  targetHealth: 0
+  bloodEffect: {fileID: 6502919927498602294, guid: dee7303474760184c979e7260a0c098e, type: 3}
+  bossSkill: {fileID: 0}
+  objectManager: {fileID: 695579173}
 --- !u!198 &9098416118076218053
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -27535,7 +27569,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6278680807778122664}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.3432821, w: 0.9392324}
+  m_LocalRotation: {x: 0, y: 0, z: 0.34325752, w: 0.93924135}
   m_LocalPosition: {x: 8.740673, y: -0.00000040746255, z: 0}
   m_LocalScale: {x: 1.0000004, y: 1.0000004, z: 1}
   m_ConstrainProportionsScale: 0
