@@ -31,6 +31,30 @@ public class FishingMinigame : MonoBehaviour
         currentFish = fish;
     }
 
+    private void StopMinigame()
+    {
+        isFishingActive = false;
+        StartCoroutine(HideMinigameAfterDelay(2f)); // Ẩn UI sau 2 giây khi hoàn thành minigame
+    }
+
+    private IEnumerator HideMinigameAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        fishingMinigameUI.SetActive(false); // Ẩn UI minigame
+    }
+
+    private void CheckCatchSuccess()
+    {
+        if (Mathf.Abs(movingObject.position.x - randomObject.position.x) < 0.1f)
+        {
+            Debug.Log("Câu cá thành công! Bạn đã câu được: " + currentFish.fishName);
+            StopMinigame(); // Dừng và ẩn minigame sau 2 giây
+        }
+        else
+        {
+            Debug.Log("Câu cá thất bại, thử lại!");
+        }
+    }
     public void StartMinigame()
     {
         if (currentFish != null)
@@ -47,19 +71,6 @@ public class FishingMinigame : MonoBehaviour
         isFishingActive = true;
         fishingMinigameUI.SetActive(true); // Hiển thị UI minigame khi bắt đầu
     }
-
-    private void StopMinigame()
-    {
-        isFishingActive = false;
-        StartCoroutine(HideMinigameAfterDelay(2f)); // Ẩn UI sau 2 giây khi hoàn thành minigame
-    }
-
-    private IEnumerator HideMinigameAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        fishingMinigameUI.SetActive(false); // Ẩn UI minigame
-    }
-
     void Update()
     {
         if (isFishingActive)
@@ -83,16 +94,5 @@ public class FishingMinigame : MonoBehaviour
         }
     }
 
-    private void CheckCatchSuccess()
-    {
-        if (Mathf.Abs(movingObject.position.x - randomObject.position.x) < 0.1f)
-        {
-            Debug.Log("Câu cá thành công! Bạn đã câu được: " + currentFish.fishName);
-            StopMinigame(); // Dừng và ẩn minigame sau 2 giây
-        }
-        else
-        {
-            Debug.Log("Câu cá thất bại, thử lại!");
-        }
-    }
+    
 }
