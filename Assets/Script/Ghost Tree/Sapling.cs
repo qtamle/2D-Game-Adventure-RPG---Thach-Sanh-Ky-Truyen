@@ -28,9 +28,11 @@ public class Sapling : MonoBehaviour
         int enemyLayer = LayerMask.NameToLayer("Enemy");
         int saplingLayer = gameObject.layer;
         int otherLayer = LayerMask.NameToLayer("Other");
+        int player = LayerMask.NameToLayer("Player");
 
         Physics2D.IgnoreLayerCollision(saplingLayer, enemyLayer, true);
         Physics2D.IgnoreLayerCollision(saplingLayer, otherLayer, true);
+        Physics2D.IgnoreLayerCollision(saplingLayer, player, true);
 
         if (playerCollider != null)
         {
@@ -96,7 +98,38 @@ public class Sapling : MonoBehaviour
 
     private IEnumerator Explode()
     {
-        yield return new WaitForSeconds(explodeDelay);
+        float elapsedTime = 0f; 
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = originalScale * 3f; 
+
+        while (elapsedTime < explodeDelay) 
+        {
+            transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / explodeDelay);
+            elapsedTime += Time.deltaTime; 
+            yield return null; 
+        }
+
+        transform.localScale = targetScale;
+
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(5);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
 
         Collider2D player = Physics2D.OverlapCircle(transform.position, radiusExplode, playerMask);
         if (player != null)

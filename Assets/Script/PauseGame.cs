@@ -4,6 +4,7 @@ using UnityEngine;
 public class PauseGame : MonoBehaviour
 {
     public GameObject pauseGamePanel;
+    public GameObject settingsMenuUI;
     public static bool isGamePaused = false;
 
     public static bool isGameOver = false;
@@ -12,6 +13,7 @@ public class PauseGame : MonoBehaviour
         isGamePaused = false;
         isGameOver = false;
         pauseGamePanel.SetActive(false);
+        settingsMenuUI.SetActive(false);
     }
 
     void Update()
@@ -22,7 +24,7 @@ public class PauseGame : MonoBehaviour
             {
                 Pause();
             }
-            else if (isGamePaused)
+            else
             {
                 Continue();
             }
@@ -33,17 +35,35 @@ public class PauseGame : MonoBehaviour
     {
         if (isGameOver) return;
 
-        isGamePaused = true;
         pauseGamePanel.SetActive(true);
         Time.timeScale = 0;
-        Debug.Log("Game paused");
+        isGamePaused = true;
     }
 
     public void Continue()
     {
-        isGamePaused = false;
         pauseGamePanel.SetActive(false);
-        Debug.Log("Game continued");
+        settingsMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+        isGamePaused = false;
+
+        Stamina stamina = FindObjectOfType<Stamina>();
+        if (stamina != null)
+        {
+            stamina.ResetStaminaValues();
+        }
+    }
+
+    public void OpenSettings()
+    {
+        pauseGamePanel.SetActive(false); 
+        settingsMenuUI.SetActive(true); 
+    }
+
+    public void CloseSettings()
+    {
+        settingsMenuUI.SetActive(false);
+        pauseGamePanel.SetActive(true);
     }
 
     public void MainMenu()

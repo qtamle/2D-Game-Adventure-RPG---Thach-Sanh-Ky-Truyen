@@ -40,7 +40,38 @@ public class GhostSpike : MonoBehaviour
     }
     private IEnumerator HandleExplosion()
     {
-        yield return new WaitForSeconds(explosionDelay);
+        float elapsedTime = 0f; 
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = originalScale * 2f;
+
+        while (elapsedTime < explosionDelay) 
+        {
+            transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / explosionDelay); 
+            elapsedTime += Time.deltaTime; 
+            yield return null;
+        }
+
+        transform.localScale = targetScale;
+
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(5);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
 
         if (smallSpikeSpawnPoints.Length > 0)
         {

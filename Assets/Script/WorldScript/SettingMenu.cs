@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
-using System.IO;
 using UnityEngine.UI;
+using System.IO;
+using System.Collections.Generic;
 
 public class SettingMenu : MonoBehaviour
 {
@@ -11,12 +10,18 @@ public class SettingMenu : MonoBehaviour
     [SerializeField] private TMP_Dropdown qualityDropdown;
     [SerializeField] private Toggle fullscreenToggle;
 
+    [SerializeField] private Slider backgroundMusicSlider;
+    [SerializeField] private Slider sfxSlider;
+
+    [SerializeField] private GameObject[] uiCanvasesToToggle; // Mảng các Canvas/UI cần ẩn/hiện
+
     private Resolution[] resolutions;
     private List<Resolution> filteredResolutions;
 
     private int currentResolutionIndex = 0;
 
     private const string settingsFilePath = "Assets/saveload/settings.json";
+    private bool isDropdownProcessing = false;
 
     private void Start()
     {
@@ -51,23 +56,51 @@ public class SettingMenu : MonoBehaviour
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
 
+        backgroundMusicSlider.value = AudioManager.Instance.backgroundMusicVolume;
+        sfxSlider.value = AudioManager.Instance.sfxVolume;
+
+        backgroundMusicSlider.onValueChanged.AddListener(SetBackgroundMusicVolume);
+        sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+
         LoadSettings();
+
+        ToggleUICanvases(true);
+    }
+
+    public void OpenSettings()
+    {
+        ToggleUICanvases(false); // Ẩn các UI không liên quan khi mở menu cài đặt
+        this.gameObject.SetActive(true); // Hiển thị menu cài đặt
+    }
+
+    public void CloseSettings()
+    {
+        ToggleUICanvases(true); // Hiển thị lại các UI không liên quan
+        this.gameObject.SetActive(false); // Ẩn menu cài đặt khi người dùng đóng nó
     }
 
     public void Resolution(int resolutionIndex)
     {
-        Resolution resolution = filteredResolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-    }
-
-    public void SetFullScreen(bool isFullscreen)
-    {
-        Screen.fullScreen = isFullscreen;
+        if (resolutionIndex != currentResolutionIndex) 
+        {
+            currentResolutionIndex = resolutionIndex; 
+            Resolution resolution = filteredResolutions[resolutionIndex];
+            Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        }
     }
 
     public void SetQuality(int quality)
     {
-        QualitySettings.SetQualityLevel(quality);
+        if (quality != QualitySettings.GetQualityLevel()) 
+        {
+            QualitySettings.SetQualityLevel(quality);
+        }
+    }
+
+
+    public void SetFullScreen(bool isFullscreen)
+    {
+        Screen.fullScreen = isFullscreen;
     }
 
     public void ApplySettings()
@@ -76,7 +109,9 @@ public class SettingMenu : MonoBehaviour
         {
             ResolutionIndex = resolutionDropdown.value,
             QualityIndex = qualityDropdown.value,
-            FullScreen = fullscreenToggle.isOn
+            FullScreen = fullscreenToggle.isOn,
+            BackgroundMusicVolume = backgroundMusicSlider.value,
+            SFXVolume = sfxSlider.value
         };
 
         SaveSettings(settings);
@@ -84,6 +119,10 @@ public class SettingMenu : MonoBehaviour
         Resolution(resolutionDropdown.value);
         SetQuality(qualityDropdown.value);
         SetFullScreen(fullscreenToggle.isOn);
+
+        AudioManager.Instance.SetBackgroundMusicVolume(backgroundMusicSlider.value);
+        AudioManager.Instance.SetSFXVolume(sfxSlider.value);
+        AudioManager.Instance.ApplyVolumeSettings();
     }
 
     private void LoadSettings()
@@ -103,13 +142,53 @@ public class SettingMenu : MonoBehaviour
 
             fullscreenToggle.isOn = settings.FullScreen;
             SetFullScreen(fullscreenToggle.isOn);
+
+            backgroundMusicSlider.value = settings.BackgroundMusicVolume;
+            sfxSlider.value = settings.SFXVolume;
+
+            AudioManager.Instance.SetBackgroundMusicVolume(settings.BackgroundMusicVolume);
+            AudioManager.Instance.SetSFXVolume(settings.SFXVolume);
         }
     }
 
     private void SaveSettings(SettingsData settings)
     {
+        settings.BackgroundMusicVolume = backgroundMusicSlider.value;
+        settings.SFXVolume = sfxSlider.value;
+
         string json = JsonUtility.ToJson(settings, true);
         File.WriteAllText(settingsFilePath, json);
+    }
+
+    private void ToggleUICanvases(bool isVisible)
+    {
+        foreach (GameObject canvas in uiCanvasesToToggle)
+        {
+            if (canvas != null)
+            {
+                canvas.SetActive(isVisible);
+            }
+        }
+    }
+
+    public void UIHide()
+    {
+        ToggleUICanvases(false);
+    }
+
+    public void UIShow()
+    {
+        ToggleUICanvases(true);
+    }
+
+    public void SetBackgroundMusicVolume(float volume)
+    {
+        AudioManager.Instance.SetBackgroundMusicVolume(volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        AudioManager.Instance.SetSFXVolume(volume);
     }
 
     [System.Serializable]
@@ -118,5 +197,8 @@ public class SettingMenu : MonoBehaviour
         public int ResolutionIndex;
         public int QualityIndex;
         public bool FullScreen;
+        public float BackgroundMusicVolume;
+        public float SFXVolume;
     }
 }
+

@@ -29,15 +29,17 @@ public class Stamina : MonoBehaviour
 
     private void Update()
     {
-        if (bow.isAiming)
+        if (!PauseGame.isGamePaused) 
         {
-            DecreaseStamina(staminaDecreaseAmount * Time.deltaTime); 
+            if (bow.isAiming)
+            {
+                DecreaseStamina(staminaDecreaseAmount * Time.unscaledDeltaTime);
+            }
+            else
+            {
+                RegenerateStamina();
+            }
         }
-        else
-        {
-            RegenerateStamina(); 
-        }
-
         currentStamina = Mathf.SmoothDamp(currentStamina, targetStamina, ref staminaVelocity, smoothTime);
         UpdateStaminaUI();
     }
@@ -46,6 +48,7 @@ public class Stamina : MonoBehaviour
     public void DecreaseStamina(float amount)
     {
         targetStamina -= amount;
+        targetStamina = Mathf.Clamp(targetStamina, 0, maxStamina);
         if (targetStamina < 0)
         {
             targetStamina = 0;
@@ -60,7 +63,8 @@ public class Stamina : MonoBehaviour
     {
         if (targetStamina < maxStamina)
         {
-            targetStamina += staminaRegenRate * Time.deltaTime;
+            targetStamina += staminaRegenRate * Time.unscaledDeltaTime;
+            targetStamina = Mathf.Clamp(targetStamina, 0, maxStamina);
             if (targetStamina > maxStamina)
             {
                 targetStamina = maxStamina;
@@ -68,9 +72,15 @@ public class Stamina : MonoBehaviour
         }
     }
 
-    private void UpdateStaminaUI()
+    public void UpdateStaminaUI()
     {
         staminaSlider.value = currentStamina;
+
+        Image fillImage = staminaSlider.fillRect.GetComponent<Image>();
+        if (fillImage != null)
+        {
+            fillImage.color = new Color(1f, 1f, 0f, 1f);
+        }
     }
 
     public void RestoreStamina(float amount)
@@ -85,6 +95,13 @@ public class Stamina : MonoBehaviour
     public float CurrentStamina
     {
         get { return currentStamina; }
+    }
+
+    public void ResetStaminaValues()
+    {
+        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+        targetStamina = currentStamina;
+        UpdateStaminaUI();
     }
 
 }
