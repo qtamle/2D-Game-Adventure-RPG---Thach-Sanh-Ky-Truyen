@@ -5,18 +5,19 @@ using UnityEngine.UI;
 
 public class Stamina : MonoBehaviour
 {
-    public Slider staminaSlider;
+    public Image staminaFillImage; 
     public float maxStamina = 100f;
     public float staminaDecreaseAmount = 10f;
-    public float staminaRegenRate = 5f; 
-    public float smoothTime = 0.2f; 
+    public float staminaRegenRate = 5f;
+    public float smoothTime = 0.2f;
 
     private float currentStamina;
     private float targetStamina;
-    private float staminaVelocity = 0f; 
+    private float staminaVelocity = 0f;
 
     private StatusEffects statusEffects;
     private Bow bow;
+
     private void Start()
     {
         statusEffects = GetComponent<StatusEffects>();
@@ -24,12 +25,13 @@ public class Stamina : MonoBehaviour
 
         currentStamina = maxStamina;
         targetStamina = currentStamina;
-        staminaSlider.value = currentStamina;
+
+        UpdateStaminaUI(); 
     }
 
     private void Update()
     {
-        if (!PauseGame.isGamePaused) 
+        if (!PauseGame.isGamePaused)
         {
             if (bow.isAiming)
             {
@@ -40,23 +42,15 @@ public class Stamina : MonoBehaviour
                 RegenerateStamina();
             }
         }
+
         currentStamina = Mathf.SmoothDamp(currentStamina, targetStamina, ref staminaVelocity, smoothTime);
         UpdateStaminaUI();
     }
-
 
     public void DecreaseStamina(float amount)
     {
         targetStamina -= amount;
         targetStamina = Mathf.Clamp(targetStamina, 0, maxStamina);
-        if (targetStamina < 0)
-        {
-            targetStamina = 0;
-        }
-        else if (targetStamina > maxStamina)
-        {
-            targetStamina = maxStamina;
-        }
     }
 
     private void RegenerateStamina()
@@ -65,31 +59,25 @@ public class Stamina : MonoBehaviour
         {
             targetStamina += staminaRegenRate * Time.unscaledDeltaTime;
             targetStamina = Mathf.Clamp(targetStamina, 0, maxStamina);
-            if (targetStamina > maxStamina)
-            {
-                targetStamina = maxStamina;
-            }
         }
     }
 
     public void UpdateStaminaUI()
     {
-        staminaSlider.value = currentStamina;
-
-        Image fillImage = staminaSlider.fillRect.GetComponent<Image>();
-        if (fillImage != null)
+        if (staminaFillImage != null)
         {
-            fillImage.color = new Color(1f, 1f, 0f, 1f);
+            // Tính toán tỷ lệ stamina còn lại
+            float fillAmount = currentStamina / maxStamina;
+            staminaFillImage.fillAmount = fillAmount;
+
+            staminaFillImage.color = Color.Lerp(Color.yellow, Color.yellow, fillAmount);
         }
     }
 
     public void RestoreStamina(float amount)
     {
         targetStamina += amount;
-        if (targetStamina > maxStamina)
-        {
-            targetStamina = maxStamina;
-        }
+        targetStamina = Mathf.Clamp(targetStamina, 0, maxStamina);
     }
 
     public float CurrentStamina
@@ -103,5 +91,4 @@ public class Stamina : MonoBehaviour
         targetStamina = currentStamina;
         UpdateStaminaUI();
     }
-
 }

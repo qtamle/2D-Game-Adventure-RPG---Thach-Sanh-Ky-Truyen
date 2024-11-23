@@ -63,19 +63,17 @@ public class SettingMenu : MonoBehaviour
         sfxSlider.onValueChanged.AddListener(SetSFXVolume);
 
         LoadSettings();
-
-        ToggleUICanvases(true);
     }
 
     public void OpenSettings()
     {
-        ToggleUICanvases(false); // Ẩn các UI không liên quan khi mở menu cài đặt
+        //ToggleUICanvases(false); // Ẩn các UI không liên quan khi mở menu cài đặt
         this.gameObject.SetActive(true); // Hiển thị menu cài đặt
     }
 
     public void CloseSettings()
     {
-        ToggleUICanvases(true); // Hiển thị lại các UI không liên quan
+        //ToggleUICanvases(true); // Hiển thị lại các UI không liên quan
         this.gameObject.SetActive(false); // Ẩn menu cài đặt khi người dùng đóng nó
     }
 
@@ -160,7 +158,7 @@ public class SettingMenu : MonoBehaviour
         File.WriteAllText(settingsFilePath, json);
     }
 
-    private void ToggleUICanvases(bool isVisible)
+    /*private void ToggleUICanvases(bool isVisible)
     {
         foreach (GameObject canvas in uiCanvasesToToggle)
         {
@@ -169,17 +167,8 @@ public class SettingMenu : MonoBehaviour
                 canvas.SetActive(isVisible);
             }
         }
-    }
+    }*/
 
-    public void UIHide()
-    {
-        ToggleUICanvases(false);
-    }
-
-    public void UIShow()
-    {
-        ToggleUICanvases(true);
-    }
 
     public void SetBackgroundMusicVolume(float volume)
     {

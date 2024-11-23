@@ -57,6 +57,8 @@ public class Attack : MonoBehaviour
     }
     private void Update()
     {
+        if (PauseGame.isGamePaused) return;
+
         if (Input.GetMouseButtonDown(0) && !ladder.isClimbing && !playerMovement.isSwinging && playerMovement.CanAttack() && !isAttack && canAttackAgain)
         {
             if (Time.time - lastComboTime >= timeBetweenCombos)
@@ -197,6 +199,25 @@ public class Attack : MonoBehaviour
                 if (dart != null)
                 {
                     dart.BounceOnHit();
+                    GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+                    if (audioManagerObject != null)
+                    {
+                        AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                        if (audioManager != null)
+                        {
+                            audioManager.PlaySFX(1);
+                        }
+                        else
+                        {
+                            Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+                    }
                     Debug.Log("Dart bị tấn công và sẽ nảy lên!");
                 }
                 // enemy normal

@@ -4636,7 +4636,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &591073896
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5358,6 +5358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseGamePanel: {fileID: 78385052}
   settingsMenuUI: {fileID: 83640892}
+  blackBackground: {fileID: 1982489653}
 --- !u!4 &645614386
 Transform:
   m_ObjectHideFlags: 0
@@ -5412,6 +5413,7 @@ MonoBehaviour:
   - {fileID: 384215407}
   - {fileID: 591073895}
   - {fileID: 1626999235150105195}
+  - {fileID: 78385052}
 --- !u!4 &650083948
 Transform:
   m_ObjectHideFlags: 0
@@ -6896,10 +6898,10 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: VolumeSetting, Assembly-CSharp
+      - m_Target: {fileID: 650083947}
+        m_TargetAssemblyTypeName: SettingMenu, Assembly-CSharp
         m_MethodName: SetSFXVolume
-        m_Mode: 1
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8977,10 +8979,10 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: VolumeSetting, Assembly-CSharp
-        m_MethodName: SetMusicVolume
-        m_Mode: 1
+      - m_Target: {fileID: 650083947}
+        m_TargetAssemblyTypeName: SettingMenu, Assembly-CSharp
+        m_MethodName: SetBackgroundMusicVolume
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10396,7 +10398,11 @@ PrefabInstance:
     - target: {fileID: 3915373986296187116, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: staminaSlider
       value: 
-      objectReference: {fileID: 1421850588}
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915373986296187116, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
+      propertyPath: staminaFillImage
+      value: 
+      objectReference: {fileID: 1441148942}
     - target: {fileID: 3915373986296187116, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: staminaRegenRate
       value: 15
@@ -10931,17 +10937,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1421850588 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3498135120548963736, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
-  m_PrefabInstance: {fileID: 1432691256}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1431790778
 GameObject:
   m_ObjectHideFlags: 0
@@ -11025,17 +11020,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 809575454941434002, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1154277875899718909, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
       propertyPath: m_Name
       value: Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306922348305152125, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
-      propertyPath: m_CullTransparentMesh
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2139781979523141792, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
       propertyPath: m_Camera
@@ -11129,18 +11116,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6019007044268044478, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6044425886558803870, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6044425886558803870, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7385795182838649395, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -11164,6 +11139,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1154277875899718909, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
   m_PrefabInstance: {fileID: 1432691256}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1441148942 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4742362971047825620, guid: 00d540afbc64eed47ad385019d0badfe, type: 3}
+  m_PrefabInstance: {fileID: 1432691256}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1455057334
 GameObject:
   m_ObjectHideFlags: 0
