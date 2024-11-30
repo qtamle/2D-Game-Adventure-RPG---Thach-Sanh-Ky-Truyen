@@ -82,7 +82,7 @@ public class PythonSkillRemake : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
         
-        //StartCoroutine(SkillRoutine());
+        StartCoroutine(SkillRoutine());
     }
     
     
