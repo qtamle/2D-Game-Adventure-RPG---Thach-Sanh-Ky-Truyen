@@ -175,11 +175,11 @@ public class LTSpear : MonoBehaviour
     private void FlipSprite()
     {
         // Nếu đối tượng đang ở bên trái player, flip sang bên phải, ngược lại flip sang bên trái
-        if (player.position.x < transform.position.x && transform.localScale.x > 0)
+        if (player.position.x > transform.position.x && transform.localScale.x > 0)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
-        else if (player.position.x > transform.position.x && transform.localScale.x < 0)
+        else if (player.position.x < transform.position.x && transform.localScale.x < 0)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
