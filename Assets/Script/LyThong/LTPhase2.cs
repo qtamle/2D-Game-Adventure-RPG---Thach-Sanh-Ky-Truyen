@@ -5,6 +5,9 @@ using UnityEngine.Rendering;
 
 public class LTPhase2 : MonoBehaviour
 {
+    [Header("Animator")]
+    public Animator anim;
+
     [Header("Summon Lightning")]
     public GameObject explosionPrefab; 
     public GameObject lightningPrefab;
@@ -145,9 +148,13 @@ public class LTPhase2 : MonoBehaviour
             // Bắt đầu dịch chuyển
             yield return StartCoroutine(TeleportSkill());
             // Sử dụng skill ngay trong trạng thái dịch chuyển
+            yield return new WaitForSeconds(1f);
             yield return StartCoroutine(ExecuteSkill(skillIndex));
+            yield return new WaitForSeconds(1f);
             // Kết thúc dịch chuyển, quay lại vị trí cũ
             yield return StartCoroutine(ReturnToOriginalPosition(originalPosition));
+            yield return new WaitForSeconds(1f);
+
         }
         else
         {
@@ -201,11 +208,11 @@ public class LTPhase2 : MonoBehaviour
 
     private void FlipBasedOnPlayerPosition()
     {
-        if (player.position.x > transform.position.x && !isFacingRight)
+        if (player.position.x < transform.position.x && !isFacingRight)
         {
             Flip();
         }
-        else if (player.position.x < transform.position.x && isFacingRight)
+        else if (player.position.x > transform.position.x && isFacingRight)
         {
             Flip(); 
         }
@@ -225,14 +232,14 @@ public class LTPhase2 : MonoBehaviour
         isTeleporting = true;
 
         Vector3 targetPosition = GetRandomPositionInCollider(teleportArea);
-
+        anim.SetTrigger("Teleport");
         yield return new WaitForSeconds(1f); 
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.enabled = false;
-        }
+        //if (spriteRenderer != null)
+        //{
+        //    spriteRenderer.enabled = false;
+        //}
 
         if (rb != null)
         {
@@ -242,10 +249,10 @@ public class LTPhase2 : MonoBehaviour
         transform.position = targetPosition;
         FlipBasedOnPlayerPosition();
 
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.enabled = true;
-        }
+        //if (spriteRenderer != null)
+        //{
+        //    spriteRenderer.enabled = true;
+        //}
 
         yield return new WaitForSeconds(0.5f);
 
@@ -263,12 +270,15 @@ public class LTPhase2 : MonoBehaviour
     }
     private IEnumerator ReturnToOriginalPosition(Vector3 originalPosition)
     {
+        
+        anim.SetTrigger("TeleportBack");
+        yield return new WaitForSeconds(1f);
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.enabled = false; // Tắt hiển thị
-        }
-
+        //if (spriteRenderer != null)
+        //{
+        //    spriteRenderer.enabled = false; // Tắt hiển thị
+        //}
+       
         if (rb != null)
         {
             rb.isKinematic = true;
@@ -276,17 +286,19 @@ public class LTPhase2 : MonoBehaviour
 
         // Quay về vị trí ban đầu
         transform.position = originalPosition;
+        
         FlipBasedOnPlayerPosition();
 
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.enabled = true; // Hiển thị lại
-        }
+        //if (spriteRenderer != null)
+        //{
+        //    spriteRenderer.enabled = true; // Hiển thị lại
+        //}
 
         if (rb != null)
         {
             rb.isKinematic = false;
         }
+        
 
         yield return null;
     }
@@ -298,7 +310,7 @@ public class LTPhase2 : MonoBehaviour
         isSkillActive = true;
 
         FlipBasedOnPlayerPosition();
-
+        anim.SetTrigger("Case0");
         int summonCount = Random.Range(5, 7);
 
         for (int i = 0; i < summonCount; i++)
@@ -329,7 +341,7 @@ public class LTPhase2 : MonoBehaviour
     private IEnumerator FireballSkill()
     {
         isSkillActive = true;
-
+        
         int fireballCount = Random.Range(3, 6);
 
         /*Vector3 originalPosition = transform.position;
@@ -356,6 +368,7 @@ public class LTPhase2 : MonoBehaviour
 
         for (int i = 0; i < fireballCount; i++)
         {
+            anim.SetTrigger("Case1");
             FlipBasedOnPlayerPosition();
 
             GameObject fireball = Instantiate(fireballPrefab, fireballSpawnPoint.position, Quaternion.Euler(-90f, 0f, 0f));
@@ -430,10 +443,10 @@ public class LTPhase2 : MonoBehaviour
         yield return new WaitForSeconds(0.5f);*/
 
         GameObject fireball = Instantiate(bigFireball, bigFireballSpawnPoint.position, Quaternion.identity);
-
+        anim.SetTrigger("Case2");
         yield return new WaitForSeconds(3f);
 
-        Vector3 throwDirection = isFacingRight ? new Vector3(1, -1, 0).normalized : new Vector3(-1, -1, 0).normalized;
+        Vector3 throwDirection = isFacingRight ? new Vector3(-1, -1, 0).normalized : new Vector3(1, -1, 0).normalized;
 
         Rigidbody2D fireballRb = fireball.GetComponent<Rigidbody2D>();
         if (fireballRb != null)
@@ -458,7 +471,7 @@ public class LTPhase2 : MonoBehaviour
         GameObject explosion = Instantiate(explosionFirePrefab, explosionPosition, Quaternion.identity);
         Destroy(explosion, 1f);
 
-        Vector3 summonPosition = explosionPosition + (isFacingRight ? new Vector3(4f, 0f, 0f) : new Vector3(-4f, 0f, 0f));
+        Vector3 summonPosition = explosionPosition + (isFacingRight ? new Vector3(-4f, 0f, 0f) : new Vector3(4f, 0f, 0f));
 
         yield return new WaitForSeconds(0.5f);
 
@@ -468,7 +481,7 @@ public class LTPhase2 : MonoBehaviour
 
             Destroy(flame, 5f);
 
-            summonPosition += isFacingRight ? new Vector3(5f, 0f, 0f) : new Vector3(-5f, 0f, 0f);
+            summonPosition += isFacingRight ? new Vector3(-5f, 0f, 0f) : new Vector3(5f, 0f, 0f);
 
             yield return new WaitForSeconds(flameInterval); 
         }
@@ -506,6 +519,7 @@ public class LTPhase2 : MonoBehaviour
         // Thực hiện các lần nhảy
         for (int i = 0; i < jumpsCount; i++)
         {
+            anim.SetTrigger("Case3");
             FlipBasedOnPlayerPosition();
 
             Vector3 jumpTarget = player.position;
@@ -606,7 +620,7 @@ public class LTPhase2 : MonoBehaviour
     public IEnumerator SpawnLightning()
     {
         isSkillActive = true;
-
+        anim.SetTrigger("Case4");
         if (lightningPrefab == null || spawnPoint == null || player == null || explosionPrefab == null)
         {
             Debug.LogWarning("Thiếu Lightning Prefab, Spawn Point, Player hoặc Explosion Prefab.");
@@ -622,18 +636,18 @@ public class LTPhase2 : MonoBehaviour
         isLightningActive = true;
 
         Instantiate(explosionPrefab, spawnPoint.position, Quaternion.identity);
-
+       
         yield return new WaitForSeconds(1f);
 
         GameObject lightning = Instantiate(lightningPrefab, spawnPoint.position, Quaternion.Euler(90f, 90f, 90f));
 
         if (isFacingRight)
         {
-            lightning.transform.rotation = Quaternion.Euler(0f, 90f, 90f);
+            lightning.transform.rotation = Quaternion.Euler(180f, 90f, 90f);
         }
         else
         {
-            lightning.transform.rotation = Quaternion.Euler(180f, 90f, 90f); 
+            lightning.transform.rotation = Quaternion.Euler(0f, 90f, 90f); 
         }
 
         Debug.Log("Tia sét được tạo và bắn theo hướng nhân vật đang đối mặt.");
@@ -649,8 +663,9 @@ public class LTPhase2 : MonoBehaviour
     private IEnumerator SpearAttackDuringTeleport()
     {
         int spearCount = Random.Range(3, 6);
+        
         List<GameObject> spears = new List<GameObject>();
-
+        anim.SetTrigger("Case5");
         Vector3 spawnStartPosition = new Vector3(transform.position.x - (spearCount - 1) * spearSpacing / 2, spearSpawnHeight, transform.position.z);
 
         // Triệu hồi giáo
@@ -704,7 +719,7 @@ public class LTPhase2 : MonoBehaviour
         }
 
         isLightningActive = true;
-
+        anim.SetTrigger("Case6");
         // Hiệu ứng nổ tại điểm xuất phát
         Instantiate(explosionPrefab, spawnPoint.position, Quaternion.identity);
 
