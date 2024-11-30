@@ -57,6 +57,8 @@ public class EagleSkillRemake : MonoBehaviour
     public Transform player;
     public Transform attackSkyfall;
     public LayerMask playerMask;
+    public ParticleSystem smoke;
+    public Transform smokeSpawn;
 
     [Header("Camera Shake")]
     public ShakeData stompShake;
@@ -84,6 +86,26 @@ public class EagleSkillRemake : MonoBehaviour
         Physics2D.IgnoreLayerCollision(myLayer, playerLayer, true);
 
         StartCoroutine(SkillRoutine());
+
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlayBackgroundMusic(0);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
     }
 
     private IEnumerator SkillRoutine()
@@ -92,7 +114,14 @@ public class EagleSkillRemake : MonoBehaviour
 
         while (true)
         {
-            if (!isSkillActive && !isLanding && eagleHealth.health > 0 && !isDowned && eagleHealth.shield > 0)
+            if (eagleHealth.shield <= 0)
+            {
+                Debug.Log("Shield đã hết, tạm dừng random skill để thực hiện SkyfallSkillAlt");
+                isSkillActive = true;
+                yield return StartCoroutine(SkyfallSkillAlt());
+                isSkillActive = false;
+            }
+            else if (!isSkillActive && !isLanding && eagleHealth.health > 0 && !isDowned)
             {
                 isRandomSkillActive = true;
                 int skillIndex = GetRandomSkill();
@@ -103,7 +132,7 @@ public class EagleSkillRemake : MonoBehaviour
             }
             else
             {
-                yield return null; 
+                yield return null;
             }
         }
     }
@@ -113,6 +142,25 @@ public class EagleSkillRemake : MonoBehaviour
         int skillIndex;
         do
         {
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(0);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             skillIndex = skillList[Random.Range(0, skillList.Count)];
         } while (skillIndex == lastSkillIndex);
 
@@ -122,6 +170,26 @@ public class EagleSkillRemake : MonoBehaviour
 
     private IEnumerator ActivateSkill(int skillIndex)
     {
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(1);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
+
         if (eagleHealth.shield <= 0)
         {
             Debug.Log("Shield đã hết, chuyển sang SkyfallSkillAlt");
@@ -179,6 +247,25 @@ public class EagleSkillRemake : MonoBehaviour
     // wind cut
     private IEnumerator WindCutSkill()
     {
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(4);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         GameObject player = GameObject.FindWithTag("Player");
 
         if (player != null)
@@ -199,7 +286,7 @@ public class EagleSkillRemake : MonoBehaviour
             Vector3 direction = (playerPosition - transform.position).normalized;
 
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            wind.transform.rotation = Quaternion.Euler(0, 0, angle - 110);
+            wind.transform.rotation = Quaternion.Euler(0, 0, angle + 95f);
 
             StartCoroutine(MoveWind(wind, direction));
 
@@ -264,6 +351,25 @@ public class EagleSkillRemake : MonoBehaviour
 
             float startAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg - spreadAngle / 2f;
 
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(4);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             // Bắn đợt đầu tiên
             for (int i = 0; i < featherCount; i++)
             {
@@ -294,6 +400,23 @@ public class EagleSkillRemake : MonoBehaviour
 
             float secondAngleStart = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg - 50f / 2f;
 
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(4);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             // Bắn đợt thứ hai
             for (int i = 0; i < featherCount; i++)
             {
@@ -363,6 +486,7 @@ public class EagleSkillRemake : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, lastPlayerPosition, teleportSpeed * Time.deltaTime);
 
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(attackSkyfall.position, attackRadius);
+                bool hasDamaged = false;
                 foreach (var collider in colliders)
                 {
                     if (collider.CompareTag("Player") && !hasDamaged)
@@ -380,6 +504,28 @@ public class EagleSkillRemake : MonoBehaviour
                 // Kiểm tra nếu đã chạm đất ngay trong quá trình di chuyển
                 if (IsGrounded())
                 {
+                    ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
+                    StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
+                    GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+                    if (audioManagerObject != null)
+                    {
+                        AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                        if (audioManager != null)
+                        {
+                            audioManager.PlaySFX(6);
+                        }
+                        else
+                        {
+                            Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+                    }
+
                     Debug.Log("Chạm đất, dừng lại 0,5 giây");
                     yield return new WaitForSeconds(0.2f);
                     break; 
@@ -402,7 +548,7 @@ public class EagleSkillRemake : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, teleportSpeed * Time.deltaTime);
                 yield return null;
             }
-
+            Play(0);
             StartCoroutine(LandAtPosition());
         }
         else
@@ -413,8 +559,10 @@ public class EagleSkillRemake : MonoBehaviour
 
     private bool IsGrounded()
     {
+
         Collider2D hit = Physics2D.OverlapCircle(layerGround.position, 1f, LayerMask.GetMask("Ground"));
         return hit != null;
+
     }
 
     // hạ cánh khi xong skill lướt
@@ -437,6 +585,25 @@ public class EagleSkillRemake : MonoBehaviour
 
         Vector3 initialPosition = transform.position;
 
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(0);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         while (elapsedTime < landingTime)
         {
             if (eagleHealth.shield <= 0)
@@ -446,13 +613,11 @@ public class EagleSkillRemake : MonoBehaviour
                 yield return StartCoroutine(SkyfallSkillAlt());
                 yield break; 
             }
-
             float lerpValue = Mathf.Clamp01(elapsedTime / (landingTime / landingSpeed));
             transform.position = Vector3.Lerp(initialPosition, new Vector3(initialPosition.x, 0f, initialPosition.z), lerpValue);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
         yield return new WaitForSeconds(1.2f);
         isLanding = false;
     }
@@ -477,6 +642,25 @@ public class EagleSkillRemake : MonoBehaviour
         float initialPullForce = pullForce;
         float velocity = 0f;
 
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(7);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         while (elapsedTime < tornadoDuration)
         {
             if (eagleHealth.shield <= 0)
@@ -571,6 +755,7 @@ public class EagleSkillRemake : MonoBehaviour
                 transform.position = spawnPosition;
 
                 float fallSpeed = 40f;
+                bool hasDamaged = false;
                 while (Vector3.Distance(transform.position, playerPosition) > 0.1f)
                 {
                     if (eagleHealth.shield <= 0)
@@ -601,8 +786,29 @@ public class EagleSkillRemake : MonoBehaviour
 
                     if (IsGrounded())
                     {
+                        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+                        if (audioManagerObject != null)
+                        {
+                            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                            if (audioManager != null)
+                            {
+                                audioManager.PlaySFX(6);
+                            }
+                            else
+                            {
+                                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+                        }
                         if (eagleHealth.shield <= 0)
                         {
+                            ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
+                            StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
                             CameraShakerHandler.Shake(fallShake);
                             isDowned = true;
                             Debug.Log("Đã gục trong 7 giây");
@@ -611,6 +817,8 @@ public class EagleSkillRemake : MonoBehaviour
                         }
                         else
                         {
+                            ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
+                            StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
                             CameraShakerHandler.Shake(stompShake);
                             Debug.Log("Chạm đất, dừng lại 0,5 giây");
                             yield return new WaitForSeconds(0.2f);
@@ -618,7 +826,6 @@ public class EagleSkillRemake : MonoBehaviour
                         break;
                     }
                 }
-
                 // Bay chéo thẳng
                 Vector3 targetPosition = transform.position + new Vector3(50f, 50f, 0f);
                 while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
@@ -634,7 +841,7 @@ public class EagleSkillRemake : MonoBehaviour
                     transform.position = Vector3.MoveTowards(transform.position, targetPosition, teleportSpeed * Time.deltaTime);
                     yield return null;
                 }
-
+                Play(0);
                 StartCoroutine(LandAtPosition());
                 break;
             }
@@ -690,6 +897,7 @@ public class EagleSkillRemake : MonoBehaviour
             transform.position = spawnPosition;
 
             float fallSpeed = 35f;
+            bool hasDamaged = false;
             while (Vector3.Distance(transform.position, playerPosition) > 0.1f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, playerPosition, fallSpeed * Time.deltaTime);
@@ -698,7 +906,7 @@ public class EagleSkillRemake : MonoBehaviour
                 Collider2D[] colliders = Physics2D.OverlapCircleAll(attackSkyfall.position, attackRadius);
                 foreach (var collider in colliders)
                 {
-                    if (collider.CompareTag("Player"))
+                    if (collider.CompareTag("Player") && !hasDamaged)
                     {
                         Debug.Log("Đã va chạm với Player khi hạ cánh.");
                         PlayerMovement playerMovement = collider.GetComponent<PlayerMovement>();
@@ -706,13 +914,35 @@ public class EagleSkillRemake : MonoBehaviour
                         {
                             playerMovement.TakeDamage(20f, 0.5f, 0.65f, 0.1f);
                         }
+                        hasDamaged = true;
                     }
                 }
 
                 if (IsGrounded())
                 {
+                    GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+                    if (audioManagerObject != null)
+                    {
+                        AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                        if (audioManager != null)
+                        {
+                            audioManager.PlaySFX(6);
+                        }
+                        else
+                        {
+                            Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+                    }
                     if (eagleHealth.shield <= 0)
                     {
+                        ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
+                        StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
                         CameraShakerHandler.Shake(fallShake);
                         isDowned = true;
                         Debug.Log("Đã gục trong 7 giây");
@@ -721,6 +951,8 @@ public class EagleSkillRemake : MonoBehaviour
                     }
                     else
                     {
+                        ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
+                        StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
                         CameraShakerHandler.Shake(stompShake);
                         Debug.Log("Chạm đất, dừng lại 0,5 giây");
                         yield return new WaitForSeconds(0.2f);
@@ -728,13 +960,13 @@ public class EagleSkillRemake : MonoBehaviour
                     break;
                 }
             }
-
             Vector3 targetPosition = transform.position + new Vector3(50f, 50f, 0f);
             while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, teleportSpeed * Time.deltaTime);
                 yield return null;
             }
+            Play(0);
             StartCoroutine(LandAtPosition());
         }
         else
@@ -743,6 +975,35 @@ public class EagleSkillRemake : MonoBehaviour
         }
 
         isSkyfallActive = false;
+    }
+
+    private void Play(int soundIndex)
+    {
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(soundIndex);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
+    }
+
+    IEnumerator DestroyAfterTime(ParticleSystem ps, float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(ps.gameObject);
     }
 
     private void OnDrawGizmos()

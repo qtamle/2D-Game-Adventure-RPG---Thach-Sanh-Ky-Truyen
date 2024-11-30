@@ -22,6 +22,7 @@ public class Arrow : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        int damageShieldEagle = Random.Range(15, 20);
         int damageShield = Random.Range(25, 30);
         int damageBoss = Random.Range(25, 30);
 
@@ -32,7 +33,7 @@ public class Arrow : MonoBehaviour
             EagleHealthbar eagleBoss = collision.gameObject.GetComponent<EagleHealthbar>();
             if (eagleBoss != null)
             {
-                eagleBoss.TakeDamage(damageShield, damageBoss);
+                eagleBoss.TakeDamage(damageShieldEagle, damageBoss);
                 Destroy(gameObject);
             }
 

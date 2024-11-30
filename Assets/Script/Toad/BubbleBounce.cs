@@ -49,6 +49,25 @@ public class BubbleBounce : MonoBehaviour
 
         if (collision.gameObject.CompareTag("TurnOn"))
         {
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(4);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             animator.SetTrigger("Check");
             rb.AddForce(new Vector2(Random.Range(-shakeAmount, shakeAmount), Random.Range(-shakeAmount, shakeAmount)), ForceMode2D.Impulse);
 
@@ -59,6 +78,25 @@ public class BubbleBounce : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(5);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             PlayerMovement player = collision.gameObject.GetComponent<PlayerMovement>();
             StatusEffects playerStatus = collision.gameObject.GetComponentInChildren<StatusEffects>();
             if (player != null)
