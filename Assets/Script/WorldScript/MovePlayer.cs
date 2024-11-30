@@ -20,14 +20,19 @@ public class MovePlayer : MonoBehaviour
     {
         Vector3 movement = new Vector3(horizontal * runSpeed, vertical * runSpeed, 0.0f);
 
+        // Tính toán vị trí mới
         Vector3 newPosition = transform.position + movement * Time.deltaTime;
-        newPosition.y = Mathf.Clamp(newPosition.y, -5.5f, -3.31f);
 
+        // Giới hạn di chuyển theo trục X và Y
+        newPosition.x = Mathf.Clamp(newPosition.x, -20.13764f, 20.20948f);
+        newPosition.y = Mathf.Clamp(newPosition.y, -5.5f, -2.21f);
+
+        // Cập nhật vị trí mới
         transform.position = newPosition;
 
+        // Gọi hàm Flip nếu cần
         Flip(horizontal);
     }
-
 
     private void Flip(float horizontal)
     {

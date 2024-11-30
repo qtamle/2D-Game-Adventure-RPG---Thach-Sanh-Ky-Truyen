@@ -21,16 +21,6 @@ public class DialogueManager : MonoBehaviour
 
     private int currentLineIndex = 0;
 
-    
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E)) // Nhấn phím E để chuyển tiếp hội thoại
-        {
-            NextLine();
-        }
-    }
-
     public void ShowDialogue()
     {
         // Lấy dòng hội thoại hiện tại
@@ -61,7 +51,6 @@ public class DialogueManager : MonoBehaviour
 
     public void NextLine()
     {
-        
         if (currentLineIndex < dialogueData.dialogueLines.Length)
         {
             ShowDialogue();
@@ -71,7 +60,6 @@ public class DialogueManager : MonoBehaviour
         {
             EndDialogue();
         }
-
     }
 
     public void EndDialogue()

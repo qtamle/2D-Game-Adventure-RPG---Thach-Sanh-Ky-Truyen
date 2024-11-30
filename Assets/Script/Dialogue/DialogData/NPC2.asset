@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33c12b61bc51ac349824ccc889601f01, type: 3}
+  m_Name: NPC2
+  m_EditorClassIdentifier: 
+  mainCharacter: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
+  secondCharacter: {fileID: 11400000, guid: 6c5e90b89e496494dbcede70643bb30f, type: 2}
+  dialogueLines:
+  - speaker: {fileID: 11400000, guid: 6c5e90b89e496494dbcede70643bb30f, type: 2}
+    dialogueText: "\xD4! Th\u1EA1ch sanh \u0111\u1EA5y \xE0"
+    emotionIndex: 0
+  - speaker: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
+    dialogueText: "Ch\xE1u ch\xE0o b\xE1c \u1EA1"
+    emotionIndex: 0
+  - speaker: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
+    dialogueText: "H\xF4m nay b\xE1c th\u1EBF n\xE0o?"
+    emotionIndex: 0
+  - speaker: {fileID: 11400000, guid: 6c5e90b89e496494dbcede70643bb30f, type: 2}
+    dialogueText: "H\xF4m nay b\xE1c kh\u1ECFe, ch\xE1u \u0111ang \u0111i \u0111\xE2u
+      \xE0?"
+    emotionIndex: 0
+  - speaker: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
+    dialogueText: "Ch\xE1u \u0111ang \u0111i t\u1EDBi b\xE1c b\xE1n c\u1EE7i \u0111\u1EC3
+      mua b\xE1n \u1EA1."
+    emotionIndex: 0
+  - speaker: {fileID: 11400000, guid: 6c5e90b89e496494dbcede70643bb30f, type: 2}
+    dialogueText: "\xC0 v\u1EADy ch\xE1u \u0111i \u0111i, ch\xFAc ch\xE1u m\u1ED9t
+      ng\xE0y may m\u1EAFn nh\xE1"
+    emotionIndex: 0
+  - speaker: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
+    dialogueText: "D\u1EA1 v\u1EADy ch\xE1u ch\xE0o b\xE1c \u1EA1."
+    emotionIndex: 0

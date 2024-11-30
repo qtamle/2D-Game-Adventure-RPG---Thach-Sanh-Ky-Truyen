@@ -82,7 +82,7 @@ public class PythonSkillRemake : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
         
-        StartCoroutine(SkillRoutine());
+        //StartCoroutine(SkillRoutine());
     }
     
     
@@ -92,6 +92,11 @@ public class PythonSkillRemake : MonoBehaviour
         if (player != null)
         {
             lastPlayerPosition = player.position;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            StartCoroutine(Dash());
         }
     }
 
@@ -149,7 +154,7 @@ public class PythonSkillRemake : MonoBehaviour
         {
             case 0:
                 Debug.Log("Skill Dash");
-                yield return StartCoroutine(AnimDash());
+                //yield return StartCoroutine(AnimDash());
                 yield return Dash();
                 break;
             case 1:
@@ -249,7 +254,7 @@ public class PythonSkillRemake : MonoBehaviour
 
     private IEnumerator DashCoroutine()
     {
-        float distance = 10f; 
+        float distance = 1f; 
 
         // Lướt tới vị trí cuối cùng của player, cộng thêm khoảng cách (tính cả hướng trái/phải)
         float direction = Mathf.Sign(lastPlayerPosition.x - transform.position.x); 
@@ -353,26 +358,15 @@ public class PythonSkillRemake : MonoBehaviour
         isSkillActive = true;
 
         FlipCharacter();
-                Vector3 targetPosition = lastPlayerPosition;  
-        yield return new WaitForSeconds(1f); 
+        Vector3 targetPosition = lastPlayerPosition;
+        yield return new WaitForSeconds(1f);
 
         // Tạo luồng lửa từ điểm bắt đầu
-        GameObject fireStream = Instantiate(fireStreamPrefab, fireStreamStartPoint.position, Quaternion.identity);
+        GameObject fireStream = Instantiate(fireStreamPrefab, fireStreamStartPoint.position, Quaternion.Euler(90f,90f,90f));
 
-        // Tính toán hướng phun
-        Vector3 direction = (targetPosition - fireStreamStartPoint.position).normalized;
-
-        // Lấy góc quay
-        float angle = -Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        if (transform.localScale.x < 0) // Quay trái
-        {
-            fireStream.transform.rotation = Quaternion.Euler(angle - 130f, -90f, 0f);  // Xoay sang trái
-        }
-        else // Quay phải
-        {
-            fireStream.transform.rotation = Quaternion.Euler(angle + 10f, 90f, 0f);  // Xoay sang phải
-        }
+        // Tính toán hướng phun và gán hướng này cho luồng lửa
+        Vector3 directionToTarget = targetPosition - fireStreamStartPoint.position;
+        fireStream.transform.rotation = Quaternion.LookRotation(directionToTarget);
 
         // Bắt đầu việc phun lửa
         StartCoroutine(FireStreamRoutine(fireStream));
@@ -382,16 +376,12 @@ public class PythonSkillRemake : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        Vector3 direction = (lastPlayerPosition - fireStream.transform.position).normalized;
-
+        float duration = 1f; 
         float elapsedTime = 0f;
-        Quaternion initialRotation = fireStream.transform.rotation;
-        Quaternion targetRotation = Quaternion.Euler(initialRotation.eulerAngles.x - 70f, initialRotation.eulerAngles.y, initialRotation.eulerAngles.z);
 
-        while (elapsedTime < 1f)
+        while (elapsedTime < duration)
         {
-            elapsedTime += Time.deltaTime * rotationSpeed;
-            fireStream.transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime);
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
 

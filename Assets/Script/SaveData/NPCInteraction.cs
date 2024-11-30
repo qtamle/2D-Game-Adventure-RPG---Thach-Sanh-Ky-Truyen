@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class NPCInteraction : MonoBehaviour
 {
     public GameObject interactionUI;
+    public GameObject saveSuccessUI;
     public SaveManager saveManager;
     public Transform player;
 
@@ -12,6 +14,7 @@ public class NPCInteraction : MonoBehaviour
     private void Start()
     {
         interactionUI.SetActive(false);
+        saveSuccessUI.SetActive(false);
     }
 
     private void Update()
@@ -23,6 +26,8 @@ public class NPCInteraction : MonoBehaviour
             // Lưu vào save slot được chỉ định
             saveManager.SaveGame(player.position, UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, saveSlot);
             Debug.Log($"Game đã được lưu vào slot {saveSlot}!");
+
+            StartCoroutine(ShowSaveSuccessMessage());
         }
     }
 
@@ -42,5 +47,12 @@ public class NPCInteraction : MonoBehaviour
             interactionUI.SetActive(false);
             isPlayerNearby = false;
         }
+    }
+
+    private IEnumerator ShowSaveSuccessMessage()
+    {
+        saveSuccessUI.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        saveSuccessUI.SetActive(false); 
     }
 }
