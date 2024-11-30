@@ -5,12 +5,14 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
 
     [Header("Audio Sources")]
-    public AudioSource backgroundMusicSource; 
-    public AudioSource sfxSource;            
+    public AudioSource backgroundMusicSource;
+    public AudioSource sfxSource;
+    public AudioSource environmentMusicSource; 
 
     [Header("Audio Clips")]
-    public AudioClip[] backgroundMusicClips;  
-    public AudioClip[] sfxClips;            
+    public AudioClip[] backgroundMusicClips;
+    public AudioClip[] sfxClips;
+    public AudioClip[] environmentMusicClips; 
 
     [Header("Volume Settings")]
     [Range(0f, 1f)] public float backgroundMusicVolume = 1f;
@@ -41,18 +43,20 @@ public class AudioManager : MonoBehaviour
         backgroundMusicSource.volume = backgroundMusicVolume;
     }
 
-    // Cài đặt âm lượng SFX
+    // Cài đặt âm lượng SFX và nhạc môi trường
     public void SetSFXVolume(float volume)
     {
         sfxVolume = volume;
         sfxSource.volume = sfxVolume;
+        environmentMusicSource.volume = sfxVolume; // Đồng bộ âm lượng SFX với nhạc môi trường
     }
 
-    // Áp dụng cài đặt âm lượng cho cả nhạc nền và SFX
+    // Áp dụng cài đặt âm lượng cho tất cả nhạc và SFX
     public void ApplyVolumeSettings()
     {
         backgroundMusicSource.volume = backgroundMusicVolume;
         sfxSource.volume = sfxVolume;
+        environmentMusicSource.volume = sfxVolume; // Áp dụng cho nhạc môi trường
     }
 
     // Phát nhạc nền cho Scene hiện tại
@@ -66,6 +70,21 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Background music clip index is out of range.");
+        }
+    }
+
+    // Phát nhạc môi trường
+    public void PlayEnvironmentMusic(int trackIndex)
+    {
+        if (environmentMusicClips != null && trackIndex >= 0 && trackIndex < environmentMusicClips.Length)
+        {
+            environmentMusicSource.clip = environmentMusicClips[trackIndex];
+            environmentMusicSource.loop = true; // Nhạc môi trường luôn chạy loop
+            environmentMusicSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Environment music clip index is out of range.");
         }
     }
 

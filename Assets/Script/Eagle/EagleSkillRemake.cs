@@ -96,6 +96,7 @@ public class EagleSkillRemake : MonoBehaviour
             if (audioManager != null)
             {
                 audioManager.PlayBackgroundMusic(0);
+                audioManager.PlayEnvironmentMusic(0);
             }
             else
             {
