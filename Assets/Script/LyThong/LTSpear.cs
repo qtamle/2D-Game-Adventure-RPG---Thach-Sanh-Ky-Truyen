@@ -5,6 +5,9 @@ using FirstGearGames.SmoothCameraShaker;
 
 public class LTSpear : MonoBehaviour
 {
+    [Header("Animator")]
+    public Animator anim;
+
     [Header("Dash Attack")]
     public Transform player;
     public float dashSpeed = 10f;
@@ -112,13 +115,14 @@ public class LTSpear : MonoBehaviour
             isChasing = false;
             isUsingSkill = true;
 
-            int skill = Random.Range(0, 5);
+            int skill = Random.Range(0, 4);
+            //int skill = 4;
             if (skill == 0)
             {
                 StartDash();
 
                 // sau khi dash thì chọn random 2 skill đâm và quạt
-                int nextSkill = Random.Range(3, 5);  
+                int nextSkill = Random.Range(3, 4);  
                 if (nextSkill == 3)
                 {
                     Debug.Log("Xai skill đâm giáo");
@@ -136,7 +140,7 @@ public class LTSpear : MonoBehaviour
             {
                 Debug.Log("nhảy lên và đập giáo");
                 if (Vector3.Distance(transform.position, player.position) <= activationRadius)
-                    StartCoroutine(StartJumpAttack());
+                StartCoroutine(StartJumpAttack());
             }
             else if (skill == 2)
             {
@@ -159,9 +163,10 @@ public class LTSpear : MonoBehaviour
                 if (Vector3.Distance(transform.position, player.position) <= activationRadiusZone)
                     StartCoroutine(SwipeSpear());
             }
-
+           
             yield return new WaitForSeconds(1f);
             isChasing = true;
+
         }
     }
 
@@ -189,6 +194,7 @@ public class LTSpear : MonoBehaviour
     public void StartDash()
     {
         isUsingSkill = true;
+        
         lastKnownPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
         isDashing = true;
         isChasing = false;
@@ -197,8 +203,9 @@ public class LTSpear : MonoBehaviour
 
     private IEnumerator DashToLastKnownPosition()
     {
+        
         yield return new WaitForSeconds(1f);
-
+        anim.SetTrigger("Dash");
         GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
 
         if (audioManagerObject != null)
@@ -221,6 +228,7 @@ public class LTSpear : MonoBehaviour
 
         while (isDashing)
         {
+            
             float distanceToTarget = Mathf.Abs(transform.position.x - lastKnownPosition.x);
             if (distanceToTarget <= stopDistance)
             {
@@ -242,17 +250,21 @@ public class LTSpear : MonoBehaviour
     // tấn công bằng nhảy
     public IEnumerator StartJumpAttack()
     {
+        
         isUsingSkill = true;
         isJumping = true;
         lastKnownPosition = new Vector3(player.position.x, player.position.y, transform.position.z);
-
+       
         isChasing = false;
-        yield return new WaitForSeconds(1f);
+        
+        yield return new WaitForSeconds(2f);
+        anim.SetTrigger("JumpAttack");
         StartCoroutine(JumpAndDashDownward());
     }
 
     private IEnumerator JumpAndDashDownward()
     {
+        
         Vector3 startPosition = transform.position;
         Vector3 targetPosition = lastKnownPosition;
 
@@ -333,9 +345,9 @@ public class LTSpear : MonoBehaviour
     // ném ám khí
     private IEnumerator ThrowGasBomb()
     {
+       
         isUsingSkill = true;
         isChasing = false;
-
         GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
 
         if (audioManagerObject != null)
@@ -355,11 +367,12 @@ public class LTSpear : MonoBehaviour
         {
             Debug.LogError("No GameObject found with the tag 'AudioManager'.");
         }
-
+        
         yield return new WaitForSeconds(1f);
-
+       
         for (int i = 0; i < 1; i++)  
         {
+            anim.SetTrigger("Dart");
             if (throwPoint != null)
             {
                 GameObject gasBomb = Instantiate(gasBombPrefab, throwPoint.position, Quaternion.identity);
@@ -387,7 +400,8 @@ public class LTSpear : MonoBehaviour
             }
 
             // Chờ 1 giây trước khi ném quả tiếp theo
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
+
         }
         yield return new WaitForSeconds(0.5f);
 
@@ -402,7 +416,7 @@ public class LTSpear : MonoBehaviour
         isUsingSkill = true;
         isChasing = false;
         yield return new WaitForSeconds(1f);
-
+        anim.SetTrigger("Stab");
         float attackTime = 0f;
         float stabDuration = 3f; 
         float damageInterval = 0.5f; 
@@ -466,13 +480,15 @@ public class LTSpear : MonoBehaviour
     // quạt giáo
     private IEnumerator SwipeSpear()
     {
+        anim.SetTrigger("Swipe");
         isUsingSkill = true;
         isChasing = false;
-        yield return new WaitForSeconds(1.5f);
-
+        yield return new WaitForSeconds(1f);
+        
         // Kiểm tra nếu đối thủ trong vùng kích hoạt
         if (Vector3.Distance(transform.position, player.position) <= activationRadiusZone)
         {
+            
             Collider2D[] colliders = Physics2D.OverlapCircleAll(swipeTransform.position, swipeRadius);
 
             foreach (var collider in colliders)
@@ -520,10 +536,12 @@ public class LTSpear : MonoBehaviour
 
     private void ChasePlayer()
     {
+        
         float distanceToPlayerX = Mathf.Abs(transform.position.x - player.position.x);
-
+        
         if (distanceToPlayerX > stopDistance)
         {
+            anim.SetTrigger("Walk");
             // Di chuyển về phía player chỉ theo chiều X
             Vector3 targetPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, chaseSpeed * Time.deltaTime);
