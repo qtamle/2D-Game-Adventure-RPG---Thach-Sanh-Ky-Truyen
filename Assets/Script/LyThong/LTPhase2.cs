@@ -310,11 +310,12 @@ public class LTPhase2 : MonoBehaviour
         isSkillActive = true;
 
         FlipBasedOnPlayerPosition();
-        anim.SetTrigger("Case0");
+        
         int summonCount = Random.Range(5, 7);
 
         for (int i = 0; i < summonCount; i++)
         {
+            anim.SetTrigger("Case0");
             Vector3 playerPosition = player.position;
 
             Vector3 explosionPosition = new Vector3(playerPosition.x, 18.73f, playerPosition.z);
