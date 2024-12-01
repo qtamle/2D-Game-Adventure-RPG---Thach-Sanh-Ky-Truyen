@@ -7,7 +7,7 @@ using UnityEngine;
 public class Attack : MonoBehaviour
 {
     
-    [SerializeField] private AnyStateAnimator animator;
+    [SerializeField] public AnyStateAnimator animator;
     public AnimationManager animationManager;
     [Header("Attack Settings")]
     public float radiusAttack = 2f;

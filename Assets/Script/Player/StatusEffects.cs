@@ -27,12 +27,16 @@ public class StatusEffects : MonoBehaviour
     private float originalSpeed;
     private bool isImmune = false;
 
+    // Thêm biến lưu trữ tỷ lệ giảm sát thương
+    private float currentDamageReduction = 0f;
+
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
         originalSpeed = playerMovement.speed;
         playerStamina = GetComponent<Stamina>();
     }
+
     public void ApplyImmunity(float immunityDuration)
     {
         if (!isImmune)
@@ -49,7 +53,7 @@ public class StatusEffects : MonoBehaviour
         isImmune = false;
     }
 
-    private void StopAllEffects()
+    public void StopAllEffects()
     {
         if (isImmune) return;
 
@@ -66,6 +70,9 @@ public class StatusEffects : MonoBehaviour
             isSlowed = false;
             playerMovement.speed = originalSpeed;
         }
+
+        // Reset giảm sát thương khi kết thúc tất cả các hiệu ứng
+        currentDamageReduction = 0f;
     }
 
     // Bleed
@@ -92,7 +99,6 @@ public class StatusEffects : MonoBehaviour
             {
                 isBleeding = false;
             }
-
         }
     }
 
@@ -137,5 +143,33 @@ public class StatusEffects : MonoBehaviour
             float staminaReduction = playerStamina.maxStamina * 0.4f;
             playerStamina.DecreaseStamina(staminaReduction);
         }
+    }
+
+    // Phương thức áp dụng giảm sát thương
+    public void ApplyDamageReduction(float reduction, float duration)
+    {
+        // Cập nhật tỷ lệ giảm sát thương
+        currentDamageReduction = reduction;
+
+        // Bạn có thể áp dụng một cách thức giảm sát thương vào các hành động tấn công hoặc nhận sát thương của nhân vật
+        Debug.Log("Applying damage reduction: " + (reduction * 100) + "% for " + duration + " seconds.");
+
+        // Reset lại giảm sát thương sau khi hết thời gian
+        StartCoroutine(RemoveDamageReductionAfterTime(duration));
+    }
+
+    // Coroutine để kết thúc hiệu ứng giảm sát thương sau một khoảng thời gian
+    private IEnumerator RemoveDamageReductionAfterTime(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        currentDamageReduction = 0f;  // Reset giảm sát thương
+        Debug.Log("Damage reduction effect ended.");
+    }
+
+    // Hàm để tính sát thương cuối cùng có thể áp dụng cho nhân vật
+    public float CalculateDamage(float incomingDamage)
+    {
+        // Trả về sát thương đã giảm, bạn có thể áp dụng thêm logic khác tùy vào game
+        return incomingDamage * (1 - currentDamageReduction);
     }
 }

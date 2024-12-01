@@ -1259,6 +1259,10 @@ GameObject:
   - component: {fileID: 1286786417732748965}
   - component: {fileID: 8814821825390380968}
   - component: {fileID: 5716720148098459112}
+  - component: {fileID: 6581989000095893104}
+  - component: {fileID: 720313384292432052}
+  - component: {fileID: 7917257228369931944}
+  - component: {fileID: 410688175478929083}
   m_Layer: 6
   m_Name: thach sanh 1
   m_TagString: Player
@@ -1371,6 +1375,7 @@ MonoBehaviour:
   staminaDecreaseAmount: 10
   isSwinging: 0
   swingForce: 200
+  animationManager: {fileID: 0}
   rb2d: {fileID: 7774256371601363359}
   groundCheck: {fileID: 733171166091219257}
   groundLayer:
@@ -1467,7 +1472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b04ee033d72e064a95073d7f4c4a51e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  staminaSlider: {fileID: 0}
+  staminaFillImage: {fileID: 0}
   maxStamina: 100
   staminaDecreaseAmount: 10
   staminaRegenRate: 5
@@ -1510,6 +1515,7 @@ MonoBehaviour:
   lerpSpeed: 5
   fillImage: {fileID: 0}
   lostFillImage: {fileID: 0}
+  gameOverScene: {fileID: 0}
 --- !u!50 &7774256371601363359
 Rigidbody2D:
   serializedVersion: 4
@@ -1550,6 +1556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 8814821825390380968}
+  animationManager: {fileID: 0}
   radiusAttack: 2
   angleAttack: 360
   attackSegments: 360
@@ -1558,6 +1565,7 @@ MonoBehaviour:
   comboCooldown: 1
   comboResetTime: 2
   PopupDamage: {fileID: 0}
+  timeBetweenCombos: 1
   reducedSpeed: 2
   staminaCostPerAttack: 5
 --- !u!114 &7927764829142761762
@@ -1878,6 +1886,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+--- !u!114 &6581989000095893104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137146942418894410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f01311b80796114bbd5e8489a6ded19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackScript: {fileID: 0}
+  damageMultiplier: 1.1
+  boostDuration: 5
+  cooldown: 10
+--- !u!114 &720313384292432052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137146942418894410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f48720d17165f6b4da846f1957e00f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusEffects: {fileID: 0}
+  shieldDuration: 5
+  cooldown: 25
+--- !u!114 &7917257228369931944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137146942418894410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d2ccef565326a048845de8c9d10952c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackScript: {fileID: 0}
+  additionalDamage: 20
+  cooldown: 20
+--- !u!114 &410688175478929083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4137146942418894410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2553fdfb70291440a7c7bd6f89a7f4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusEffects: {fileID: 0}
+  cooldown: 30
 --- !u!1 &4824743187751501488
 GameObject:
   m_ObjectHideFlags: 0
