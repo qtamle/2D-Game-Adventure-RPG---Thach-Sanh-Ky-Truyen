@@ -26,7 +26,7 @@ public class HealthBarBoss : MonoBehaviour
     public BossSkill bossSkill;
     public ObjectManager objectManager;
 
-
+    [SerializeField] private DamageFlash dameflash;
 
     private void Start()
     {
@@ -56,6 +56,7 @@ public class HealthBarBoss : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        dameflash.CallDamageFlash();
         targetHealth -= damage;
         if (targetHealth < 0) targetHealth = 0;
 

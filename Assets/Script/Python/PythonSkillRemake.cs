@@ -67,10 +67,10 @@ public class PythonSkillRemake : MonoBehaviour
     private bool isSkyfallActive = false;
     private bool isRandomSkillActive = false;
 
-    private void Awake()
-    {
-        healthBarBoss = GetComponent<HealthBarBoss>();
-    }
+    //private void Awake()
+    //{
+    //    healthBarBoss = GetComponent<HealthBarBoss>();
+    //}
     private void Start()
     {
         anim = GetComponentInParent<Animator>();
@@ -352,12 +352,13 @@ public class PythonSkillRemake : MonoBehaviour
     {
         isSkillActive = false;
         anim.SetTrigger("Snake_FirePillar");
-        Vector3 targetPosition = new Vector3(lastPlayerPosition.x, -20f, lastPlayerPosition.z);
+        Vector3 targetPosition = new Vector3(lastPlayerPosition.x, -10f, lastPlayerPosition.z);
 
         GameObject explosion = Instantiate(explosionPrefab, targetPosition, Quaternion.identity);
         yield return new WaitForSeconds(explosionDuration);
         Destroy(explosion);
 
+        yield return new WaitForSeconds(1f);
         GameObject firePillar = Instantiate(firePillarPrefab, targetPosition, Quaternion.Euler(-90f, 0f, 0f));
 
         StartCoroutine(FirePillarRoutine(firePillar));
