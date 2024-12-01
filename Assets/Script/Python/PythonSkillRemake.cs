@@ -162,12 +162,10 @@ public class PythonSkillRemake : MonoBehaviour
                 break;
             case 2:
                 Debug.Log("Skill Fire Stream");
-                yield return StartCoroutine(AnimFireSteam());
                 yield return FireStreamSkill();
                 break;
             case 3:
                 Debug.Log("Skill Fire Pillar");
-                yield return StartCoroutine(AnimFirePillar());
                 yield return ActivateFirePillarSkill();
                 break;
             case 4:
@@ -181,37 +179,6 @@ public class PythonSkillRemake : MonoBehaviour
 
         isSkillActive = false;
     }
-
-    // Hàm gọi animation tương ứng với từng kỹ năng
-
-    IEnumerator AnimDash()
-    {
-        Debug.Log("ThucHIenAnimation");
-        anim.SetTrigger("Snake_Dash");
-        yield return new WaitForSeconds(2f);
-    }
-
-    IEnumerator AnimTail()
-    {
-        Debug.Log("ThucHIenAnimation");
-        anim.SetTrigger("Snake_Tail");
-        yield return new WaitForSeconds(2f);
-    }
-    IEnumerator AnimFireSteam()
-    {
-        Debug.Log("ThucHIenAnimation");
-        anim.SetTrigger("Snake_FireSteam");
-        yield return new WaitForSeconds(2f);
-    }
-    IEnumerator AnimFirePillar()
-    {
-        Debug.Log("ThucHIenAnimation");
-        anim.SetTrigger("Snake_FirePillar");
-        yield return new WaitForSeconds(2f);
-    }
-    
-      
-
 
     private void FlipCharacter()
     {
@@ -346,7 +313,7 @@ public class PythonSkillRemake : MonoBehaviour
     public IEnumerator FireStreamSkill()
     {
         isSkillActive = true;
-
+        anim.SetTrigger("Snake_FireSteam");
         FlipCharacter();
         Vector3 targetPosition = lastPlayerPosition;
         yield return new WaitForSeconds(1f);
@@ -384,6 +351,7 @@ public class PythonSkillRemake : MonoBehaviour
     public IEnumerator ActivateFirePillarSkill()
     {
         isSkillActive = false;
+        anim.SetTrigger("Snake_FirePillar");
         Vector3 targetPosition = new Vector3(lastPlayerPosition.x, -20f, lastPlayerPosition.z);
 
         GameObject explosion = Instantiate(explosionPrefab, targetPosition, Quaternion.identity);
@@ -472,6 +440,7 @@ public class PythonSkillRemake : MonoBehaviour
     // tấn công bằng đuôi
     private IEnumerator TailStrong(Vector3 playerPosition)
     {
+        anim.SetTrigger("Snake_Tail");
         isSkillActive = true;
         yield return new WaitForSeconds(1f);
         StartCoroutine(GrowTail(playerPosition));
