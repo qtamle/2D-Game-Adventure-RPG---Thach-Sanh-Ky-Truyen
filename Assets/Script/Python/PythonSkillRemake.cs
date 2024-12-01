@@ -73,7 +73,7 @@ public class PythonSkillRemake : MonoBehaviour
     }
     private void Start()
     {
-       
+        anim = GetComponentInParent<Animator>();
         // Bỏ qua layer 
         int myLayer = gameObject.layer;
         int playerLayer = LayerMask.NameToLayer("Player");
@@ -81,11 +81,11 @@ public class PythonSkillRemake : MonoBehaviour
         Physics2D.IgnoreLayerCollision(myLayer, playerLayer, true);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        
-        //StartCoroutine(SkillRoutine());
+
+        StartCoroutine(SkillRoutine());
     }
-    
-    
+
+
     private void Update()
     {
         // Cập nhật vị trí player liên tục
@@ -124,7 +124,6 @@ public class PythonSkillRemake : MonoBehaviour
         if (healthBarBoss.targetHealth <= 0)
         {
             isAlive = false;
-            anim.SetTrigger("Snake_Die"); // Kích hoạt animation chết
             StopAllCoroutines(); // Dừng toàn bộ kỹ năng
         }
     }
@@ -154,13 +153,11 @@ public class PythonSkillRemake : MonoBehaviour
         {
             case 0:
                 Debug.Log("Skill Dash");
-                //yield return StartCoroutine(AnimDash());
                 yield return Dash();
                 break;
             case 1:
                 Vector3 playerPosition = player.transform.position;
                 Debug.Log("Skill Tail");
-                yield return StartCoroutine(AnimTail());
                 yield return TailStrong(playerPosition);
                 break;
             case 2:
@@ -175,7 +172,6 @@ public class PythonSkillRemake : MonoBehaviour
                 break;
             case 4:
                 Debug.Log("Skill Projectile");
-                yield return StartCoroutine(AnimProjectile());
                 yield return LaunchProjectile();
                 break;
             default:
@@ -214,13 +210,7 @@ public class PythonSkillRemake : MonoBehaviour
         yield return new WaitForSeconds(2f);
     }
     
-    IEnumerator AnimProjectile()
-    {
-        Debug.Log("ThucHIenAnimation");
-        anim.SetTrigger("Snake_Projectile");
-        yield return new WaitForSeconds(2f);
-    }
-    
+      
 
 
     private void FlipCharacter()
@@ -242,8 +232,8 @@ public class PythonSkillRemake : MonoBehaviour
     {
         isSkillActive = true;
 
-
-        yield return new WaitForSeconds(0.1f);
+        anim.SetTrigger("Snake_Dash");
+        yield return new WaitForSeconds(1f);
         if (!isDashing)
         {
             isDashing = true;
@@ -431,6 +421,7 @@ public class PythonSkillRemake : MonoBehaviour
     {
         isSkillActive = true;
         // Tạo projectile tại firePoint
+        anim.SetTrigger("Snake_Projectile");
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
 
         float elapsedTime = 0f;

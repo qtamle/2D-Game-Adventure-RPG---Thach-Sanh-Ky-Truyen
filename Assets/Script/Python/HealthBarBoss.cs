@@ -13,9 +13,7 @@ public class HealthBarBoss : MonoBehaviour
     public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
 
     private Animator anim;
-    private AnyStateAnimation animator;
-    public AnimationManager animationManager;
-
+   
     public float targetHealth;
     private float currentHealth;
     private float healthVelocity = 0f;
