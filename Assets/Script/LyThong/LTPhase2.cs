@@ -85,6 +85,27 @@ public class LTPhase2 : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         StartCoroutine(SkillRoutine());
+
+
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlayBackgroundMusic(0);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
     }
 
     private void Update()
@@ -229,12 +250,30 @@ public class LTPhase2 : MonoBehaviour
 
     private IEnumerator TeleportSkill()
     {
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(2);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         isTeleporting = true;
 
         Vector3 targetPosition = GetRandomPositionInCollider(teleportArea);
         anim.SetTrigger("Teleport");
-        yield return new WaitForSeconds(1f); 
-
+        yield return new WaitForSeconds(1f);
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         //if (spriteRenderer != null)
         //{
@@ -246,6 +285,23 @@ public class LTPhase2 : MonoBehaviour
             rb.isKinematic = true;
         }
 
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(3);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         transform.position = targetPosition;
         FlipBasedOnPlayerPosition();
 
@@ -270,7 +326,25 @@ public class LTPhase2 : MonoBehaviour
     }
     private IEnumerator ReturnToOriginalPosition(Vector3 originalPosition)
     {
-        
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(2);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         anim.SetTrigger("TeleportBack");
         yield return new WaitForSeconds(1f);
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
@@ -284,9 +358,25 @@ public class LTPhase2 : MonoBehaviour
             rb.isKinematic = true;
         }
 
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(3);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         // Quay về vị trí ban đầu
         transform.position = originalPosition;
-        
         FlipBasedOnPlayerPosition();
 
         //if (spriteRenderer != null)
@@ -320,14 +410,48 @@ public class LTPhase2 : MonoBehaviour
 
             Vector3 explosionPosition = new Vector3(playerPosition.x, 18.73f, playerPosition.z);
             GameObject explosion = Instantiate(explosionPrefab, explosionPosition, Quaternion.identity);
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
 
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(4);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             Destroy(explosion, 1f);
 
             yield return new WaitForSeconds(0.5f);
 
             Vector3 lightningPosition = new Vector3(playerPosition.x, 23f, playerPosition.z);
             GameObject lightning = Instantiate(lightningPrefab, lightningPosition, Quaternion.Euler(90f,0f,0f));
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
 
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(1);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             Destroy(lightning, 1f);
 
             yield return new WaitForSeconds(1f);
@@ -379,10 +503,45 @@ public class LTPhase2 : MonoBehaviour
             float angleX = Mathf.Atan2(directionToPlayer.y, directionToPlayer.z) * Mathf.Rad2Deg;
 
             fireball.transform.rotation = Quaternion.Euler(angleX, 0, 0);
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
 
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(6);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             // Chờ trước khi bắn
             yield return new WaitForSeconds(1.5f);
 
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(5);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             Vector3 targetPosition = player.position;
             Vector3 direction = (targetPosition - fireballSpawnPoint.position).normalized;
 
@@ -443,10 +602,46 @@ public class LTPhase2 : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);*/
 
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(10);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         GameObject fireball = Instantiate(bigFireball, bigFireballSpawnPoint.position, Quaternion.identity);
         anim.SetTrigger("Case2");
         yield return new WaitForSeconds(3f);
 
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(5);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         Vector3 throwDirection = isFacingRight ? new Vector3(-1, -1, 0).normalized : new Vector3(1, -1, 0).normalized;
 
         Rigidbody2D fireballRb = fireball.GetComponent<Rigidbody2D>();
@@ -465,7 +660,23 @@ public class LTPhase2 : MonoBehaviour
             }
             yield return null;
         }
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
 
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(12);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         Destroy(fireball);
 
         Vector3 explosionPosition = fireball.transform.position; 
@@ -478,6 +689,23 @@ public class LTPhase2 : MonoBehaviour
 
         for (int i = 0; i < flameCount; i++)
         {
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(11);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             GameObject flame = Instantiate(flamePrefab, summonPosition, Quaternion.Euler(-90f,0f,0f));
 
             Destroy(flame, 5f);
@@ -540,7 +768,25 @@ public class LTPhase2 : MonoBehaviour
             }
 
             transform.position = jumpTarget;
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
 
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(0);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             Collider2D[] colliders = Physics2D.OverlapCircleAll(damageAreaTransform.position, damageRadius);
 
             foreach (var collider in colliders)
@@ -567,9 +813,42 @@ public class LTPhase2 : MonoBehaviour
                 Vector3 explosionGround = new Vector3(transform.position.x, 18.73f, transform.position.z);
                 GameObject explosion = Instantiate(explosionPrefab, explosionGround, Quaternion.identity);
                 Destroy(explosion, 1f);
+                if (audioManagerObject != null)
+                {
+                    AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
 
+                    if (audioManager != null)
+                    {
+                        audioManager.PlaySFX(4);
+                    }
+                    else
+                    {
+                        Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+                }
                 yield return new WaitForSeconds(0.5f);
 
+                if (audioManagerObject != null)
+                {
+                    AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                    if (audioManager != null)
+                    {
+                        audioManager.PlaySFX(1);
+                    }
+                    else
+                    {
+                        Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+                }
                 Vector3 lightningPosition = new Vector3(transform.position.x, 23f, transform.position.z);
                 GameObject lightning = Instantiate(lightningPrefab, lightningPosition, Quaternion.Euler(90f, 0f, 0f));
                 Destroy(lightning, 1f);
@@ -603,6 +882,25 @@ public class LTPhase2 : MonoBehaviour
             explosionPositions[i] = new Vector3(randomX, 18.73f, transform.position.z);
 
             GameObject explosion = Instantiate(explosionPrefab, explosionPositions[i], Quaternion.identity);
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(4);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             Destroy(explosion, 1f);
         }
 
@@ -610,8 +908,26 @@ public class LTPhase2 : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            Vector3 lightningPosition = new Vector3(explosionPositions[i].x, 23f, explosionPositions[i].z);
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
 
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(1);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
+            Vector3 lightningPosition = new Vector3(explosionPositions[i].x, 23f, explosionPositions[i].z);
             GameObject randomLightning = Instantiate(lightningPrefab, lightningPosition, Quaternion.Euler(90f, 0f, 0f));
             Destroy(randomLightning, 1f);
         }
@@ -637,11 +953,46 @@ public class LTPhase2 : MonoBehaviour
         isLightningActive = true;
 
         Instantiate(explosionPrefab, spawnPoint.position, Quaternion.identity);
-       
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(4);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         yield return new WaitForSeconds(1f);
 
         GameObject lightning = Instantiate(lightningPrefab, spawnPoint.position, Quaternion.Euler(90f, 90f, 90f));
 
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(1);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         if (isFacingRight)
         {
             lightning.transform.rotation = Quaternion.Euler(180f, 90f, 90f);
@@ -672,6 +1023,25 @@ public class LTPhase2 : MonoBehaviour
         // Triệu hồi giáo
         for (int i = 0; i < spearCount; i++)
         {
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(7);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             Vector3 spawnPosition = spawnStartPosition + new Vector3(i * spearSpacing, 0, 0);
             GameObject spear = Instantiate(spearPrefab, spawnPosition, Quaternion.identity);
             spears.Add(spear);
@@ -690,8 +1060,27 @@ public class LTPhase2 : MonoBehaviour
 
             // Tính góc xoay trục Z để mũi giáo hướng về Player
             float rot = Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg; 
-            spear.transform.rotation = Quaternion.Euler(0, 0, rot + 20f); 
+            spear.transform.rotation = Quaternion.Euler(0, 0, rot + 20f);
 
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(8);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             // Di chuyển ngọn giáo về phía Player
             while (spear != null && Vector3.Distance(spear.transform.position, targetPosition) > 0.1f)
             {
@@ -723,7 +1112,25 @@ public class LTPhase2 : MonoBehaviour
         anim.SetTrigger("Case6");
         // Hiệu ứng nổ tại điểm xuất phát
         Instantiate(explosionPrefab, spawnPoint.position, Quaternion.identity);
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
 
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(4);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         // Lưu vị trí hiện tại của player
         Vector3 targetPosition = player.position;
 
@@ -732,6 +1139,23 @@ public class LTPhase2 : MonoBehaviour
         // Tạo tia sét tại điểm spawn
         GameObject lightning = Instantiate(lightningPrefab, spawnPoint.position, Quaternion.Euler(90f, 90f, 90f));
 
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(1);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         // Tính toán hướng tia sét đến vị trí đã lưu
         Vector3 directionToTarget = targetPosition - spawnPoint.position;
         lightning.transform.rotation = Quaternion.LookRotation(directionToTarget);
@@ -742,6 +1166,8 @@ public class LTPhase2 : MonoBehaviour
 
         // Hủy tia sét sau 1 giây
         Destroy(lightning);
+        Destroy(explosionPrefab);
+
         isLightningActive = false;
         isSkillActive = true;
     }

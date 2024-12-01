@@ -23,6 +23,25 @@ public class Spear : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Ground"))
         {
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(9);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             if (rb != null)
             {
@@ -34,6 +53,25 @@ public class Spear : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("TurnOn"))
         {
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(9);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             if (rb != null)
             {

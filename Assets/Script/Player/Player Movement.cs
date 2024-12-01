@@ -50,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private LayerMask ledgeLayer;
     [SerializeField] private ParticleSystem dustPrefab;
+    [SerializeField] private DamageFlash damageFlash;
 
     [Header("Health")]
     public HealthBar healthBar;
@@ -300,6 +301,25 @@ public class PlayerMovement : MonoBehaviour
     {
         if (stamina.CurrentStamina >= staminaDecreaseAmount)
         {
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlayPlayerSFX(2);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             stamina.DecreaseStamina(staminaDecreaseAmount);
             canDash = false;
             isDashing = true;
@@ -392,6 +412,21 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Debug.LogError("HealthBar chưa được gán.");
+        }
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlayPlayerSFX(1);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
         }
 
         Vector3 knockbackDirection = GetKnockbackDirection();

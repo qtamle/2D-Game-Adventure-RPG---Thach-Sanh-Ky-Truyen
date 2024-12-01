@@ -7,12 +7,13 @@ public class AudioManager : MonoBehaviour
     [Header("Audio Sources")]
     public AudioSource backgroundMusicSource;
     public AudioSource sfxSource;
-    public AudioSource environmentMusicSource; 
+    public AudioSource environmentMusicSource;
 
     [Header("Audio Clips")]
     public AudioClip[] backgroundMusicClips;
     public AudioClip[] sfxClips;
-    public AudioClip[] environmentMusicClips; 
+    public AudioClip[] environmentMusicClips;
+    public AudioClip[] playerSFXClips; 
 
     [Header("Volume Settings")]
     [Range(0f, 1f)] public float backgroundMusicVolume = 1f;
@@ -48,7 +49,7 @@ public class AudioManager : MonoBehaviour
     {
         sfxVolume = volume;
         sfxSource.volume = sfxVolume;
-        environmentMusicSource.volume = sfxVolume; // Đồng bộ âm lượng SFX với nhạc môi trường
+        environmentMusicSource.volume = sfxVolume;
     }
 
     // Áp dụng cài đặt âm lượng cho tất cả nhạc và SFX
@@ -56,7 +57,7 @@ public class AudioManager : MonoBehaviour
     {
         backgroundMusicSource.volume = backgroundMusicVolume;
         sfxSource.volume = sfxVolume;
-        environmentMusicSource.volume = sfxVolume; // Áp dụng cho nhạc môi trường
+        environmentMusicSource.volume = sfxVolume;
     }
 
     // Phát nhạc nền cho Scene hiện tại
@@ -79,7 +80,7 @@ public class AudioManager : MonoBehaviour
         if (environmentMusicClips != null && trackIndex >= 0 && trackIndex < environmentMusicClips.Length)
         {
             environmentMusicSource.clip = environmentMusicClips[trackIndex];
-            environmentMusicSource.loop = true; // Nhạc môi trường luôn chạy loop
+            environmentMusicSource.loop = true;
             environmentMusicSource.Play();
         }
         else
@@ -98,6 +99,19 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.LogWarning("SFX clip index is out of range.");
+        }
+    }
+
+    // Phát hiệu ứng âm thanh cho Player
+    public void PlayPlayerSFX(int clipIndex)
+    {
+        if (playerSFXClips != null && clipIndex >= 0 && clipIndex < playerSFXClips.Length)
+        {
+            sfxSource.PlayOneShot(playerSFXClips[clipIndex], sfxVolume);
+        }
+        else
+        {
+            Debug.LogWarning("Player SFX clip index is out of range.");
         }
     }
 }

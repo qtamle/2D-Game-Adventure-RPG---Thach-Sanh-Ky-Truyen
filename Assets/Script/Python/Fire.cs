@@ -7,6 +7,8 @@ public class Fire : MonoBehaviour
     public float damageInterval = 1f;
 
     private bool isPlayerInRange = false;
+    private bool hasDamaged = false;
+
     private PlayerMovement playerMovement;
     private StatusEffects playerStatus;
 
@@ -17,10 +19,11 @@ public class Fire : MonoBehaviour
             playerMovement = other.GetComponent<PlayerMovement>();
             playerStatus = other.gameObject.GetComponentInChildren<StatusEffects>();
 
-            if (playerMovement != null)
+            if (playerMovement != null && !hasDamaged)
             {
                 isPlayerInRange = true;
                 StartCoroutine(ApplyDamage());
+                hasDamaged = true;
             }
 
             if (playerStatus != null)

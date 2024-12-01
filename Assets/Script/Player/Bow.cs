@@ -60,6 +60,25 @@ public class Bow : MonoBehaviour
         {
             if (!isDrawing)
             {
+                GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+                if (audioManagerObject != null)
+                {
+                    AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                    if (audioManager != null)
+                    {
+                        audioManager.PlayPlayerSFX(6);
+                    }
+                    else
+                    {
+                        Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+                }
                 stamina.DecreaseStamina(staminaBow);
                 StartCoroutine(DrawBow(direction));
             }
@@ -126,6 +145,25 @@ public class Bow : MonoBehaviour
 
     private IEnumerator ShootWithDelay(Vector3 direction)
     {
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlayPlayerSFX(7);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         isAiming = false;
         Debug.Log("Đang bắn...");
         yield return new WaitForSeconds(0f);

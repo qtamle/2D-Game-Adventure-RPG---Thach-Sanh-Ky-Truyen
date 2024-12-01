@@ -32,8 +32,27 @@ public class Arrow : MonoBehaviour
         {
             EagleHealthbar eagleBoss = collision.gameObject.GetComponent<EagleHealthbar>();
             if (eagleBoss != null)
-            {
+            {               
                 eagleBoss.TakeDamage(damageShieldEagle, damageBoss);
+                GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+                if (audioManagerObject != null)
+                {
+                    AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                    if (audioManager != null)
+                    {
+                        audioManager.PlayPlayerSFX(8);
+                    }
+                    else
+                    {
+                        Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+                }
                 Destroy(gameObject);
             }
 
@@ -48,6 +67,25 @@ public class Arrow : MonoBehaviour
             if (lt != null)
             {
                 lt.TakeDamage(damageBoss);
+                GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+                if (audioManagerObject != null)
+                {
+                    AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                    if (audioManager != null)
+                    {
+                        audioManager.PlayPlayerSFX(8);
+                    }
+                    else
+                    {
+                        Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+                }
                 Destroy(gameObject);
             }
 
@@ -55,6 +93,25 @@ public class Arrow : MonoBehaviour
             if (ltPhase2 != null)
             {
                 ltPhase2.TakeDamage(damageBoss);
+                GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+                if (audioManagerObject != null)
+                {
+                    AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                    if (audioManager != null)
+                    {
+                        audioManager.PlayPlayerSFX(8);
+                    }
+                    else
+                    {
+                        Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+                }
                 Destroy(gameObject);
             }
         }

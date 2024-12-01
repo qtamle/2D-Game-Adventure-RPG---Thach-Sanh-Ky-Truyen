@@ -53,7 +53,6 @@ public class Attack : MonoBehaviour
         stamina = GetComponent<Stamina>();
         originalSpeed = playerMovement.speed;
         animator.SetInteger("attackCombo", comboCount);
-
     }
     private void Update()
     {
@@ -138,25 +137,54 @@ public class Attack : MonoBehaviour
     {
         isAttack = true;
         playerMovement.isAttacking = true; // Đặt trạng thái đang tấn công
+
         // Giảm tốc độ khi tấn công
         playerMovement.speed = reducedSpeed;
-        
+
         // Thời gian giảm tốc độ khi tấn công (có thể thay đổi dựa trên combo)
         float reducedSpeedDuration = 0.1f;
 
         PlayerAttack();
 
-        // Nếu comboCount tăng, có thể giảm thời gian di chuyển chậm hơn
+        // Lấy đối tượng AudioManager
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager audioManager = null;
+
+        if (audioManagerObject != null)
+        {
+            audioManager = audioManagerObject.GetComponent<AudioManager>();
+            if (audioManager == null)
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
+
         switch (comboCount)
         {
             case 0:
+                if (audioManager != null)
+                {
+                    audioManager.PlayPlayerSFX(3); 
+                }
                 reducedSpeedDuration = 0.1f;
                 break;
             case 1:
-                reducedSpeedDuration = 0.15f; // Combo 1, thời gian giảm tốc độ lâu hơn chút
+                if (audioManager != null)
+                {
+                    audioManager.PlayPlayerSFX(4); 
+                }
+                reducedSpeedDuration = 0.15f; 
                 break;
             case 2:
-                reducedSpeedDuration = 0.2f;  // Combo 2, giảm tốc độ lâu nhất
+                if (audioManager != null)
+                {
+                    audioManager.PlayPlayerSFX(5);
+                }
+                reducedSpeedDuration = 0.2f; 
                 break;
         }
 
@@ -168,6 +196,7 @@ public class Attack : MonoBehaviour
         playerMovement.isAttacking = false; // Kết thúc trạng thái tấn công
         isAttack = false;
     }
+
 
     private void PlayerAttack()
     {
@@ -227,7 +256,7 @@ public class Attack : MonoBehaviour
                     Vector3 popupPosition = enemyHealth.transform.position;
                     Vector2 knockbackDirection = directionToEnemy * 1;
                     if (comboCount == 0)
-                    {
+                    {                       
                         ShowDamage(Mathf.Round(damageRandom1 * 10).ToString(), popupPosition);
                         enemyHealth.TakeDamage(Mathf.Round(damageRandom1), knockbackDirection);
                         Debug.Log("Đòn 1 với sát thương: " + damageRandom1);
@@ -405,6 +434,7 @@ public class Attack : MonoBehaviour
                     Vector3 popupPosition = ltPhase2.transform.position;
                     if (comboCount == 0)
                     {
+                        
                         ShowDamage(Mathf.Round(damageRandom1 * 10).ToString(), popupPosition);
                         ltPhase2.TakeDamage(Mathf.Round(damageRandom1));
                         Debug.Log("Đòn 1 với sát thương: " + damageRandom1);

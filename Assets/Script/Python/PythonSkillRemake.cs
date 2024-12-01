@@ -83,6 +83,27 @@ public class PythonSkillRemake : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         StartCoroutine(SkillRoutine());
+
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlayBackgroundMusic(0);
+                audioManager.PlayEnvironmentMusic(0);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
     }
 
 
@@ -92,11 +113,6 @@ public class PythonSkillRemake : MonoBehaviour
         if (player != null)
         {
             lastPlayerPosition = player.position;
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            StartCoroutine(Dash());
         }
     }
 
@@ -211,6 +227,25 @@ public class PythonSkillRemake : MonoBehaviour
 
     private IEnumerator DashCoroutine()
     {
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(0);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         float distance = 1f; 
 
         // Lướt tới vị trí cuối cùng của player, cộng thêm khoảng cách (tính cả hướng trái/phải)
@@ -331,6 +366,25 @@ public class PythonSkillRemake : MonoBehaviour
 
     private IEnumerator FireStreamRoutine(GameObject fireStream)
     {
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(4);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         yield return new WaitForSeconds(1f);
 
         float duration = 1f; 
@@ -354,11 +408,47 @@ public class PythonSkillRemake : MonoBehaviour
         anim.SetTrigger("Snake_FirePillar");
         Vector3 targetPosition = new Vector3(lastPlayerPosition.x, -10f, lastPlayerPosition.z);
 
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(1);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         GameObject explosion = Instantiate(explosionPrefab, targetPosition, Quaternion.identity);
         yield return new WaitForSeconds(explosionDuration);
         Destroy(explosion);
 
         yield return new WaitForSeconds(1f);
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(2);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         GameObject firePillar = Instantiate(firePillarPrefab, targetPosition, Quaternion.Euler(-90f, 0f, 0f));
 
         StartCoroutine(FirePillarRoutine(firePillar));
@@ -370,7 +460,6 @@ public class PythonSkillRemake : MonoBehaviour
         Vector3 endPosition = new Vector3(firePillar.transform.position.x, firePillar.transform.position.y + 50f, firePillar.transform.position.z);
 
         float elapsedTime = 0f;
-
         while (elapsedTime < firePillarDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -397,6 +486,25 @@ public class PythonSkillRemake : MonoBehaviour
         Vector3 startPosition = projectile.transform.position;
         Vector3 targetPosition = startPosition + Vector3.up * 100f;
 
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(3);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         while (elapsedTime < launchDuration)
         {
             float moveSpeed = Mathf.Lerp(0, projectileSpeed, elapsedTime / launchDuration);
@@ -461,6 +569,25 @@ public class PythonSkillRemake : MonoBehaviour
 
             float elapsedTime = 0f;
 
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.PlaySFX(6);
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
             CameraShakerHandler.Shake(spikeShake);
             // Tạo đuôi mọc lên
             while (elapsedTime < tailGrowTime)
