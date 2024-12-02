@@ -26,6 +26,25 @@ public class PopupSystem : MonoBehaviour
 
     public void ShowPopUp(int itemID)
     {
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(1);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         ItemDescription item = itemDescriptions.Find(i => i.itemID == itemID);
 
         if (item != null)
@@ -43,6 +62,25 @@ public class PopupSystem : MonoBehaviour
 
     public void HidePopUp()
     {
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(1);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
         overlay.SetActive(false);
         popUpBox.SetActive(false);
         anim.SetTrigger("Close");

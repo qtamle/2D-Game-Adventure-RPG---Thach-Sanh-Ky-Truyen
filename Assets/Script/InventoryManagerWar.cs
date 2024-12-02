@@ -148,7 +148,9 @@ public class InventoryManagerWar : MonoBehaviour
                         itemFunction.UseImmunityItem();
                         break;
                     case 4:
-                        Debug.Log("Chưa có chức năng");
+                        itemFunction.UseHealthItem();
+                        itemFunction.UseStaminaItem(itemFunction.GetComponent<Stamina>());
+                        itemFunction.UseImmunityItem();
                         break;
                     default:
                         Debug.LogWarning("Unknown potion ID!");

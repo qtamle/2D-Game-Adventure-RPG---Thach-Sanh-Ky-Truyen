@@ -26,10 +26,10 @@ public class ShopManager : MonoBehaviour
         shopItems[1, 4] = 4;
 
         // Price
-        shopItems[2, 1] = 100;
-        shopItems[2, 2] = 100;
+        shopItems[2, 1] = 120;
+        shopItems[2, 2] = 120;
         shopItems[2, 3] = 300;
-        shopItems[2, 4] = 150;
+        shopItems[2, 4] = 500;
 
         inventoryManager.LoadInventory();
 
@@ -38,17 +38,28 @@ public class ShopManager : MonoBehaviour
         StartCoroutine(UpdateItemSlotsCoroutine());
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            coinManager.SaveCoins(); 
-            Debug.Log("Coins saved.");
-        }
-    }
-
     public void Buy()
     {
+        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+        if (audioManagerObject != null)
+        {
+            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+            if (audioManager != null)
+            {
+                audioManager.PlaySFX(0);
+            }
+            else
+            {
+                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+        }
+
         GameObject buttonRef = GameObject.FindGameObjectWithTag("Event").GetComponent<EventSystem>().currentSelectedGameObject;
 
         if (buttonRef == null)
