@@ -139,8 +139,11 @@ public class PythonSkillRemake : MonoBehaviour
         // Nếu isAlive là false hoặc health <= 0, kết thúc kỹ năng
         if (healthBarBoss.targetHealth <= 0)
         {
+            Debug.Log("Dieeeeee");
             isAlive = false;
+            anim.SetTrigger("Snake_Die");
             StopAllCoroutines(); // Dừng toàn bộ kỹ năng
+            Destroy(gameObject, 2f);
         }
     }
 
@@ -154,7 +157,7 @@ public class PythonSkillRemake : MonoBehaviour
         } while (skillIndex == lastSkillIndex);
 
         lastSkillIndex = skillIndex;
-        return skillIndex;
+        return 0;
     }
 
     private IEnumerator ActivateSkill(int skillIndex)
@@ -215,7 +218,7 @@ public class PythonSkillRemake : MonoBehaviour
     {
         isSkillActive = true;
 
-        anim.SetTrigger("Snake_Dash");
+        
         yield return new WaitForSeconds(1f);
         if (!isDashing)
         {
@@ -227,8 +230,9 @@ public class PythonSkillRemake : MonoBehaviour
 
     private IEnumerator DashCoroutine()
     {
+        
         GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-
+        anim.SetTrigger("Snake_Dash");
         if (audioManagerObject != null)
         {
             AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
@@ -246,7 +250,7 @@ public class PythonSkillRemake : MonoBehaviour
         {
             Debug.LogError("No GameObject found with the tag 'AudioManager'.");
         }
-        float distance = 1f; 
+        float distance = 19f; 
 
         // Lướt tới vị trí cuối cùng của player, cộng thêm khoảng cách (tính cả hướng trái/phải)
         float direction = Mathf.Sign(lastPlayerPosition.x - transform.position.x); 
@@ -348,17 +352,18 @@ public class PythonSkillRemake : MonoBehaviour
     public IEnumerator FireStreamSkill()
     {
         isSkillActive = true;
-        anim.SetTrigger("Snake_FireSteam");
+       
         FlipCharacter();
         Vector3 targetPosition = lastPlayerPosition;
-        yield return new WaitForSeconds(1f);
-
+        anim.SetTrigger("Snake_FireSteam");
+        yield return new WaitForSeconds(2f);
+        
         // Tạo luồng lửa từ điểm bắt đầu
-        GameObject fireStream = Instantiate(fireStreamPrefab, fireStreamStartPoint.position, Quaternion.Euler(90f,90f,90f));
+        GameObject fireStream = Instantiate(fireStreamPrefab, fireStreamStartPoint.position, Quaternion.Euler(90f,90f,90f), fireStreamStartPoint);
 
         // Tính toán hướng phun và gán hướng này cho luồng lửa
         Vector3 directionToTarget = targetPosition - fireStreamStartPoint.position;
-        fireStream.transform.rotation = Quaternion.LookRotation(directionToTarget);
+        fireStream.transform.rotation = Quaternion.LookRotation(directionToTarget, Vector3.up);
 
         // Bắt đầu việc phun lửa
         StartCoroutine(FireStreamRoutine(fireStream));
@@ -630,6 +635,8 @@ public class PythonSkillRemake : MonoBehaviour
         {
             Debug.LogWarning("Player or Player's Transform is null!");
         }
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(damageAreaTransform.position, damageRadius);
     }
 
 }

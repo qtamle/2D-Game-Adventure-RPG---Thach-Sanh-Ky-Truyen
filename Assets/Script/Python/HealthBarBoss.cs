@@ -12,7 +12,7 @@ public class HealthBarBoss : MonoBehaviour
     public float smoothTime = 0.2f;
     public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
 
-    private Animator anim;
+    public Animator anim;
    
     public float targetHealth;
     private float currentHealth;
@@ -86,8 +86,7 @@ public class HealthBarBoss : MonoBehaviour
         }
         if (targetHealth <= 0)
         {
-            anim.SetTrigger("Snake_Die");
-            Destroy(gameObject);
+            
         }
     }
 
