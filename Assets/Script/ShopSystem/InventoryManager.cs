@@ -29,15 +29,6 @@ public class InventoryManager : MonoBehaviour
         selectedPotionID = healingMedicine;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            SaveInventory();
-            Debug.Log("Inventory saved. File path: " + Application.persistentDataPath + "/inventory.json");
-        }
-    }
-
     public void AddItem(int itemID)
     {
         InventoryItem item = inventoryList.Find(i => i.itemID == itemID);

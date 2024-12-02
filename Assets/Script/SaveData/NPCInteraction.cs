@@ -21,13 +21,7 @@ public class NPCInteraction : MonoBehaviour
     {
         if (isPlayerNearby && Input.GetKeyDown(KeyCode.Q))
         {
-            int saveSlot = MainMenuSL.selectedSaveSlot;
-
-            // Lưu vào save slot được chỉ định
-            saveManager.SaveGame(player.position, UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, saveSlot);
-            Debug.Log($"Game đã được lưu vào slot {saveSlot}!");
-
-            StartCoroutine(ShowSaveSuccessMessage());
+            SaveGameFromInteraction();
         }
     }
 
@@ -49,10 +43,28 @@ public class NPCInteraction : MonoBehaviour
         }
     }
 
+    // Hàm gọi từ script khác
+    public void SaveGameExternally()
+    {
+        SaveGameFromInteraction();
+    }
+
+    // Hàm lưu game và hiển thị thông báo
+    private void SaveGameFromInteraction()
+    {
+        int saveSlot = MainMenuSL.selectedSaveSlot;
+
+        // Lưu vào save slot được chỉ định
+        saveManager.SaveGame(player.position, UnityEngine.SceneManagement.SceneManager.GetActiveScene().name, saveSlot);
+        Debug.Log($"Game đã được lưu vào slot {saveSlot}!");
+
+        StartCoroutine(ShowSaveSuccessMessage());
+    }
+
     private IEnumerator ShowSaveSuccessMessage()
     {
         saveSuccessUI.SetActive(true);
         yield return new WaitForSeconds(3f);
-        saveSuccessUI.SetActive(false); 
+        saveSuccessUI.SetActive(false);
     }
 }

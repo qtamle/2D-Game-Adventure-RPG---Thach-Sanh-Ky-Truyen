@@ -17,4 +17,15 @@ public class PlayerPositionLoader : MonoBehaviour
             player.transform.position = data.playerPosition;
         }
     }
+
+    public void LoadData()
+    {
+        int saveSlot = MainMenuSL.selectedSaveSlot; // Lấy saveSlot từ Menu
+        SaveData data = saveManager.LoadGame(saveSlot);
+
+        if (data != null)
+        {
+            player.transform.position = data.playerPosition;
+        }
+    }
 }
