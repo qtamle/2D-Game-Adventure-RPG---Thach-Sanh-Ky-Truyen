@@ -126,7 +126,8 @@ public class ToadSkill : MonoBehaviour
 
             yield return new WaitForSeconds(2f);
 
-            int randomSkill = Random.Range(0, 3);
+            //int randomSkill = Random.Range(0, 3);
+            int randomSkill = 1;
             if (healthToad.health < 400f && randomSkill == 0)
             {
                 CatchBugs();
@@ -158,7 +159,7 @@ public class ToadSkill : MonoBehaviour
         float angleInRadians = jumpAngle * Mathf.Deg2Rad;
 
         Vector2 jumpVector = new Vector2(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians)) * currentJumpForce;
-        if (!isFacingRight)
+        if (isFacingRight)
         {
             jumpVector.x = -jumpVector.x;
         }
@@ -283,11 +284,11 @@ public class ToadSkill : MonoBehaviour
         Vector3 playerPosition = player.transform.position;
         Vector3 directionToPlayer = (playerPosition - transform.position).normalized;
 
-        if (directionToPlayer.x > 0 && !isFacingRight)
+        if (directionToPlayer.x < 0 && !isFacingRight)
         {
             Flip(); 
         }
-        else if (directionToPlayer.x < 0 && isFacingRight)
+        else if (directionToPlayer.x > 0 && isFacingRight)
         {
             Flip(); 
         }
@@ -301,7 +302,7 @@ public class ToadSkill : MonoBehaviour
             tongue = Instantiate(tonguePrefab, tongueStartPosition.position, Quaternion.identity);
             tongueOriginalScale = tongue.transform.localScale;
 
-            float angle = isFacingRight ? 0f : 180f;
+            float angle = !isFacingRight ? 0f : 180f;
             tongue.transform.rotation = Quaternion.Euler(0, 0, angle);
 
             GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
