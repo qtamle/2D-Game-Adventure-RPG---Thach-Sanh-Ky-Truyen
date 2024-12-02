@@ -10,24 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33c12b61bc51ac349824ccc889601f01, type: 3}
-  m_Name: NewDialogue
+  m_Name: NPC1
   m_EditorClassIdentifier: 
   mainCharacter: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
   secondCharacter: {fileID: 11400000, guid: 6c5e90b89e496494dbcede70643bb30f, type: 2}
   dialogueLines:
   - speaker: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
+    dialogueText: "Xin ch\xE0o"
+    emotionIndex: 0
+  - speaker: {fileID: 11400000, guid: 6c5e90b89e496494dbcede70643bb30f, type: 2}
     dialogueText: "Ch\xE0o c\u1EADu"
     emotionIndex: 0
-  - speaker: {fileID: 11400000, guid: 140f2246c31778248b0e476b67871909, type: 2}
-    dialogueText: "Ch\xE0o l\u1EA1i c\u1EADu"
+  - speaker: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
+    dialogueText: "T\xF4i \u0111ang bu\u1ED3n"
+    emotionIndex: 1
+  - speaker: {fileID: 11400000, guid: 6c5e90b89e496494dbcede70643bb30f, type: 2}
+    dialogueText: "\u0110\u1EEBng bu\u1ED3n"
     emotionIndex: 0
   - speaker: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
-    dialogueText: "H\xF4m nay tr\u1EDDi \u0111\u1EB9p qu\xE1, t\xF4i \u0111i \u0111\u1ED1n
-      c\xE2y"
-    emotionIndex: 0
-  - speaker: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
-    dialogueText: "C\u1EADu \u1EDF nh\xE0 ch\u1EDD t\xF4i nh\xE1"
-    emotionIndex: 0
-  - speaker: {fileID: 11400000, guid: 980d433f4d3077a40bcc6df588a54b79, type: 2}
-    dialogueText: AAAAAAAAAAAA
-    emotionIndex: 0
+    dialogueText: "Wow, t\xF4i s\u1EBD h\u1EBFt bu\u1ED3n"
+    emotionIndex: 2
