@@ -7,9 +7,6 @@ using UnityEngine.UI;
 public class CutScene : MonoBehaviour
 {
 
-    public Button nextButton;
-    public Button backButton;
-
     void Start()
     {
     }
@@ -31,4 +28,8 @@ public class CutScene : MonoBehaviour
         SceneManager.LoadScene("Final Boss");
     }
 
+    public void Lang()
+    {
+        SceneManager.LoadScene("Làng");
+    }
 }
