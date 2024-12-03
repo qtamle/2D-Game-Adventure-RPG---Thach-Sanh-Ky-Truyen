@@ -13,13 +13,14 @@ public class ToadHealth : MonoBehaviour
     public float smoothTime = 0.2f;
     public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
 
-    private Animator anim;
+    public Animator anim;
     private float targetHealth;
     private float currentHealth;
     private float healthVelocity = 0f;
     private float delayedHealth;
     private Image fillImage;
     private Image lostFillImage;
+    public Active active;
 
     private void Start()
     {
@@ -94,7 +95,9 @@ public class ToadHealth : MonoBehaviour
 
         if (targetHealth <= 0)
         {
-            Destroy(gameObject);
+            active.SetAndPlayTimeline(1);
+          
+            Destroy(gameObject, 2f);
         }
     }
 

@@ -11,6 +11,11 @@ public class CutScene : MonoBehaviour
     {
     }
 
+    public void CotTruyen()
+    {
+        SceneManager.LoadScene("Story1");
+    }
+
     public void MoDau()
     {
         SceneManager.LoadScene("Làng");
@@ -31,5 +36,10 @@ public class CutScene : MonoBehaviour
     public void Lang()
     {
         SceneManager.LoadScene("Làng");
+    }
+
+    public void CocTinh()
+    {
+        SceneManager.LoadScene("Toad 1");
     }
 }
