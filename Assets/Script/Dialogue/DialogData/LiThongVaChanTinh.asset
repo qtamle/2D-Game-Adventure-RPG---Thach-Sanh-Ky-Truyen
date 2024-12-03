@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33c12b61bc51ac349824ccc889601f01, type: 3}
+  m_Name: LiThongVaChanTinh
+  m_EditorClassIdentifier: 
+  mainCharacter: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
+  secondCharacter: {fileID: 11400000, guid: 0be26bad557820744b5e0be84acfa787, type: 2}
+  dialogueLines:
+  - speaker: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
+    dialogueText: "Anh L\xED Th\xF4ng \u01A1i, em \u0111\xE3 ch\u1EB7t \u0111\u01B0\u1EE3c
+      \u0111\u1EA7u Ch\u1EB1n Tinh r\u1ED3i n\xE0y"
+    emotionIndex: 0
+  - speaker: {fileID: 11400000, guid: 0be26bad557820744b5e0be84acfa787, type: 2}
+    dialogueText: "Gh\xEA qu\xE1 \xE1 \xE1 \xE1"
+    emotionIndex: 1
+  - speaker: {fileID: 11400000, guid: 1dc44dfa8accac64590a1b7fc92553a9, type: 2}
+    dialogueText: "Sao v\u1EADy anh?"
+    emotionIndex: 1
+  - speaker: {fileID: 11400000, guid: 0be26bad557820744b5e0be84acfa787, type: 2}
+    dialogueText: "( T\u1EEB t\u1EEB, h\xECnh nh\u01B0 ai gi\u1EBFt \u0111\u01B0\u1EE3c
+      ch\u1EB1n tinh th\xEC s\u1EBD \u0111\u01B0\u1EE3c tr\u1ECDng th\u01B0\u1EDFng
+      )"
+    emotionIndex: 0
+  - speaker: {fileID: 11400000, guid: 0be26bad557820744b5e0be84acfa787, type: 2}
+    dialogueText: "( M\xECnh ph\u1EA3i c\u01B0\u1EDBp c\xF4ng c\u1EE7a n\xF3 m\u1EDBi
+      \u0111\u01B0\u1EE3c )"
+    emotionIndex: 0
