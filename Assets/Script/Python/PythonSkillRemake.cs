@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class PythonSkillRemake : MonoBehaviour
 {
@@ -67,17 +68,25 @@ public class PythonSkillRemake : MonoBehaviour
     private bool isSkyfallActive = false;
     private bool isRandomSkillActive = false;
 
+    [Header("TimelineCheck")]
+    public int timelineIndexToPlay; // Chỉ mục của timeline cần kiểm tra và chạy
+    private TimelineManager timelineManager; // Tham chiếu đến TimelineManager
+
     //private void Awake()
     //{
     //    healthBarBoss = GetComponent<HealthBarBoss>();
     //}
-    private void Start()
+    private IEnumerator Start()
     {
+        // Chạy Timeline đầu tiên và đợi cho đến khi hoàn tất
+        yield return StartCoroutine(ActiveTimeline1());
+
         anim = GetComponentInParent<Animator>();
         // Bỏ qua layer 
         int myLayer = gameObject.layer;
         int playerLayer = LayerMask.NameToLayer("Player");
 
+        anim.SetTrigger("Show_Up");
         Physics2D.IgnoreLayerCollision(myLayer, playerLayer, true);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -104,6 +113,50 @@ public class PythonSkillRemake : MonoBehaviour
         {
             Debug.LogError("No GameObject found with the tag 'AudioManager'.");
         }
+    }
+
+    private IEnumerator ActiveTimeline1()
+    {
+        timelineManager = FindObjectOfType<TimelineManager>();
+
+        if (timelineManager == null)
+        {
+            Debug.LogError("Không tìm thấy TimelineManager trong scene!");
+            yield break;  // Dừng coroutine nếu không tìm thấy TimelineManager
+        }
+
+        // Kiểm tra xem Timeline đã chạy chưa
+        if (timelineManager.HasTimelinePlayed(timelineManager.timelines[timelineIndexToPlay].name))
+        {
+            Debug.Log($"Timeline {timelineManager.timelines[timelineIndexToPlay].name} đã chạy trước đó, không chạy lại.");
+            // Nếu đã chạy rồi, set PlayableDirector thành inactive
+            timelineManager.directors[timelineIndexToPlay].gameObject.SetActive(false);
+        }
+        else
+        {
+            // Nếu chưa chạy, tiến hành chạy
+            timelineManager.PlayTimeline(timelineIndexToPlay);
+
+            // Đăng ký sự kiện khi Timeline kết thúc
+            timelineManager.directors[timelineIndexToPlay].stopped += (PlayableDirector d) =>
+            {
+                OnTimelineComplete(d);
+            };
+
+            // Chờ cho đến khi timeline hoàn thành
+            yield return new WaitUntil(() => timelineManager.directors[timelineIndexToPlay].state != PlayState.Playing);
+
+            // Sau khi timeline hoàn thành, có thể thực hiện các hành động tiếp theo ở đây
+            Debug.Log($"Timeline {timelineManager.timelines[timelineIndexToPlay].name} đã hoàn thành.");
+        }
+    }
+
+
+    private void OnTimelineComplete(PlayableDirector director)
+    {
+        Debug.Log($"Timeline {director.playableAsset.name} đã kết thúc.");
+        // Thực hiện các hành động sau khi timeline hoàn tất
+        director.stopped -= (PlayableDirector d) => OnTimelineComplete(d); // Hủy đăng ký sự kiện
     }
 
 
