@@ -42,12 +42,12 @@ public class GhostTreeSkill : MonoBehaviour
     [HideInInspector]
     private Transform playerTransform;
     private bool isUsingSkill = false;
+
+    public bool isActive;
     private void Start()
     {
         numberOfSpawns = Random.Range(2, 3);
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        StartCoroutine(ManageSkills());
-
         ParticleSystem leafPrefab = Instantiate(leaf, leafSpawn.position, Quaternion.identity);
 
         GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
@@ -69,66 +69,80 @@ public class GhostTreeSkill : MonoBehaviour
         {
             Debug.LogError("No GameObject found with the tag 'AudioManager'.");
         }
+        StartCoroutine(ManageSkills());
     }
-    private IEnumerator ManageSkills()
+
+    public void DisableSkill()
     {
-        while (true)
-        {
-            if (!isUsingSkill) 
+        isActive = false;
+        Debug.Log(" kochay duoc");
+    }
+    public void EnableSkill()
+    {
+        isActive = true;
+        Debug.Log(" chay duoc");
+    }
+
+    public IEnumerator ManageSkills()
+    {
+        yield return new WaitForSeconds(10f);
+            while (true)
             {
-                Debug.Log("Waiting before executing a new skill...");
-                yield return new WaitForSeconds(2f);
-
-                int skillIndex = Random.Range(0,4);
-                Debug.Log($"Executing skill {skillIndex}");
-
-                isUsingSkill = true;
-
-                switch (skillIndex)
+                if (!isUsingSkill)
                 {
-                    case 0:
-                        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+                    Debug.Log("Waiting before executing a new skill...");
+                    yield return new WaitForSeconds(2f);
 
-                        if (audioManagerObject != null)
-                        {
-                            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+                    int skillIndex = Random.Range(0, 4);
+                    Debug.Log($"Executing skill {skillIndex}");
 
-                            if (audioManager != null)
+                    isUsingSkill = true;
+
+                    switch (skillIndex)
+                    {
+                        case 0:
+                            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+                            if (audioManagerObject != null)
                             {
-                                audioManager.PlaySFX(5);
+                                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                                if (audioManager != null)
+                                {
+                                    audioManager.PlaySFX(5);
+                                }
+                                else
+                                {
+                                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                                }
                             }
                             else
                             {
-                                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
                             }
-                        }
-                        else
-                        {
-                            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-                        }
-                        yield return StartCoroutine(AnimVine());
-                        yield return StartCoroutine(SpawnVine());
-                        break;
-                    case 1:
-                        yield return StartCoroutine(AnimHands());
-                        yield return StartCoroutine(MoveHands());
-                        break;
-                    case 2:
-                        StartCoroutine(SpawnMiniMonsters());
-                        break;
-                    case 3:
-                        yield return StartCoroutine(ShootSpikes());
-                        break;
+                            yield return StartCoroutine(AnimVine());
+                            yield return StartCoroutine(SpawnVine());
+                            break;
+                        case 1:
+                            yield return StartCoroutine(AnimHands());
+                            yield return StartCoroutine(MoveHands());
+                            break;
+                        case 2:
+                            StartCoroutine(SpawnMiniMonsters());
+                            break;
+                        case 3:
+                            yield return StartCoroutine(ShootSpikes());
+                            break;
+                    }
+
+                    isUsingSkill = false;
+
+                    float waitTime = Random.Range(1f, 2.2f);
+                    Debug.Log($"Waiting {waitTime} seconds before the next skill.");
+                    yield return new WaitForSeconds(waitTime);
                 }
-
-                isUsingSkill = false;
-
-                float waitTime = Random.Range(1f, 2.2f);
-                Debug.Log($"Waiting {waitTime} seconds before the next skill.");
-                yield return new WaitForSeconds(waitTime);
+                yield return null;
             }
-            yield return null;
-        }
     }
 
     private IEnumerator SpawnVine()
