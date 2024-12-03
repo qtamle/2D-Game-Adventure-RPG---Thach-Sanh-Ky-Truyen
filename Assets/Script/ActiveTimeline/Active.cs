@@ -8,11 +8,25 @@ public class Active : MonoBehaviour
 
     private void Start()
     {
+        InitializeTimelineManager();
+        TryPlayTimeline();
+    }
+
+    private void InitializeTimelineManager()
+    {
         timelineManager = FindObjectOfType<TimelineManager>();
 
         if (timelineManager == null)
         {
             Debug.LogError("Không tìm thấy TimelineManager trong scene!");
+        }
+    }
+
+    private void TryPlayTimeline()
+    {
+        if (timelineManager == null || timelineIndexToPlay < 0 || timelineIndexToPlay >= timelineManager.timelines.Count)
+        {
+            Debug.LogError("Thông tin TimelineManager hoặc chỉ mục không hợp lệ.");
             return;
         }
 
@@ -28,5 +42,12 @@ public class Active : MonoBehaviour
             // Nếu chưa chạy, tiến hành chạy
             timelineManager.PlayTimeline(timelineIndexToPlay);
         }
+    }
+
+    // Hàm công khai để thiết lập và kích hoạt timeline từ script khác
+    public void SetAndPlayTimeline(int index)
+    {
+        timelineIndexToPlay = index;
+        TryPlayTimeline();
     }
 }
