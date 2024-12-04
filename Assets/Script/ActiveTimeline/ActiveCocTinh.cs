@@ -9,7 +9,7 @@ public class ActiveCocTinh : MonoBehaviour
     public Active activeTimeline;
     private void Start()
     {
-        active.SetActive(false);
+        active.SetActive(true);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
