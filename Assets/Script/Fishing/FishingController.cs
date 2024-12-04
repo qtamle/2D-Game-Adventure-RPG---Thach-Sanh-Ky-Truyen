@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class FishingController : MonoBehaviour
 {
-    public List<Fish> fishList;
+    public List<Fish> fishList; 
     public FishingMinigame fishingMinigame;
-    private Fish currentFish;
+    public Fish currentFish;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            StartCoroutine(StartFishingWithDelay(1.5f)); // Đợi 1.5 giây trước khi bắt đầu minigame
+            StartCoroutine(StartFishingWithDelay(1.5f)); 
         }
     }
 
-    private IEnumerator StartFishingWithDelay(float delay)
+    public IEnumerator StartFishingWithDelay(float delay)
     {
-        fishingMinigame.fishingMinigameUI.SetActive(false); // Ẩn UI minigame
+        fishingMinigame.fishingMinigameUI.SetActive(false); 
         yield return new WaitForSeconds(delay);
 
         currentFish = fishList[Random.Range(0, fishList.Count)];
@@ -27,3 +27,4 @@ public class FishingController : MonoBehaviour
         fishingMinigame.StartMinigame();
     }
 }
+

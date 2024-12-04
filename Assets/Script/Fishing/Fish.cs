@@ -6,7 +6,8 @@ using UnityEngine;
 public class Fish
 {
     public string fishName;
-    public int coins; // ảnh cá nếu muốn hiển thị khi bắt được
-    public int rarity; // độ hiếm của cá
+    public int coins; // Số tiền nhận được khi câu cá
+    public int rarity; // Độ hiếm của cá
+    public Sprite fishImage; // Hình ảnh của cá
 }
 

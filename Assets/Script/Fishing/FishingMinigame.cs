@@ -1,9 +1,17 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class FishingMinigame : MonoBehaviour
 {
-    public GameObject fishingMinigameUI; // Tham chiếu tới GameObject cha của minigame
+    public GameObject fishingMinigameUI;
+    public GameObject resultPanel;
+    public TMP_Text fishNameText;
+    public Image fishImageDisplay;
+    public Button backToVillageButton;
+    public Button fishAgainButton;
+
     public Transform moveBar;
     public Transform movingObject;
     public Transform randomObject;
@@ -17,13 +25,18 @@ public class FishingMinigame : MonoBehaviour
     private Fish currentFish;
     private float moveSpeed;
 
+    private FishingController fishingController; 
+
     private void Start()
     {
+        fishingController = FindObjectOfType<FishingController>(); 
+
         float barWidth = moveBar.localScale.x;
         barLeftLimit = moveBar.position.x - (barWidth / 2);
         barRightLimit = moveBar.position.x + (barWidth / 2);
 
-        fishingMinigameUI.SetActive(false); // Ẩn UI minigame khi bắt đầu game
+        fishingMinigameUI.SetActive(false); 
+        resultPanel.SetActive(false); 
     }
 
     public void SetCurrentFish(Fish fish)
@@ -31,16 +44,32 @@ public class FishingMinigame : MonoBehaviour
         currentFish = fish;
     }
 
-    private void StopMinigame()
+    private void ShowResultPanel()
     {
-        isFishingActive = false;
-        StartCoroutine(HideMinigameAfterDelay(2f)); // Ẩn UI sau 2 giây khi hoàn thành minigame
+        resultPanel.SetActive(true);
+        fishNameText.text = $"Chúc mừng bạn đã câu được: {currentFish.fishName}";
+        fishImageDisplay.sprite = currentFish.fishImage;
+        backToVillageButton.onClick.RemoveAllListeners();
+        backToVillageButton.onClick.AddListener(BackToVillage);
+        fishAgainButton.onClick.RemoveAllListeners();
+        fishAgainButton.onClick.AddListener(FishAgain);
     }
 
-    private IEnumerator HideMinigameAfterDelay(float delay)
+    private void BackToVillage()
     {
-        yield return new WaitForSeconds(delay);
-        fishingMinigameUI.SetActive(false); // Ẩn UI minigame
+        Debug.Log("Quay lại làng!");
+        resultPanel.SetActive(false);
+        fishingMinigameUI.SetActive(false);
+        // Logic quay lại làng
+    }
+
+    private void FishAgain()
+    {
+        Debug.Log("Câu tiếp!");
+        currentFish = fishingController.fishList[Random.Range(0, fishingController.fishList.Count)];
+        SetCurrentFish(currentFish);
+        resultPanel.SetActive(false);
+        StartMinigame();
     }
 
     private void CheckCatchSuccess()
@@ -48,13 +77,15 @@ public class FishingMinigame : MonoBehaviour
         if (Mathf.Abs(movingObject.position.x - randomObject.position.x) < 0.1f)
         {
             Debug.Log("Câu cá thành công! Bạn đã câu được: " + currentFish.fishName);
-            StopMinigame(); // Dừng và ẩn minigame sau 2 giây
+            isFishingActive = false;
+            ShowResultPanel();
         }
         else
         {
             Debug.Log("Câu cá thất bại, thử lại!");
         }
     }
+
     public void StartMinigame()
     {
         if (currentFish != null)
@@ -71,6 +102,7 @@ public class FishingMinigame : MonoBehaviour
         isFishingActive = true;
         fishingMinigameUI.SetActive(true); // Hiển thị UI minigame khi bắt đầu
     }
+
     void Update()
     {
         if (isFishingActive)
@@ -93,6 +125,4 @@ public class FishingMinigame : MonoBehaviour
             }
         }
     }
-
-    
 }
