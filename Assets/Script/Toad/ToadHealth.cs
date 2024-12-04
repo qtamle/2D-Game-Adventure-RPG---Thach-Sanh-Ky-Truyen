@@ -22,9 +22,12 @@ public class ToadHealth : MonoBehaviour
     private Image lostFillImage;
     public Active active;
 
+    public string bossName;
+    private SaveBoss saveBoss;  
     private void Start()
     {
         anim = GetComponent<Animator>();
+        saveBoss = FindObjectOfType<SaveBoss>();
 
         health = maxHealth;
         targetHealth = health;
@@ -52,7 +55,11 @@ public class ToadHealth : MonoBehaviour
     {
         targetHealth -= damage;
         dameflash.CallDamageFlash();
-        if (targetHealth < 0) targetHealth = 0;
+        if (targetHealth < 0) 
+        { 
+            targetHealth = 0;
+            saveBoss.MarkBossAsDefeated(bossName);
+        }
 
         health = targetHealth;
         StartCoroutine(UpdateHealthBar());

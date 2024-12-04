@@ -14,7 +14,7 @@ public class GhostTreeHealth : MonoBehaviour
     public float maxHealth = 1000f;
     public float smoothTime = 0.2f;
     public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
-
+    public string bossName;
     
     private float targetHealth;
     private float currentHealth;
@@ -24,10 +24,12 @@ public class GhostTreeHealth : MonoBehaviour
     private Image lostFillImage;
 
     public ShakeData deadthShake;
+    private SaveBoss saveBoss;
 
     private void Start()
     {
-       
+
+        saveBoss = FindObjectOfType<SaveBoss>();
 
         health = maxHealth;
         targetHealth = health;
@@ -55,7 +57,11 @@ public class GhostTreeHealth : MonoBehaviour
     {
         targetHealth -= damage;
         dameflash.CallDamageFlash();
-        if (targetHealth < 0) targetHealth = 0;
+        if (targetHealth < 0) 
+        {          
+            targetHealth = 0;
+            Die();
+        }
 
         health = targetHealth;
         StartCoroutine(UpdateHealthBar());
@@ -134,6 +140,11 @@ public class GhostTreeHealth : MonoBehaviour
         {
             fillImage.color = Color.red;
         }
+    }
+
+    public void Die()
+    {
+        saveBoss.MarkBossAsDefeated(bossName);
     }
 
 }

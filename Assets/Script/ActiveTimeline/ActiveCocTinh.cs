@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class ActiveCocTinh : MonoBehaviour
 {
     public GameObject active;
-    public Active activeTimeline;
     private void Start()
     {
         active.SetActive(true);
@@ -18,7 +17,7 @@ public class ActiveCocTinh : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             active.SetActive(false);
-            activeTimeline.SetAndPlayTimeline(2);
+            SceneManager.LoadScene("Toad 1");
         }
     }
 }

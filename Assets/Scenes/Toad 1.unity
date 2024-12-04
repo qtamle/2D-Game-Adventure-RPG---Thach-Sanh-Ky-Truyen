@@ -2573,6 +2573,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2018155098}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &403509676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 403509679}
+  - component: {fileID: 403509678}
+  m_Layer: 0
+  m_Name: SaveDataBoss
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &403509678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403509676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cfc0df2d7cd9e942ac7df3a540bcff5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &403509679
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403509676}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.0734105, y: -11.868056, z: -0.02642304}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &404929460
 GameObject:
   m_ObjectHideFlags: 0
@@ -4908,7 +4952,7 @@ RectTransform:
   m_Father: {fileID: 1208608676}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0.0113220215, y: 0}
   m_SizeDelta: {x: 0.022614, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6218,7 +6262,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &896013693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8042,7 +8086,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1087486646}
           m_TargetAssemblyTypeName: CutScene, Assembly-CSharp
-          m_MethodName: CotTruyen
+          m_MethodName: Lang
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -8731,7 +8775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1201805137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10217,7 +10261,7 @@ RectTransform:
   m_Father: {fileID: 1213129005}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -3.190979, y: 0}
   m_SizeDelta: {x: -0.0669, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -15354,7 +15398,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1981515878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15518,6 +15562,7 @@ MonoBehaviour:
   lostHealthLerpSpeed: 5
   anim: {fileID: 446895415}
   active: {fileID: 446895418}
+  bossName: Toad
 --- !u!114 &2018155100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17636,3 +17681,4 @@ SceneRoots:
   - {fileID: 474370885}
   - {fileID: 836330031}
   - {fileID: 1339592393}
+  - {fileID: 403509679}
