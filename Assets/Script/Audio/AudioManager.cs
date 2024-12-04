@@ -24,7 +24,6 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Đảm bảo AudioManager không bị phá hủy khi chuyển Scene
         }
         else
         {
@@ -112,6 +111,24 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Player SFX clip index is out of range.");
+        }
+    }
+
+    public void StopAllMusic()
+    {
+        if (backgroundMusicSource.isPlaying)
+        {
+            backgroundMusicSource.Stop();
+        }
+
+        if (environmentMusicSource.isPlaying)
+        {
+            environmentMusicSource.Stop();
+        }
+
+        if (sfxSource.isPlaying)
+        {
+            sfxSource.Stop();
         }
     }
 }

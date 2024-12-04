@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 namespace Chess.Game {
@@ -39,7 +40,10 @@ namespace Chess.Game {
 		public Board board { get; private set; }
 		Board searchBoard; // Duplicate version of board used for ai search
 
-		void Start () {
+		private CoinManager coinManager;
+        public TMP_Text coinsText;
+
+        void Start () {
 			//Application.targetFrameRate = 60;
 
 			if (useClocks) {
@@ -55,7 +59,23 @@ namespace Chess.Game {
 
 			NewGame (whitePlayerType, blackPlayerType);
 
-		}
+            coinManager = FindObjectOfType<CoinManager>();
+            if (coinManager == null)
+            {
+                Debug.LogError("Không tìm thấy CoinManager!");
+            }
+
+            if (coinManager != null)
+            {
+                coinManager.LoadCoins();
+                UpdateCoinsText();
+            }
+            else
+            {
+                Debug.LogWarning("CoinManager không được tìm thấy!");
+            }
+
+        }
 
 		void Update () {
 			zobristDebug = board.ZobristKey;
@@ -70,12 +90,7 @@ namespace Chess.Game {
 					blackClock.isTurnToMove = !board.WhiteToMove;
 				}
 			}
-
-			if (Input.GetKeyDown (KeyCode.E)) {
-				ExportGame ();
-			}
-
-		}
+        }
 
 		void OnMoveChosen (Move move) {
 			bool animateMove = playerToMove is AIPlayer;
@@ -179,30 +194,52 @@ namespace Chess.Game {
 			}
 		}
 
-		void PrintGameResult (Result result) {
-			float subtitleSize = resultUI.fontSize * 0.75f;
-			string subtitleSettings = $"<color=#787878> <size={subtitleSize}>";
+        void PrintGameResult(Result result)
+        {
+            float subtitleSize = resultUI.fontSize * 0.75f;
+            string subtitleSettings = $"<color=#787878> <size={subtitleSize}>";
 
-			if (result == Result.Playing) {
-				resultUI.text = "";
-			} else if (result == Result.WhiteIsMated || result == Result.BlackIsMated) {
-				resultUI.text = "Checkmate!";
-			} else if (result == Result.FiftyMoveRule) {
-				resultUI.text = "Draw";
-				resultUI.text += subtitleSettings + "\n(50 move rule)";
-			} else if (result == Result.Repetition) {
-				resultUI.text = "Draw";
-				resultUI.text += subtitleSettings + "\n(3-fold repetition)";
-			} else if (result == Result.Stalemate) {
-				resultUI.text = "Draw";
-				resultUI.text += subtitleSettings + "\n(Stalemate)";
-			} else if (result == Result.InsufficientMaterial) {
-				resultUI.text = "Draw";
-				resultUI.text += subtitleSettings + "\n(Insufficient material)";
-			}
-		}
+            if (result == Result.Playing)
+            {
+                resultUI.text = "";
+            }
+            else if (result == Result.WhiteIsMated || result == Result.BlackIsMated)
+            {
+                resultUI.text = "Checkmate!";
+                if (!board.WhiteToMove)
+                {
+                    AddCoins(1000); // Người chơi thắng
+                }
+            }
+            else if (result == Result.FiftyMoveRule)
+            {
+                resultUI.text = "Draw";
+                resultUI.text += subtitleSettings + "\n(50 move rule)";
+                AddCoins(300); // Hòa
+            }
+            else if (result == Result.Repetition)
+            {
+                resultUI.text = "Draw";
+                resultUI.text += subtitleSettings + "\n(3-fold repetition)";
+                AddCoins(300); // Hòa
+            }
+            else if (result == Result.Stalemate)
+            {
+                resultUI.text = "Draw";
+                resultUI.text += subtitleSettings + "\n(Stalemate)";
+                AddCoins(300); // Hòa
+            }
+            else if (result == Result.InsufficientMaterial)
+            {
+                resultUI.text = "Draw";
+                resultUI.text += subtitleSettings + "\n(Insufficient material)";
+                AddCoins(300); // Hòa
+            }
 
-		Result GetGameState () {
+            Debug.Log("Kết quả: " + result);
+        }
+
+        Result GetGameState () {
 			MoveGenerator moveGenerator = new MoveGenerator ();
 			var moves = moveGenerator.GenerateMoves (board);
 
@@ -253,5 +290,31 @@ namespace Chess.Game {
 			}
 			player.onMoveChosen += OnMoveChosen;
 		}
-	}
+
+        private void AddCoins(int amount)
+        {
+            if (coinManager != null)
+            {
+                coinManager.coins += amount;
+                coinManager.SaveCoins(); // Lưu trạng thái coins
+                Debug.Log($"Đã cộng {amount} coins. Tổng coins: {coinManager.coins}");
+            }
+            else
+            {
+                Debug.LogWarning("Không tìm thấy CoinManager để cập nhật coins.");
+            }
+        }
+
+        private void UpdateCoinsText()
+        {
+            if (coinsText != null && coinManager != null)
+            {
+                coinsText.text = $"Coins: {coinManager.coins}";
+            }
+            else
+            {
+                Debug.LogWarning("CoinsText hoặc CoinManager không được thiết lập.");
+            }
+        }
+    }
 }

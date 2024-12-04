@@ -37,6 +37,8 @@ public class MainMenuSL : MonoBehaviour
     // Phương thức cho việc bắt đầu game mới
     public void StartNewGame(int saveSlot)
     {
+        AudioManager.Instance.StopAllMusic();
+
         selectedSaveSlot = saveSlot;  // Lưu slot đã chọn
         saveManager.SaveGame(Vector3.zero, "StartScene", selectedSaveSlot);
         UnityEngine.SceneManagement.SceneManager.LoadScene("Story1");
@@ -44,6 +46,8 @@ public class MainMenuSL : MonoBehaviour
 
     public void ContinueGame(int saveSlot)
     {
+        AudioManager.Instance.StopAllMusic();
+
         selectedSaveSlot = saveSlot;  // Lưu slot đã chọn
         SaveData data = saveManager.LoadGame(selectedSaveSlot);
         if (data != null)

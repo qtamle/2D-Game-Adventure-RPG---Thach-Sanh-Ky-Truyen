@@ -151,14 +151,12 @@ public class PythonSkillRemake : MonoBehaviour
         }
     }
 
-
     private void OnTimelineComplete(PlayableDirector director)
     {
         Debug.Log($"Timeline {director.playableAsset.name} đã kết thúc.");
         // Thực hiện các hành động sau khi timeline hoàn tất
         director.stopped -= (PlayableDirector d) => OnTimelineComplete(d); // Hủy đăng ký sự kiện
     }
-
 
     private void Update()
     {

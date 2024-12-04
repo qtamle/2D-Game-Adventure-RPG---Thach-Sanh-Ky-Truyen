@@ -54,8 +54,11 @@ public class LTSpear : MonoBehaviour
     [Header("Camera Shake")]
     public ShakeData jumpShake;
 
+    private HealthBarLT heathLT;
+
     private void Start()
     {
+        heathLT = GetComponent<HealthBarLT>();
         rb = GetComponent<Rigidbody2D>();
         int myLayer = gameObject.layer;
         int playerLayer = LayerMask.NameToLayer("Player");
@@ -162,6 +165,10 @@ public class LTSpear : MonoBehaviour
                 yield return new WaitUntil(() => !isDashing);
                 if (Vector3.Distance(transform.position, player.position) <= activationRadiusZone)
                     StartCoroutine(SwipeSpear());
+            }
+            else if (heathLT.health <= 0)
+            {
+                StopAllCoroutines();
             }
            
             yield return new WaitForSeconds(1f);

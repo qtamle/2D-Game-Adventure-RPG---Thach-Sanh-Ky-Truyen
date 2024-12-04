@@ -24,7 +24,7 @@ public class MovePlayer : MonoBehaviour
         Vector3 newPosition = transform.position + movement * Time.deltaTime;
 
         // Giới hạn di chuyển theo trục X và Y
-        newPosition.x = Mathf.Clamp(newPosition.x, -20.13764f, 20.20948f);
+        newPosition.x = Mathf.Clamp(newPosition.x, -20.16944f, 25f);
         newPosition.y = Mathf.Clamp(newPosition.y, -5.5f, -2.21f);
 
         // Cập nhật vị trí mới

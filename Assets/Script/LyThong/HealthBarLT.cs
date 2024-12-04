@@ -25,8 +25,6 @@ public class HealthBarLT : MonoBehaviour
 
     private void Start()
     {
-
-
         health = maxHealth;
         targetHealth = health;
         currentHealth = health;
@@ -53,7 +51,29 @@ public class HealthBarLT : MonoBehaviour
     {
         targetHealth -= damage;
         dameflash.CallDamageFlash();
-        if (targetHealth < 0) targetHealth = 0;
+        if (targetHealth < 0) 
+        { 
+            targetHealth = 0;
+            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+
+            if (audioManagerObject != null)
+            {
+                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+
+                if (audioManager != null)
+                {
+                    audioManager.StopAllMusic();
+                }
+                else
+                {
+                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
+                }
+            }
+            else
+            {
+                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
+            }
+        }
 
         health = targetHealth;
         StartCoroutine(UpdateHealthBar());

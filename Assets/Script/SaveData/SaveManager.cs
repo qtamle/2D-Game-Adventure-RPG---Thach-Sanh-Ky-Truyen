@@ -63,13 +63,14 @@ public class SaveManager : MonoBehaviour
     {
         string saveFilePath = GetSaveFilePath(saveSlot);
 
+        // Delete the game save file
         if (File.Exists(saveFilePath))
         {
-            File.Delete(saveFilePath); // Xóa file lưu game
+            File.Delete(saveFilePath); // Delete the save file
             Debug.Log("Đã xóa dữ liệu trong slot " + saveSlot);
 
-            // Xóa thư mục nếu không còn file nào trong đó
-            string folderPath = Application.dataPath + "/savedata/saveslot" + saveSlot;
+            // Check if the folder is empty and delete it
+            string folderPath = Path.Combine(Application.dataPath, "savedata", "saveslot" + saveSlot);
             if (Directory.GetFiles(folderPath).Length == 0)
             {
                 Directory.Delete(folderPath);
@@ -79,6 +80,38 @@ public class SaveManager : MonoBehaviour
         else
         {
             Debug.Log("Không có dữ liệu để xóa trong slot " + saveSlot);
+        }
+
+        // Delete specific files in saveload (excluding 'settings')
+        string saveLoadPath = Path.Combine(Application.dataPath, "saveload");
+        string[] filesToDeleteInSaveLoad = { "coins.json", "inventory.json" };
+
+        foreach (string fileName in filesToDeleteInSaveLoad)
+        {
+            string filePath = Path.Combine(saveLoadPath, fileName);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+                Debug.Log("Đã xóa file: " + fileName);
+            }
+            else
+            {
+                Debug.Log("Không tìm thấy file: " + fileName + " để xóa.");
+            }
+        }
+
+        // Delete the timelineData file in saveTimeline
+        string saveTimelinePath = Path.Combine(Application.dataPath, "saveTimeline");
+        string timelineDataFile = Path.Combine(saveTimelinePath, "timelineData.json");
+
+        if (File.Exists(timelineDataFile))
+        {
+            File.Delete(timelineDataFile);
+            Debug.Log("Đã xóa file timelineData trong thư mục saveTimeline.");
+        }
+        else
+        {
+            Debug.Log("Không tìm thấy file timelineData trong thư mục saveTimeline để xóa.");
         }
     }
 }

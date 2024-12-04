@@ -10,6 +10,7 @@ public class FishingMinigame : MonoBehaviour
     public TMP_Text fishNameText;
     public TMP_Text rarityText;
     public TMP_Text coinText;
+    public TMP_Text coinsText;
     public Image fishImageDisplay;
     public Button backToVillageButton;
     public Button fishAgainButton;
@@ -28,17 +29,29 @@ public class FishingMinigame : MonoBehaviour
     private float moveSpeed;
 
     private FishingController fishingController; 
+    private CoinManager coinManager;
 
     private void Start()
     {
-        fishingController = FindObjectOfType<FishingController>(); 
+        fishingController = FindObjectOfType<FishingController>();
+        coinManager = FindObjectOfType<CoinManager>();
 
         float barWidth = moveBar.localScale.x;
         barLeftLimit = moveBar.position.x - (barWidth / 2);
         barRightLimit = moveBar.position.x + (barWidth / 2);
 
         fishingMinigameUI.SetActive(false); 
-        resultPanel.SetActive(false); 
+        resultPanel.SetActive(false);
+
+        if (coinManager != null)
+        {
+            coinManager.LoadCoins();
+            UpdateCoinsText();      
+        }
+        else
+        {
+            Debug.LogWarning("CoinManager không được tìm thấy!");
+        }
     }
 
     public void SetCurrentFish(Fish fish)
@@ -49,10 +62,24 @@ public class FishingMinigame : MonoBehaviour
     private void ShowResultPanel()
     {
         resultPanel.SetActive(true);
+
         fishNameText.text = $"Chúc mừng bạn đã câu được: {currentFish.fishName}";
         fishImageDisplay.sprite = currentFish.fishImage;
         rarityText.text = $"Độ hiếm: {currentFish.rarity}"; 
         coinText.text = $"Số coin nhận được: {currentFish.coins}";
+
+        if (coinManager != null)
+        {
+            coinManager.coins += currentFish.coins; 
+            coinManager.SaveCoins();
+            UpdateCoinsText();
+            Debug.Log($"Đã cộng {currentFish.coins} coins. Tổng coins: {coinManager.coins}");
+        }
+        else
+        {
+            Debug.LogWarning("Không tìm thấy CoinManager để cập nhật coins.");
+        }
+
         backToVillageButton.onClick.RemoveAllListeners();
         backToVillageButton.onClick.AddListener(BackToVillage);
         fishAgainButton.onClick.RemoveAllListeners();
@@ -105,6 +132,18 @@ public class FishingMinigame : MonoBehaviour
         isMovingRight = true;
         isFishingActive = true;
         fishingMinigameUI.SetActive(true); // Hiển thị UI minigame khi bắt đầu
+    }
+
+    private void UpdateCoinsText()
+    {
+        if (coinsText != null && coinManager != null)
+        {
+            coinsText.text = $"Coins: {coinManager.coins}";
+        }
+        else
+        {
+            Debug.LogWarning("CoinsText hoặc CoinManager không được thiết lập.");
+        }
     }
 
     void Update()
