@@ -14,12 +14,14 @@ public class BossData
 public class SaveDataBoss
 {
     public List<BossData> bosses = new List<BossData>();
+
 }
 
 public class SaveBoss : MonoBehaviour
 {
     private string savePath; 
     private SaveDataBoss saveData;
+    public List<string> defaultBossList = new List<string>(); // Danh sách trùm mặc định
 
     private void Awake()
     {
@@ -36,6 +38,33 @@ public class SaveBoss : MonoBehaviour
         savePath = Path.Combine(folderPath, "boss_save.json");
 
         LoadData(); // Tải dữ liệu khi game khởi động
+    }
+    // Thêm tất cả trùm mặc định nếu chưa tồn tại
+    private void InitializeDefaultBosses()
+    {
+        foreach (string bossName in defaultBossList)
+        {
+            if (!saveData.bosses.Exists(b => b.bossName == bossName))
+            {
+                saveData.bosses.Add(new BossData { bossName = bossName, isDefeated = false });
+            }
+        }
+
+        SaveDataToFile(); // Lưu lại danh sách cập nhật
+    }
+    public void PrintBossStates()
+    {
+        Debug.Log("=== Trạng thái các trùm ===");
+        foreach (var boss in saveData.bosses)
+        {
+            Debug.Log($"Trùm: {boss.bossName}, Đã bị đánh bại: {boss.isDefeated}");
+        }
+        Debug.Log("==========================");
+    }
+    // Kiểm tra xem tên trùm có tồn tại trong danh sách lưu trữ hay không
+    public bool IsBossExist(string bossName)
+    {
+        return saveData.bosses.Exists(b => b.bossName == bossName);
     }
 
     // Hàm dùng để đánh dấu boss bị đánh bại

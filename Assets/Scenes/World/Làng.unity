@@ -1066,7 +1066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &58339999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12111,6 +12111,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cfc0df2d7cd9e942ac7df3a540bcff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultBossList:
+  - GhostTree
+  - Toad
+  - ChanTinh
+  - DaiBang
+  - LiThong
 --- !u!4 &1305974291
 Transform:
   m_ObjectHideFlags: 0
@@ -12139,15 +12145,64 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossName: GhostTree
+  bossName1: Toad
+  bossName2: ChanTinh
+  bossName3: DaiBang
+  bossName4: LiThong
   hideObjects:
-  - {fileID: 1955680669}
-  - {fileID: 1640632706}
+  - {fileID: 1605305998}
   - {fileID: 618105255}
+  - {fileID: 58339998}
+  - {fileID: 2140955836}
+  - {fileID: 1640632706}
   showObjects:
   - {fileID: 1955680669}
-  hideOthers:
+  - {fileID: 2092843153}
+  hideObjects1:
+  - {fileID: 1605305998}
+  - {fileID: 2092843153}
+  - {fileID: 58339998}
+  - {fileID: 2140955836}
+  showObjects1:
   - {fileID: 1640632706}
+  - {fileID: 1955680669}
   - {fileID: 618105255}
+  hideObjects2:
+  - {fileID: 1605305998}
+  - {fileID: 2092843153}
+  - {fileID: 618105255}
+  - {fileID: 2140955836}
+  showObjects2:
+  - {fileID: 58339998}
+  - {fileID: 1955680669}
+  - {fileID: 1640632706}
+  hideObjects3:
+  - {fileID: 1605305998}
+  - {fileID: 2092843153}
+  - {fileID: 618105255}
+  - {fileID: 58339998}
+  - {fileID: 1640632706}
+  showObjects3:
+  - {fileID: 1955680669}
+  - {fileID: 2140955836}
+  hideObjects4:
+  - {fileID: 1605305998}
+  - {fileID: 2092843153}
+  - {fileID: 618105255}
+  - {fileID: 58339998}
+  - {fileID: 2140955836}
+  - {fileID: 1640632706}
+  showObjects4:
+  - {fileID: 1955680669}
+  defaultHideObjects:
+  - {fileID: 2092843153}
+  - {fileID: 618105255}
+  - {fileID: 58339998}
+  - {fileID: 2140955836}
+  - {fileID: 1955680669}
+  - {fileID: 1640632706}
+  defaultShowObjects:
+  - {fileID: 1605305998}
 --- !u!1 &1309984175
 GameObject:
   m_ObjectHideFlags: 0
@@ -21716,7 +21771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2140955837
 MonoBehaviour:
   m_ObjectHideFlags: 0

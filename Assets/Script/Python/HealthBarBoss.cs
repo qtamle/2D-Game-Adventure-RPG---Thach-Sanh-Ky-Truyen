@@ -13,7 +13,8 @@ public class HealthBarBoss : MonoBehaviour
     public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
 
     public Animator anim;
-   
+    public string bossName;
+
     public float targetHealth;
     private float currentHealth;
     private float healthVelocity = 0f;
@@ -27,9 +28,10 @@ public class HealthBarBoss : MonoBehaviour
     public ObjectManager objectManager;
 
     [SerializeField] private DamageFlash dameflash;
-
+    private SaveBoss saveBoss;
     private void Start()
     {
+        saveBoss = FindObjectOfType<SaveBoss>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
 

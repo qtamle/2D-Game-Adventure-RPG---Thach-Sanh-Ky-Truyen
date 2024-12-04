@@ -19,6 +19,7 @@ public class EagleHealthbar : MonoBehaviour
 
     public Animator anim;
     public Active active;
+    public string bossname;
 
     private float targetHealth;
     private float currentHealth;
@@ -33,6 +34,8 @@ public class EagleHealthbar : MonoBehaviour
     private Image shieldFillImage;
     private Image lostShieldFillImage;
 
+    private SaveBoss saveBoss;
+
     public Transform glassSpawn;
     [SerializeField] private ParticleSystem shieldDepletedEffect;
     [SerializeField] private EagleSkillRemake eagleSkillRemake;
@@ -40,6 +43,8 @@ public class EagleHealthbar : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
+        saveBoss = FindObjectOfType<SaveBoss>();
+
 
         health = maxHealth;
         shield = maxShield;
