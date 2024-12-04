@@ -8,6 +8,8 @@ public class FishingMinigame : MonoBehaviour
     public GameObject fishingMinigameUI;
     public GameObject resultPanel;
     public TMP_Text fishNameText;
+    public TMP_Text rarityText;
+    public TMP_Text coinText;
     public Image fishImageDisplay;
     public Button backToVillageButton;
     public Button fishAgainButton;
@@ -49,6 +51,8 @@ public class FishingMinigame : MonoBehaviour
         resultPanel.SetActive(true);
         fishNameText.text = $"Chúc mừng bạn đã câu được: {currentFish.fishName}";
         fishImageDisplay.sprite = currentFish.fishImage;
+        rarityText.text = $"Độ hiếm: {currentFish.rarity}"; 
+        coinText.text = $"Số coin nhận được: {currentFish.coins}";
         backToVillageButton.onClick.RemoveAllListeners();
         backToVillageButton.onClick.AddListener(BackToVillage);
         fishAgainButton.onClick.RemoveAllListeners();
