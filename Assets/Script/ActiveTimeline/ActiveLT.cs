@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class ActiveCocTinh : MonoBehaviour
+public class ActiveLT : MonoBehaviour
 {
     public GameObject active;
     public Active activeTimeline;
@@ -18,8 +17,7 @@ public class ActiveCocTinh : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             active.SetActive(false);
-            activeTimeline.SetAndPlayTimeline(2);
-            //SceneManager.LoadScene("Toad 1");
+            activeTimeline.SetAndPlayTimeline(5);
         }
     }
 }

@@ -11,8 +11,13 @@ public class CutScene : MonoBehaviour
     {
     }
 
-    public void CotTruyen()
+    public void CotTruyen(int timelineIndex)
     {
+        // Lưu chỉ số Timeline vào PlayerPrefs
+        PlayerPrefs.SetInt("TimelineIndex", timelineIndex);
+        PlayerPrefs.Save();
+
+        // Chuyển sang scene Story1
         SceneManager.LoadScene("Story1");
     }
 
@@ -31,6 +36,10 @@ public class CutScene : MonoBehaviour
     public void LiThong()
     {
         SceneManager.LoadScene("Final Boss");
+    }
+    public void LiThongPhase2()
+    {
+        SceneManager.LoadScene("Final Boss Phase 2");
     }
 
     public void Lang()

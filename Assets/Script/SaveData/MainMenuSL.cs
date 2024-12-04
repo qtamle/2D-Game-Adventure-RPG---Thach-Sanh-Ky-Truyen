@@ -39,7 +39,7 @@ public class MainMenuSL : MonoBehaviour
     {
         selectedSaveSlot = saveSlot;  // Lưu slot đã chọn
         saveManager.SaveGame(Vector3.zero, "StartScene", selectedSaveSlot);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Làng");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Story1");
     }
 
     public void ContinueGame(int saveSlot)

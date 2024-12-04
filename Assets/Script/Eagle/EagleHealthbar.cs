@@ -17,7 +17,9 @@ public class EagleHealthbar : MonoBehaviour
     public float lostHealthLerpSpeed = 5f;
     public float lostShieldLerpSpeed = 5f;
 
-    private Animator anim;
+    public Animator anim;
+    public Active active;
+
     private float targetHealth;
     private float currentHealth;
     private float healthVelocity = 0f;
@@ -169,6 +171,7 @@ public class EagleHealthbar : MonoBehaviour
 
         if (targetHealth <= 0)
         {
+            active.SetAndPlayTimeline(1);
             Destroy(gameObject);
         }
     }

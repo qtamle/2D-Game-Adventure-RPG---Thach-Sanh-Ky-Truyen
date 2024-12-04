@@ -36,7 +36,16 @@ public class TimelineManager : MonoBehaviour
 
         // Load trạng thái đã lưu
         LoadTimelineData();
+
+        // Kiểm tra PlayerPrefs để chạy Timeline
+        if (PlayerPrefs.HasKey("TimelineIndex"))
+        {
+            int timelineIndex = PlayerPrefs.GetInt("TimelineIndex");
+            PlayerPrefs.DeleteKey("TimelineIndex"); // Xóa sau khi lấy giá trị để tránh lỗi cho lần tiếp theo
+            PlayTimeline(timelineIndex); // Chạy timeline theo chỉ số
+        }
     }
+
 
     /// <summary>
     /// Chạy một Timeline nếu nó chưa được chạy trước đó.

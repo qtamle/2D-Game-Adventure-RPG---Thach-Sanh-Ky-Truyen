@@ -14,6 +14,7 @@ public class Phase2Health : MonoBehaviour
     public float smoothTime = 0.2f;
     public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
 
+    public Active active;
 
     private float targetHealth;
     private float currentHealth;
@@ -80,6 +81,7 @@ public class Phase2Health : MonoBehaviour
 
         if (targetHealth <= 0)
         {
+            active.SetAndPlayTimeline(1);
             Destroy(gameObject);
         }
     }

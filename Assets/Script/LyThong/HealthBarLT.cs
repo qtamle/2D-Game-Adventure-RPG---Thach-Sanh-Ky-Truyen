@@ -13,7 +13,8 @@ public class HealthBarLT : MonoBehaviour
     public float maxHealth = 1000f;
     public float smoothTime = 0.2f;
     public float lostHealthLerpSpeed = 5f; // Tốc độ giảm của fill máu đã mất
-
+    public Active active;
+    public Animator anim;
 
     private float targetHealth;
     private float currentHealth;
@@ -80,7 +81,9 @@ public class HealthBarLT : MonoBehaviour
 
         if (targetHealth <= 0)
         {
-            Destroy(gameObject);
+            anim.SetTrigger("Phase2");
+
+            active.SetAndPlayTimeline(1);
         }
     }
 
