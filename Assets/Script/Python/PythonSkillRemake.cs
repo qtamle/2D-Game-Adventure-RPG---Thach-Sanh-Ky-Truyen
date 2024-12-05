@@ -208,7 +208,7 @@ public class PythonSkillRemake : MonoBehaviour
         } while (skillIndex == lastSkillIndex);
 
         lastSkillIndex = skillIndex;
-        return 0;
+        return skillIndex;
     }
 
     private IEnumerator ActivateSkill(int skillIndex)
