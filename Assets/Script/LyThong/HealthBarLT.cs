@@ -16,6 +16,8 @@ public class HealthBarLT : MonoBehaviour
     public Active active;
     public Animator anim;
 
+    public string bossname;
+
     private float targetHealth;
     private float currentHealth;
     private float healthVelocity = 0f;
@@ -23,8 +25,12 @@ public class HealthBarLT : MonoBehaviour
     private Image fillImage;
     private Image lostFillImage;
 
+    private SaveBoss saveBoss;
+
     private void Start()
     {
+        saveBoss = FindObjectOfType<SaveBoss>();
+
         health = maxHealth;
         targetHealth = health;
         currentHealth = health;
@@ -54,25 +60,7 @@ public class HealthBarLT : MonoBehaviour
         if (targetHealth < 0) 
         { 
             targetHealth = 0;
-            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-
-            if (audioManagerObject != null)
-            {
-                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                if (audioManager != null)
-                {
-                    audioManager.StopAllMusic();
-                }
-                else
-                {
-                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-            }
+            saveBoss.MarkBossAsDefeated(bossname);
         }
 
         health = targetHealth;

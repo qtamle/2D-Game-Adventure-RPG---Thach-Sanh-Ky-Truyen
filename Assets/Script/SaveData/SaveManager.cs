@@ -115,16 +115,16 @@ public class SaveManager : MonoBehaviour
         }
 
         string saveBossPath = Path.Combine(Application.dataPath, "SaveBoss");
-        string BossDataFile = Path.Combine(saveTimelinePath, "boss_save.json");
+        string BossDataFile = Path.Combine(saveBossPath, "boss_save.json");
 
         if (File.Exists(BossDataFile))
         {
             File.Delete(BossDataFile);
-            Debug.Log("Đã xóa file timelineData trong thư mục saveTimeline.");
+            Debug.Log("Đã xóa file saveboss trong thư mục saveBoss.");
         }
         else
         {
-            Debug.Log("Không tìm thấy file timelineData trong thư mục saveTimeline để xóa.");
+            Debug.Log("Không tìm thấy file saveBoss trong thư mục saveBoss để xóa.");
         }
     }
 }
