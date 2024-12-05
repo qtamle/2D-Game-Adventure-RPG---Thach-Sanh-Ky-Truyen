@@ -147,43 +147,22 @@ public class Attack : MonoBehaviour
         PlayerAttack();
 
         // Lấy đối tượng AudioManager
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-        AudioManager audioManager = null;
-
-        if (audioManagerObject != null)
-        {
-            audioManager = audioManagerObject.GetComponent<AudioManager>();
-            if (audioManager == null)
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
 
         switch (comboCount)
         {
             case 0:
-                if (audioManager != null)
-                {
-                    audioManager.PlayPlayerSFX(3); 
-                }
+                AudioManager.Instance.PlayPlayerSFX(3);
+
                 reducedSpeedDuration = 0.1f;
                 break;
             case 1:
-                if (audioManager != null)
-                {
-                    audioManager.PlayPlayerSFX(4); 
-                }
+                AudioManager.Instance.PlayPlayerSFX(3);
+
                 reducedSpeedDuration = 0.15f; 
                 break;
             case 2:
-                if (audioManager != null)
-                {
-                    audioManager.PlayPlayerSFX(5);
-                }
+                AudioManager.Instance.PlayPlayerSFX(3);
+
                 reducedSpeedDuration = 0.2f; 
                 break;
         }

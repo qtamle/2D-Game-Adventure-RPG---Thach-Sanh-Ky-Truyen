@@ -72,25 +72,8 @@ public class ToadSkill : MonoBehaviour
 
         StartCoroutine(JumpAndUseSkillRoutine());
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlayBackgroundMusic(0);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlayBackgroundMusic(0);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
     }
 
     void Update()
@@ -165,25 +148,8 @@ public class ToadSkill : MonoBehaviour
 
         rb.AddForce(jumpVector, ForceMode2D.Impulse);
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(0);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(0);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -201,25 +167,8 @@ public class ToadSkill : MonoBehaviour
                 CameraShakerHandler.Shake(jumpShake);
                 hasCamShaken = true;
 
-                GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+                AudioManager.Instance.PlaySFX(1);
 
-                if (audioManagerObject != null)
-                {
-                    AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                    if (audioManager != null)
-                    {
-                        audioManager.PlaySFX(1);
-                    }
-                    else
-                    {
-                        Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                    }
-                }
-                else
-                {
-                    Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-                }
             }
 
             if (footImpactParticlePrefab != null)
@@ -304,25 +253,7 @@ public class ToadSkill : MonoBehaviour
             float angle = !isFacingRight ? 0f : 180f;
             tongue.transform.rotation = Quaternion.Euler(0, 0, angle);
 
-            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-
-            if (audioManagerObject != null)
-            {
-                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                if (audioManager != null)
-                {
-                    audioManager.PlaySFX(2);
-                }
-                else
-                {
-                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-            }
+            AudioManager.Instance.PlaySFX(2);
 
             StartCoroutine(ExtendTongue());
         }
@@ -368,25 +299,8 @@ public class ToadSkill : MonoBehaviour
     }
     void ShootBubble()
     {
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(3);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(3);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
         // Bắn viên bong bóng đầu tiên
         GameObject bubble1 = Instantiate(bubblePrefab, shootBubble.position, Quaternion.identity);
         Rigidbody2D bubbleRb1 = bubble1.GetComponent<Rigidbody2D>();
@@ -403,25 +317,8 @@ public class ToadSkill : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(3);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(3);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
         // Bắn viên bong bóng thứ hai
         GameObject bubble2 = Instantiate(bubblePrefab, shootBubble.position, Quaternion.identity);
         Rigidbody2D bubbleRb2 = bubble2.GetComponent<Rigidbody2D>();
@@ -435,25 +332,8 @@ public class ToadSkill : MonoBehaviour
     IEnumerator ShootBubbleWithDelay3(float delay)
     {
         yield return new WaitForSeconds(delay);
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(3);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(3);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
         // Bắn viên bong bóng thứ ba
         GameObject bubble3 = Instantiate(bubblePrefab, shootBubble.position, Quaternion.identity);
         Rigidbody2D bubbleRb3 = bubble3.GetComponent<Rigidbody2D>();
@@ -471,25 +351,8 @@ public class ToadSkill : MonoBehaviour
         {   
             Destroy(bubble);
             GameObject bubblePop = Instantiate(bubblePopPrefab, bubble.transform.position, Quaternion.identity);
-            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+            AudioManager.Instance.PlaySFX(5);
 
-            if (audioManagerObject != null)
-            {
-                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                if (audioManager != null)
-                {
-                    audioManager.PlaySFX(5);
-                }
-                else
-                {
-                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-            }
             Destroy(bubblePop, 2f);
         }
     }
@@ -522,25 +385,8 @@ public class ToadSkill : MonoBehaviour
 
     IEnumerator ShootTongueAtBug(Transform bugTransform)
     {
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(2);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(2);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
 
         tongueDirection = (bugTransform.position - bugTongueStartPosition.position).normalized;
 

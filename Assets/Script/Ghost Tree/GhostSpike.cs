@@ -53,25 +53,8 @@ public class GhostSpike : MonoBehaviour
 
         transform.localScale = targetScale;
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(5);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(5);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
 
         if (smallSpikeSpawnPoints.Length > 0)
         {

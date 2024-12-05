@@ -50,25 +50,8 @@ public class GhostTreeSkill : MonoBehaviour
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         ParticleSystem leafPrefab = Instantiate(leaf, leafSpawn.position, Quaternion.identity);
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlayBackgroundMusic(0);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlayBackgroundMusic(0); 
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
         StartCoroutine(ManageSkills());
     }
 
@@ -101,26 +84,9 @@ public class GhostTreeSkill : MonoBehaviour
                     switch (skillIndex)
                     {
                         case 0:
-                            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+                        AudioManager.Instance.PlaySFX(5);
 
-                            if (audioManagerObject != null)
-                            {
-                                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                                if (audioManager != null)
-                                {
-                                    audioManager.PlaySFX(5);
-                                }
-                                else
-                                {
-                                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                                }
-                            }
-                            else
-                            {
-                                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-                            }
-                            yield return StartCoroutine(AnimVine());
+                        yield return StartCoroutine(AnimVine());
                             yield return StartCoroutine(SpawnVine());
                             break;
                         case 1:
@@ -246,25 +212,7 @@ public class GhostTreeSkill : MonoBehaviour
         {
             yield return StartCoroutine(AnimSpawn());
 
-            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-
-            if (audioManagerObject != null)
-            {
-                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                if (audioManager != null)
-                {
-                    audioManager.PlaySFX(2);
-                }
-                else
-                {
-                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-            }
+            AudioManager.Instance.PlaySFX(2);
 
             float randomX = Random.Range(minSpawnX, maxSpawnX);
             Vector3 spawnPosition = new Vector3(randomX, spawnY, spawnZ);
@@ -285,25 +233,7 @@ public class GhostTreeSkill : MonoBehaviour
         {
             yield return StartCoroutine(AnimSpike());
 
-            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-
-            if (audioManagerObject != null)
-            {
-                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                if (audioManager != null)
-                {
-                    audioManager.PlaySFX(4);
-                }
-                else
-                {
-                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-            }
+            AudioManager.Instance.PlaySFX(4);
 
             Debug.Log("Shooting spike...");
 

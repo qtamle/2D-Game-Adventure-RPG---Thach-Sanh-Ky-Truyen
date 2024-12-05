@@ -67,25 +67,8 @@ public class LTSpear : MonoBehaviour
 
         StartCoroutine(RandomSkillSelection());
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlayBackgroundMusic(0);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlayBackgroundMusic(0);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
     }
     private void Update()
     {
@@ -213,25 +196,7 @@ public class LTSpear : MonoBehaviour
         
         yield return new WaitForSeconds(1f);
         anim.SetTrigger("Dash");
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(0);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
+        AudioManager.Instance.PlaySFX(0);
 
         while (isDashing)
         {
@@ -305,25 +270,8 @@ public class LTSpear : MonoBehaviour
 
         CameraShakerHandler.Shake(jumpShake);
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(2);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(2);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(damageAreaTransform.position, damageRadius);
 
@@ -355,26 +303,9 @@ public class LTSpear : MonoBehaviour
        
         isUsingSkill = true;
         isChasing = false;
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(3);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
 
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(3);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
-        
         yield return new WaitForSeconds(1f);
 
         anim.SetTrigger("Dart");
@@ -390,23 +321,8 @@ public class LTSpear : MonoBehaviour
                 Vector2 direction = new Vector2(Mathf.Sign(player.position.x - throwPoint.position.x), 0).normalized;
                 gasBomb.GetComponent<Rigidbody2D>().velocity = direction * throwSpeed;
 
-                if (audioManagerObject != null)
-                {
-                    AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+                AudioManager.Instance.PlaySFX(4);
 
-                    if (audioManager != null)
-                    {
-                        audioManager.PlaySFX(4);
-                    }
-                    else
-                    {
-                        Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                    }
-                }
-                else
-                {
-                    Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-                }
             }
 
             // Chờ 1 giây trước khi ném quả tiếp theo
@@ -458,25 +374,8 @@ public class LTSpear : MonoBehaviour
             attackTime += Time.deltaTime; // Tăng thời gian tấn công
             yield return null;
         }
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(5);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(5);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
 
         yield return new WaitForSeconds(1.5f);
         Debug.Log("Da hoan tat skill dam giao");
@@ -488,25 +387,8 @@ public class LTSpear : MonoBehaviour
     // quạt giáo
     private IEnumerator SwipeSpear()
     {
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(6);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(6);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
         anim.SetTrigger("Swipe");
         isUsingSkill = true;
         isChasing = false;

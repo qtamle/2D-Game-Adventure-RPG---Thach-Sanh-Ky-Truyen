@@ -111,25 +111,7 @@ public class Sapling : MonoBehaviour
 
         transform.localScale = targetScale;
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(5);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
+        AudioManager.Instance.PlaySFX(5);
 
         Collider2D player = Physics2D.OverlapCircle(transform.position, radiusExplode, playerMask);
         if (player != null)

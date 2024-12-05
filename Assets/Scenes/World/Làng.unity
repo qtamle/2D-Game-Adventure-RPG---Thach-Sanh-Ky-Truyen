@@ -5390,7 +5390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &461241681
 Transform:
   m_ObjectHideFlags: 0
@@ -6829,7 +6829,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585870385}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -8677,7 +8677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a26a5199d7e5bf646a9cc370d08b804c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueManager: {fileID: 1382204976}
+  dialogueManager: {fileID: 1294781036}
 --- !u!212 &775719360
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12278,7 +12278,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Bla bla bla
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 380efc04a9f9fa14b8861d1868c2c569, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0e417dd93dc431743bf98e7f27d48534, type: 2}
   m_sharedMaterial: {fileID: 596498657734289811, guid: 380efc04a9f9fa14b8861d1868c2c569, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -12342,7 +12342,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -0.7175293, w: -25.05072}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1205373098
@@ -19688,7 +19688,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Bla bla bla
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 380efc04a9f9fa14b8861d1868c2c569, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0e417dd93dc431743bf98e7f27d48534, type: 2}
   m_sharedMaterial: {fileID: 596498657734289811, guid: 380efc04a9f9fa14b8861d1868c2c569, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -19752,7 +19752,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -0.7175293, w: -25.05072}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1659178171
@@ -24724,7 +24724,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.20003042, y: 0.074783154}
+  m_Offset: {x: -0.20003042, y: 0.061069332}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -24735,7 +24735,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.058864653, y: 0.109898224}
+  m_Size: {x: 0.058864653, y: 0.13732587}
   m_EdgeRadius: 0
 --- !u!212 &2092843156
 SpriteRenderer:

@@ -87,26 +87,9 @@ public class EagleSkillRemake : MonoBehaviour
 
         StartCoroutine(SkillRoutine());
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlayBackgroundMusic(0);
+        AudioManager.Instance.PlayEnvironmentMusic(0);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlayBackgroundMusic(0);
-                audioManager.PlayEnvironmentMusic(0);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
     }
 
     private IEnumerator SkillRoutine()
@@ -143,25 +126,8 @@ public class EagleSkillRemake : MonoBehaviour
         int skillIndex;
         do
         {
-            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+            AudioManager.Instance.PlaySFX(0);
 
-            if (audioManagerObject != null)
-            {
-                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                if (audioManager != null)
-                {
-                    audioManager.PlaySFX(0);
-                }
-                else
-                {
-                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-            }
             skillIndex = skillList[Random.Range(0, skillList.Count)];
         } while (skillIndex == lastSkillIndex);
 
@@ -171,25 +137,7 @@ public class EagleSkillRemake : MonoBehaviour
 
     private IEnumerator ActivateSkill(int skillIndex)
     {
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(1);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
+        AudioManager.Instance.PlaySFX(1);
 
         if (eagleHealth.shield <= 0)
         {
@@ -248,25 +196,8 @@ public class EagleSkillRemake : MonoBehaviour
     // wind cut
     private IEnumerator WindCutSkill()
     {
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(4);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(4);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
         GameObject player = GameObject.FindWithTag("Player");
 
         if (player != null)
@@ -352,25 +283,8 @@ public class EagleSkillRemake : MonoBehaviour
 
             float startAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg - spreadAngle / 2f;
 
-            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+            AudioManager.Instance.PlaySFX(4);
 
-            if (audioManagerObject != null)
-            {
-                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                if (audioManager != null)
-                {
-                    audioManager.PlaySFX(4);
-                }
-                else
-                {
-                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-            }
             // Bắn đợt đầu tiên
             for (int i = 0; i < featherCount; i++)
             {
@@ -401,23 +315,8 @@ public class EagleSkillRemake : MonoBehaviour
 
             float secondAngleStart = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg - 50f / 2f;
 
-            if (audioManagerObject != null)
-            {
-                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
+            AudioManager.Instance.PlaySFX(4);
 
-                if (audioManager != null)
-                {
-                    audioManager.PlaySFX(4);
-                }
-                else
-                {
-                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-            }
             // Bắn đợt thứ hai
             for (int i = 0; i < featherCount; i++)
             {
@@ -507,26 +406,7 @@ public class EagleSkillRemake : MonoBehaviour
                 {
                     ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                     StartCoroutine(DestroyAfterTime(smokeEffect, 5f));
-                    GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-
-                    if (audioManagerObject != null)
-                    {
-                        AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                        if (audioManager != null)
-                        {
-                            audioManager.PlaySFX(6);
-                        }
-                        else
-                        {
-                            Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-                    }
-
+                    AudioManager.Instance.PlaySFX(6);
                     Debug.Log("Chạm đất, dừng lại 0,5 giây");
                     yield return new WaitForSeconds(0.2f);
                     break; 
@@ -586,25 +466,8 @@ public class EagleSkillRemake : MonoBehaviour
 
         Vector3 initialPosition = transform.position;
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(0);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(0);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
         while (elapsedTime < landingTime)
         {
             if (eagleHealth.shield <= 0)
@@ -643,25 +506,8 @@ public class EagleSkillRemake : MonoBehaviour
         float initialPullForce = pullForce;
         float velocity = 0f;
 
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(7);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(7);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
         while (elapsedTime < tornadoDuration)
         {
             if (eagleHealth.shield <= 0)
@@ -787,25 +633,8 @@ public class EagleSkillRemake : MonoBehaviour
 
                     if (IsGrounded())
                     {
-                        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+                        AudioManager.Instance.PlaySFX(6);
 
-                        if (audioManagerObject != null)
-                        {
-                            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                            if (audioManager != null)
-                            {
-                                audioManager.PlaySFX(6);
-                            }
-                            else
-                            {
-                                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                            }
-                        }
-                        else
-                        {
-                            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-                        }
                         if (eagleHealth.shield <= 0)
                         {
                             ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
@@ -921,25 +750,8 @@ public class EagleSkillRemake : MonoBehaviour
 
                 if (IsGrounded())
                 {
-                    GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+                    AudioManager.Instance.PlaySFX(6);
 
-                    if (audioManagerObject != null)
-                    {
-                        AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                        if (audioManager != null)
-                        {
-                            audioManager.PlaySFX(6);
-                        }
-                        else
-                        {
-                            Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-                    }
                     if (eagleHealth.shield <= 0)
                     {
                         ParticleSystem smokeEffect = Instantiate(smoke, smokeSpawn.position, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
@@ -980,25 +792,8 @@ public class EagleSkillRemake : MonoBehaviour
 
     private void Play(int soundIndex)
     {
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+        AudioManager.Instance.PlaySFX(soundIndex);
 
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(soundIndex);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
-        else
-        {
-            Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-        }
     }
 
     IEnumerator DestroyAfterTime(ParticleSystem ps, float time)

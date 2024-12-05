@@ -34,25 +34,8 @@ public class FireBallSmall : MonoBehaviour
 
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+            AudioManager.Instance.PlaySFX(5);
 
-            if (audioManagerObject != null)
-            {
-                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                if (audioManager != null)
-                {
-                    audioManager.PlaySFX(5);
-                }
-                else
-                {
-                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-            }
             Vector3 hitPosition = collision.ClosestPoint(transform.position);
             hitPosition.y += yOffset;
 

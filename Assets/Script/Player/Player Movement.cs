@@ -301,25 +301,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (stamina.CurrentStamina >= staminaDecreaseAmount)
         {
-            GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
+            AudioManager.Instance.PlayPlayerSFX(2);
 
-            if (audioManagerObject != null)
-            {
-                AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-                if (audioManager != null)
-                {
-                    audioManager.PlayPlayerSFX(2);
-                }
-                else
-                {
-                    Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-                }
-            }
-            else
-            {
-                Debug.LogError("No GameObject found with the tag 'AudioManager'.");
-            }
             stamina.DecreaseStamina(staminaDecreaseAmount);
             canDash = false;
             isDashing = true;
@@ -413,21 +396,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError("HealthBar chưa được gán.");
         }
-        GameObject audioManagerObject = GameObject.FindWithTag("AudioManager");
-
-        if (audioManagerObject != null)
-        {
-            AudioManager audioManager = audioManagerObject.GetComponent<AudioManager>();
-
-            if (audioManager != null)
-            {
-                audioManager.PlayPlayerSFX(1);
-            }
-            else
-            {
-                Debug.LogError("AudioManager component not found on the GameObject with the tag 'AudioManager'.");
-            }
-        }
+        AudioManager.Instance.PlayPlayerSFX(1);
 
         Vector3 knockbackDirection = GetKnockbackDirection();
         StartCoroutine(ApplyKnockback(knockbackDirection, knockbackDistance, knockbackSpeed, knockbackDuration));

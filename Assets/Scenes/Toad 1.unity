@@ -5777,14 +5777,14 @@ PlayableDirector:
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
-  - key: {fileID: -7164524740488471640, guid: c91a33e00d86f42cf91d3a91f0aae466, type: 2}
-    value: {fileID: 1369765085}
-  - key: {fileID: 7374141441031689701, guid: c91a33e00d86f42cf91d3a91f0aae466, type: 2}
-    value: {fileID: 1369765085}
   - key: {fileID: 8790493889227904534, guid: c91a33e00d86f42cf91d3a91f0aae466, type: 2}
     value: {fileID: 2018155104}
   - key: {fileID: 719173255911066022, guid: c91a33e00d86f42cf91d3a91f0aae466, type: 2}
     value: {fileID: 3652385017490262470}
+  - key: {fileID: 4385349893030563453, guid: c91a33e00d86f42cf91d3a91f0aae466, type: 2}
+    value: {fileID: 1369765085}
+  - key: {fileID: 2696151946588017728, guid: c91a33e00d86f42cf91d3a91f0aae466, type: 2}
+    value: {fileID: 1369765085}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &836330031
@@ -7553,11 +7553,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919364351069812758, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0090363715
+      value: 0.009051511
       objectReference: {fileID: 0}
     - target: {fileID: 919364351069812758, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.99995923
+      value: -0.99995905
       objectReference: {fileID: 0}
     - target: {fileID: 1286786417732748965, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_Size.x
@@ -7613,7 +7613,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1901895592504865279, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.42
+      value: -6.89
       objectReference: {fileID: 0}
     - target: {fileID: 1901895592504865279, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7657,11 +7657,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2486483419928072412, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.13314919
+      value: 0.13319609
       objectReference: {fileID: 0}
     - target: {fileID: 2486483419928072412, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.991096
+      value: 0.9910897
       objectReference: {fileID: 0}
     - target: {fileID: 2871209243731231397, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7669,7 +7669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2871209243731231397, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000008119795
+      value: -0.00005516183
       objectReference: {fileID: 0}
     - target: {fileID: 3075088445408681824, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7749,7 +7749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6466396342056229421, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000015570375
+      value: 0.00010992359
       objectReference: {fileID: 0}
     - target: {fileID: 7566313598245311528, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: speed
@@ -7769,7 +7769,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7692510309106507992, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000030660583
+      value: -0.0000007059058
       objectReference: {fileID: 0}
     - target: {fileID: 7790463538988721056, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7777,7 +7777,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7790463538988721056, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000016036027
+      value: 0.00000018902179
       objectReference: {fileID: 0}
     - target: {fileID: 7927764829142761762, guid: 602b3d8b1254b09468dde268a1c6ff46, type: 3}
       propertyPath: bow
@@ -10336,9 +10336,9 @@ PlayableDirector:
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
-  - key: {fileID: -7164524740488471640, guid: c91a33e00d86f42cf91d3a91f0aae466, type: 2}
+  - key: {fileID: 0}
     value: {fileID: 1369765085}
-  - key: {fileID: 7374141441031689701, guid: c91a33e00d86f42cf91d3a91f0aae466, type: 2}
+  - key: {fileID: 0}
     value: {fileID: 1369765085}
   - key: {fileID: 8790493889227904534, guid: c91a33e00d86f42cf91d3a91f0aae466, type: 2}
     value: {fileID: 0}
