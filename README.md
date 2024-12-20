@@ -24,13 +24,17 @@ Level 5: Lí Thông ( 2 phase )
 
 Mini game Câu cá:
 
+
 ------------- Chức năng -------------------
+
 1: Save/Load file
 
 2: Chức năng Hệ thống Hội thoại
 
 3: Timeline đi kèm với hội thoại
+
 https://github.com/user-attachments/assets/5ecc75d8-3d00-40ac-829a-611b02aa9fe7
+
 Sử dụng UnityEvent để bắt Timeline và Signal Emitter, Signal Receiver
 
 4: Kĩ năng bosses
